@@ -23,6 +23,9 @@ mod rt;
 #[allow(unused_imports)]
 mod auto;
 
+// #[macro_use]
+pub mod subclass;
+
 mod crypto_context;
 mod filter_checksum;
 mod internet_address;
