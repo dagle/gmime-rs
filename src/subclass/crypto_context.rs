@@ -9,7 +9,7 @@ use crate::Stream;
 use crate::VerifyFlags;
 use glib::object::IsA;
 use glib::translate::*;
-use glib::{Cast, GString};
+use glib::GString;
 extern crate libc;
 
 pub trait CryptoContextImpl: CryptoContextExt + ObjectImpl {
@@ -98,6 +98,7 @@ pub trait CryptoContextExt: ObjectSubclass {
     ) -> Result<i32, glib::Error>;
 
     fn parent_encryption_protocol(&self) -> Option<glib::GString>;
+
     fn parent_key_exchange_protocol(&self) -> Option<glib::GString>;
 
     fn parent_signature_protocol(&self) -> Option<glib::GString>;
@@ -160,7 +161,6 @@ unsafe extern "C" fn decrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoCon
         &*outstream);
 
     match result {
-        // Is ownership correct?
         Ok(num) => num.to_glib_full(),
         Err(e) => {
             *error = e.into_glib_ptr();
@@ -203,18 +203,86 @@ unsafe extern "C" fn get_key_exchange_protocol<T: CryptoContextImpl>(ptr: *mut f
     imp.signature_protocol().to_glib_full()
 }
 
-unsafe extern "C" fn verify<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, flags: ffi::GMimeVerifyFlags, instream: *mut ffi::GMimeStream, sigstream: *mut ffi::GMimeStream, ostream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> *mut ffi::GMimeSignatureList {
+unsafe extern "C" fn verify<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, flags: ffi::GMimeVerifyFlags, istream: *mut ffi::GMimeStream, sigstream: *mut ffi::GMimeStream, ostream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> *mut ffi::GMimeSignatureList {
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    let instream: Borrowed<Stream> = from_glib_borrow(istream);
+    let outstream: Borrowed<Option<Stream>> = from_glib_borrow(ostream);
+    let sstream: Borrowed<Option<Stream>> = from_glib_borrow(sigstream);
+
+    let result = imp.verify(
+        from_glib(flags),
+        &*instream,
+        sstream.as_ref().as_ref(),
+        outstream.as_ref().as_ref());
+
+    match result {
+        Ok(num) => num.to_glib_full(),
+        Err(e) => {
+            *error = e.into_glib_ptr();
+            std::ptr::null_mut()
+        }
+    }
 }
 
 unsafe extern "C" fn encrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, sign: glib::ffi::gboolean, uid: *const libc::c_char, flags: ffi::GMimeEncryptFlags, recipients: *mut glib::ffi::GPtrArray, istream: *mut ffi::GMimeStream,  ostream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> libc::c_int {
-    1
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    let uid = from_glib_borrow::<_, Option<GString>>(uid);
+    let instream: Borrowed<Stream> = from_glib_borrow(istream);
+    let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
+    // let reciep = FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec((*recipients).pdata);
+    // let len = (*recipients).len as usize;
+    // let reciep = std::slice::from_raw_parts((*recipients).pdata, len);
+
+    let r = vec![];
+    for i in reciep {
+        r.push(i )
+    }
+    // let recipe = reciep.iter().map(|s| {s.as_ptr()}).collect();
+    // let reciep = Vec::from_raw_parts((*recipients).pdata, len, len);
+    let result = imp.encrypt(
+        from_glib(sign),
+        uid.as_ref().as_ref().map(|s| s.as_ref()),
+        from_glib(flags),
+        &reciep,
+        &*instream,
+        &*outstream);
+
+    match result {
+        Ok(num) => num,
+        Err(e) => {
+            *error = e.into_glib_ptr();
+            -1
+        }
+    }
+
 }
 unsafe extern "C" fn import_keys<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, istream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> libc::c_int {
-    1
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    let instream: Borrowed<Stream> = from_glib_borrow(istream);
+    match imp.import_keys(&*instream) {
+        Ok(num) => num,
+        Err(e) => {
+            *error = e.into_glib_ptr();
+            -1
+        }
+    }
 }
 
 unsafe extern "C" fn export_keys<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, keys: *mut *const libc::c_char, ostream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> libc::c_int {
-    1
+    let instance = &*(ptr as *mut T::Instance);
+    let imp = instance.imp();
+    let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
+    let keys = FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(keys);
+    match imp.export_keys(&*keys, &*outstream) {
+        Ok(num) => num,
+        Err(e) => {
+            *error = e.into_glib_ptr();
+            -1
+        }
+    }
 }
 
 unsafe extern "C" fn sign<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, detach: glib::ffi::gboolean, uid: *const libc::c_char, istream: *mut ffi::GMimeStream, ostream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> libc::c_int {
