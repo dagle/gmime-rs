@@ -127,6 +127,78 @@ pub trait CryptoContextExt: ObjectSubclass {
     ) -> Result<Option<SignatureList>, glib::Error>;
 }
 
+impl<T: CryptoContextImpl> CryptoContextExt for T {
+    fn parent_decrypt(
+        &self,
+        flags: DecryptFlags,
+        session_key: Option<&str>,
+        istream: &impl IsA<Stream>,
+        ostream: &impl IsA<Stream>,
+    ) -> Result<DecryptResult, glib::Error> {
+        todo!()
+    }
+
+    fn parent_digest_id(&self, name: &str) -> DigestAlgo {
+        todo!()
+    }
+
+    fn parent_digest_name(&self, digest: DigestAlgo) -> Option<glib::GString> {
+        todo!()
+    }
+
+    fn parent_encrypt(
+        &self,
+        sign: bool,
+        userid: Option<&str>,
+        flags: EncryptFlags,
+        recipients: &[&str],
+        istream: &impl IsA<Stream>,
+        ostream: &impl IsA<Stream>,
+    ) -> Result<i32, glib::Error> {
+        todo!()
+    }
+
+    fn parent_encryption_protocol(&self) -> Option<glib::GString> {
+        todo!()
+    }
+
+    fn parent_key_exchange_protocol(&self) -> Option<glib::GString> {
+        todo!()
+    }
+
+    fn parent_signature_protocol(&self) -> Option<glib::GString> {
+        todo!()
+    }
+
+    fn parent_import_keys(&self, istream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
+        todo!()
+    }
+
+    fn parent_export_keys(&self, keys: &[&str], ostream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
+        todo!()
+    }
+
+    fn parent_sign(
+        &self,
+        detach: bool,
+        userid: &str,
+        istream: &impl IsA<Stream>,
+        ostream: &impl IsA<Stream>,
+    ) -> Result<i32, glib::Error> {
+        todo!()
+    }
+
+    fn parent_verify(
+        &self,
+        flags: VerifyFlags,
+        istream: &impl IsA<Stream>,
+        sigstream: Option<&impl IsA<Stream>>,
+        ostream: Option<&impl IsA<Stream>>,
+    ) -> Result<Option<SignatureList>, glib::Error> {
+        todo!()
+    }
+}
+
 unsafe impl<T: CryptoContextImpl> IsSubclassable<T> for CryptoContext {
     fn class_init(class: &mut glib::Class<Self>) {
         <glib::Object as IsSubclassable<T>>::class_init(class);
@@ -144,9 +216,9 @@ unsafe impl<T: CryptoContextImpl> IsSubclassable<T> for CryptoContext {
         klass.sign = Some(sign::<T>);
         klass.verify = Some(verify::<T>);
     }
-    fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-        <glib::Object as IsSubclassable<T>>::instance_init(instance);
-    }
+    // fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
+    //     <glib::Object as IsSubclassable<T>>::instance_init(instance);
+    // }
 }
 
 unsafe extern "C" fn decrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, flags: ffi::GMimeDecryptFlags, keys: *const libc::c_char, istream: *mut ffi::GMimeStream, ostream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> *mut ffi::GMimeDecryptResult {

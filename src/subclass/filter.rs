@@ -16,7 +16,7 @@ pub trait FilterImpl: FilterImplExt + ObjectImpl {
     }
 
     fn reset(&self) {
-        self.reset()
+        self.parent_reset()
     }
 }
 
@@ -30,6 +30,32 @@ pub trait FilterImplExt: ObjectSubclass {
     fn parent_reset(&self);
 }
 
+// impl<T: FilterImpl> FilterImplExt for T {
+//     fn parent_complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
+//         todo!()
+//     }
+//
+//     fn parent_copy(&self) -> Option<Filter> {
+//         todo!()
+//     }
+//
+//     fn parent_filter(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
+//         todo!()
+//     }
+//
+//     fn parent_reset(&self) {
+//         unsafe {
+//             let data = T::type_data();
+//             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeFilterClass;
+//             if let Some(f) = (*parent_class).reset {
+//                 f(
+//                     self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0,
+//                 )
+//             }
+//         }
+//     }
+// }
+
 unsafe impl<T: FilterImpl> IsSubclassable<T> for Filter {
     fn class_init(class: &mut glib::Class<Self>) {
         <glib::Object as IsSubclassable<T>>::class_init(class);
@@ -39,10 +65,6 @@ unsafe impl<T: FilterImpl> IsSubclassable<T> for Filter {
         klass.copy = Some(copy::<T>);
         klass.filter = Some(filter::<T>);
         klass.reset = Some(reset::<T>);
-    }
-
-    fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-        <glib::Object as IsSubclassable<T>>::instance_init(instance);
     }
 }
 

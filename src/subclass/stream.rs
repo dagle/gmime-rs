@@ -4,6 +4,9 @@ use crate::{Stream, SeekWhence};
 use glib::translate::*;
 use glib::subclass::prelude::*;
 
+// unsafe impl Send for Stream {}
+// unsafe impl Sync for Stream {}
+
 pub trait StreamImpl: StreamImplExt + ObjectImpl {
     fn close(&self) -> i32 {
         self.parent_close()
@@ -67,6 +70,48 @@ pub trait StreamImplExt: ObjectSubclass {
 
     fn parent_write(&self, buf: &str) -> isize;
 }
+
+// impl<T: StreamImpl> StreamImplExt for T {
+//     fn parent_close(&self) -> i32 {
+//         todo!()
+//     }
+//
+//     fn parent_eos(&self) -> bool {
+//         todo!()
+//     }
+//
+//     fn parent_flush(&self) -> i32 {
+//         todo!()
+//     }
+//
+//     fn parent_length(&self) -> i64 {
+//         todo!()
+//     }
+//
+//     fn parent_read(&self, buf: &[u8]) -> isize {
+//         todo!()
+//     }
+//
+//     fn parent_reset(&self) -> i32 {
+//         todo!()
+//     }
+//
+//     fn parent_seek(&self, offset: i64, whence: SeekWhence) -> i64 {
+//         todo!()
+//     }
+//
+//     fn parent_substream(&self, start: i64, end: i64) -> Option<Stream> {
+//         todo!()
+//     }
+//
+//     fn parent_tell(&self) -> i64 {
+//         todo!()
+//     }
+//
+//     fn parent_write(&self, buf: &str) -> isize {
+//         todo!()
+//     }
+// }
 
 unsafe impl<T: StreamImpl> IsSubclassable<T> for Stream {
     fn class_init(class: &mut glib::Class<Self>) {
