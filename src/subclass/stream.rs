@@ -1,4 +1,5 @@
 use std::ffi::CStr;
+use glib::Cast;
 
 use crate::{Stream, SeekWhence};
 use glib::translate::*;
@@ -71,47 +72,145 @@ pub trait StreamImplExt: ObjectSubclass {
     fn parent_write(&self, buf: &str) -> isize;
 }
 
-// impl<T: StreamImpl> StreamImplExt for T {
-//     fn parent_close(&self) -> i32 {
-//         todo!()
-//     }
-//
-//     fn parent_eos(&self) -> bool {
-//         todo!()
-//     }
-//
-//     fn parent_flush(&self) -> i32 {
-//         todo!()
-//     }
-//
-//     fn parent_length(&self) -> i64 {
-//         todo!()
-//     }
-//
-//     fn parent_read(&self, buf: &[u8]) -> isize {
-//         todo!()
-//     }
-//
-//     fn parent_reset(&self) -> i32 {
-//         todo!()
-//     }
-//
-//     fn parent_seek(&self, offset: i64, whence: SeekWhence) -> i64 {
-//         todo!()
-//     }
-//
-//     fn parent_substream(&self, start: i64, end: i64) -> Option<Stream> {
-//         todo!()
-//     }
-//
-//     fn parent_tell(&self) -> i64 {
-//         todo!()
-//     }
-//
-//     fn parent_write(&self, buf: &str) -> isize {
-//         todo!()
-//     }
-// }
+impl<T: StreamImpl> StreamImplExt for T {
+    fn parent_close(&self) -> i32 {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .close
+                .expect("No parent class impl for \"close\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+            )
+        }
+    }
+
+    fn parent_eos(&self) -> bool {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .eos
+                .expect("No parent class impl for \"eos\"");
+            from_glib(f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn parent_flush(&self) -> i32 {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .flush
+                .expect("No parent class impl for \"flush\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+            )
+        }
+    }
+
+    fn parent_length(&self) -> i64 {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .length
+                .expect("No parent class impl for \"length\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+            )
+        }
+    }
+
+    fn parent_read(&self, buf: &[u8]) -> isize {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .read
+                .expect("No parent class impl for \"close\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+                buf.to_glib_none().0,
+                buf.len() as usize,
+            )
+        }
+    }
+
+    fn parent_reset(&self) -> i32 {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .reset
+                .expect("No parent class impl for \"reset\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+            )
+        }
+    }
+
+    fn parent_seek(&self, offset: i64, whence: SeekWhence) -> i64 {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .seek
+                .expect("No parent class impl for \"reset\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+                offset,
+                whence.into_glib()
+            )
+        }
+    }
+
+    fn parent_substream(&self, start: i64, end: i64) -> Option<Stream> {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .substream
+                .expect("No parent class impl for \"reset\"");
+            from_glib_full(f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+                start,
+                end,
+            ))
+        }
+    }
+
+    fn parent_tell(&self) -> i64 {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .tell
+                .expect("No parent class impl for \"reset\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+            )
+        }
+    }
+
+    fn parent_write(&self, buf: &str) -> isize {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
+            let f = (*parent_class)
+                .write
+                .expect("No parent class impl for \"reset\"");
+            f(
+                self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
+                buf.to_glib_none().0,
+                buf.len() as usize
+            )
+        }
+    }
+}
 
 unsafe impl<T: StreamImpl> IsSubclassable<T> for Stream {
     fn class_init(class: &mut glib::Class<Self>) {

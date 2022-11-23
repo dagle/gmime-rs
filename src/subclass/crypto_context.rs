@@ -1,5 +1,4 @@
-use std::ffi::CStr;
-use std::str::from_utf8;
+use glib::Cast;
 
 use crate::CryptoContext;
 use glib::subclass::prelude::*;
@@ -43,11 +42,11 @@ pub trait CryptoContextImpl: CryptoContextExt + ObjectImpl {
         self.parent_encrypt(sign, userid, flags, recipients, istream, ostream)
     }
 
-    fn encryption_protocol(&self) -> Option<glib::GString> {
+    fn encryption_protocol(&self) -> Option<String> {
         self.parent_encryption_protocol()
     }
     fn key_exchange_protocol(&self) -> Option<glib::GString> {
-        self.parent_encryption_protocol()
+        self.parent_key_exchange_protocol()
     }
     fn signature_protocol(&self) -> Option<glib::GString> {
         self.parent_signature_protocol()
@@ -100,7 +99,7 @@ pub trait CryptoContextExt: ObjectSubclass {
         ostream: &impl IsA<Stream>,
     ) -> Result<i32, glib::Error>;
 
-    fn parent_encryption_protocol(&self) -> Option<glib::GString>;
+    fn parent_encryption_protocol(&self) -> Option<String>;
 
     fn parent_key_exchange_protocol(&self) -> Option<glib::GString>;
 
@@ -135,15 +134,55 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         istream: &impl IsA<Stream>,
         ostream: &impl IsA<Stream>,
     ) -> Result<DecryptResult, glib::Error> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .decrypt
+                .expect("No parent class impl for \"decrypt\"");
+            let mut error = std::ptr::null_mut();
+            let ret = f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                flags.into_glib(),
+                session_key.to_glib_none().0,
+                istream.as_ref().to_glib_none().0,
+                ostream.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 
     fn parent_digest_id(&self, name: &str) -> DigestAlgo {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .digest_id
+                .expect("No parent class impl for \"digest_id\"");
+            from_glib(f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                name.to_glib_none().0,
+            ))
+        }
     }
 
     fn parent_digest_name(&self, digest: DigestAlgo) -> Option<glib::GString> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .digest_name
+                .expect("No parent class impl for \"digest_name\"");
+            from_glib_none(f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                digest.into_glib()
+            ))
+        }
     }
 
     fn parent_encrypt(
@@ -155,27 +194,111 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         istream: &impl IsA<Stream>,
         ostream: &impl IsA<Stream>,
     ) -> Result<i32, glib::Error> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .encrypt
+                .expect("No parent class impl for \"encrypt\"");
+            let mut error = std::ptr::null_mut();
+            let ret = f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                sign.into_glib(),
+                userid.to_glib_none().0,
+                flags.into_glib(),
+                recipients.to_glib_none().0,
+                istream.as_ref().to_glib_none().0,
+                ostream.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(ret)
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 
-    fn parent_encryption_protocol(&self) -> Option<glib::GString> {
-        todo!()
+    fn parent_encryption_protocol(&self) -> Option<String> {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .get_encryption_protocol
+                .expect("No parent class impl for \"encrypt\"");
+            from_glib_none(f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+            ))
+        }
     }
 
     fn parent_key_exchange_protocol(&self) -> Option<glib::GString> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .get_key_exchange_protocol
+                .expect("No parent class impl for \"encrypt\"");
+            from_glib_none(f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+            ))
+        }
     }
 
     fn parent_signature_protocol(&self) -> Option<glib::GString> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .get_signature_protocol
+                .expect("No parent class impl for \"encrypt\"");
+            from_glib_none(f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+            ))
+        }
     }
 
     fn parent_import_keys(&self, istream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .import_keys
+                .expect("No parent class impl for \"import_keys\"");
+            let mut error = std::ptr::null_mut();
+            let ret = f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                istream.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(ret)
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 
     fn parent_export_keys(&self, keys: &[&str], ostream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .export_keys
+                .expect("No parent class impl for \"export_keys\"");
+            let mut error = std::ptr::null_mut();
+            let ret = f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                keys.to_glib_none().0,
+                ostream.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(ret)
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 
     fn parent_sign(
@@ -185,7 +308,27 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         istream: &impl IsA<Stream>,
         ostream: &impl IsA<Stream>,
     ) -> Result<i32, glib::Error> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .sign
+                .expect("No parent class impl for \"sign\"");
+            let mut error = std::ptr::null_mut();
+            let ret = f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                detach.into_glib(),
+                userid.to_glib_none().0,
+                istream.as_ref().to_glib_none().0,
+                ostream.as_ref().to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(ret)
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 
     fn parent_verify(
@@ -195,7 +338,27 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         sigstream: Option<&impl IsA<Stream>>,
         ostream: Option<&impl IsA<Stream>>,
     ) -> Result<Option<SignatureList>, glib::Error> {
-        todo!()
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
+            let f = (*parent_class)
+                .verify
+                .expect("No parent class impl for \"verify\"");
+            let mut error = std::ptr::null_mut();
+            let ret = f(
+                self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
+                flags.into_glib(),
+                istream.as_ref().to_glib_none().0,
+                sigstream.map(|p| p.as_ref()).to_glib_none().0,
+                ostream.map(|p| p.as_ref()).to_glib_none().0,
+                &mut error,
+            );
+            if error.is_null() {
+                Ok(from_glib_full(ret))
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 }
 
@@ -306,7 +469,7 @@ unsafe extern "C" fn encrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoCon
     let uid = from_glib_borrow::<_, Option<GString>>(uid);
     let instream: Borrowed<Stream> = from_glib_borrow(istream);
     let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
-    let len = (*recipients).len as usize;
+    // let len = (*recipients).len as usize;
     // TODO FIX ME!!!
     let recip = &[];
     // let t = std::slice::from_raw_parts((*recipients).pdata, len);

@@ -1,4 +1,7 @@
+use std::mem;
+
 use crate::Filter;
+use glib::Cast;
 use glib::translate::*;
 use glib::subclass::prelude::*;
 
@@ -30,31 +33,85 @@ pub trait FilterImplExt: ObjectSubclass {
     fn parent_reset(&self);
 }
 
-// impl<T: FilterImpl> FilterImplExt for T {
-//     fn parent_complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
-//         todo!()
-//     }
-//
-//     fn parent_copy(&self) -> Option<Filter> {
-//         todo!()
-//     }
-//
-//     fn parent_filter(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
-//         todo!()
-//     }
-//
-//     fn parent_reset(&self) {
-//         unsafe {
-//             let data = T::type_data();
-//             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeFilterClass;
-//             if let Some(f) = (*parent_class).reset {
-//                 f(
-//                     self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0,
-//                 )
-//             }
-//         }
-//     }
-// }
+impl<T: FilterImpl> FilterImplExt for T {
+    fn parent_complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeFilterClass;
+            let f = (*parent_class)
+                .filter
+                .expect("No parent class impl for \"complete\"");
+            let mut outbuf: *mut u8 = std::ptr::null_mut();
+            let mut outlen = mem::MaybeUninit::uninit();
+            let mut outpre = mem::MaybeUninit::uninit();
+            f(
+                self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0,
+                inbuf.to_glib_none().0,
+                inbuf.len(),
+                prespace as libc::size_t,
+                &mut outbuf,
+                outlen.as_mut_ptr(),
+                outpre.as_mut_ptr(),
+            );
+            let outprespace = outpre.assume_init();
+            (
+                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as usize),
+                outprespace,
+            )
+        }
+    }
+
+    fn parent_copy(&self) -> Option<Filter> {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeFilterClass;
+            let f = (*parent_class)
+                .copy
+                .expect("No parent class impl for \"compare\"");
+            from_glib_full(f(self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0))
+        }
+    }
+
+    fn parent_filter(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeFilterClass;
+            let f = (*parent_class)
+                .filter
+                .expect("No parent class impl for \"filter\"");
+            let mut outbuf: *mut u8 = std::ptr::null_mut();
+            let mut outlen = mem::MaybeUninit::uninit();
+            let mut outpre = mem::MaybeUninit::uninit();
+            f(
+                self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0,
+                inbuf.to_glib_none().0,
+                inbuf.len(),
+                prespace as libc::size_t,
+                &mut outbuf,
+                outlen.as_mut_ptr(),
+                outpre.as_mut_ptr(),
+            );
+            let outprespace = outpre.assume_init();
+            (
+                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as usize),
+                outprespace,
+            )
+        }
+    }
+
+    fn parent_reset(&self) {
+        unsafe {
+            let data = T::type_data();
+            let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeFilterClass;
+            let f = (*parent_class)
+                .reset
+                .expect("No parent class impl for \"reset\"");
+            f(
+                self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0,
+            )
+        }
+    }
+}
 
 unsafe impl<T: FilterImpl> IsSubclassable<T> for Filter {
     fn class_init(class: &mut glib::Class<Self>) {
