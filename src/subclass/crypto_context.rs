@@ -9,7 +9,6 @@ use crate::EncryptFlags;
 use crate::SignatureList;
 use crate::Stream;
 use crate::VerifyFlags;
-use glib::object::IsA;
 use glib::translate::*;
 use glib::GString;
 extern crate libc;
@@ -469,21 +468,15 @@ unsafe extern "C" fn encrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoCon
     let uid = from_glib_borrow::<_, Option<GString>>(uid);
     let instream: Borrowed<Stream> = from_glib_borrow(istream);
     let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
-    // let len = (*recipients).len as usize;
-    // TODO FIX ME!!!
-    let recip = &[];
-    // let t = std::slice::from_raw_parts((*recipients).pdata, len);
-    // let vec = t.iter().map(|t| from_utf8(CStr::from_ptr(msg as *const _)).collect::<Vec<_>>();
-    // let reciep = reciep.iter().map(|s| CStr::from_ptr(*s as *const _)).collect();
-    // let reciep = todo!();
-    // let reciep = FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec((*recipients).pdata);
 
-    // let reciep = Vec::from_raw_parts((*recipients).pdata, len, len);
+    let recip: Vec<glib::GString> = FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(recipients);
+    let recip: Vec<&str> = recip.iter().map(|x| x.as_str()).collect();
+
     let result = imp.encrypt(
         from_glib(sign),
         uid.as_ref().as_ref().map(|s| s.as_ref()),
         from_glib(flags),
-        recip,
+        &*recip,
         &*instream,
         &*outstream);
 
@@ -513,10 +506,11 @@ unsafe extern "C" fn export_keys<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCrypt
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
-    // TODO FIX ME!!!
-    let keys = &[];
-    // let keys = FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(keys);
-    match imp.export_keys(keys, &*outstream) {
+
+    let keys: Vec<glib::GString> = FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(keys);
+    let keys: Vec<&str> = keys.iter().map(|x| x.as_str()).collect();
+
+    match imp.export_keys(&*keys, &*outstream) {
         Ok(num) => num,
         Err(e) => {
             *error = e.into_glib_ptr();
