@@ -19,15 +19,15 @@ pub trait CryptoContextImpl: CryptoContextExt + ObjectImpl {
         &self,
         flags: DecryptFlags,
         session_key: Option<&str>,
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<DecryptResult, glib::Error> {
         self.parent_decrypt(flags, session_key, istream, ostream)
     }
     fn digest_id(&self, name: &str) -> DigestAlgo {
         self.parent_digest_id(name)
     }
-    fn digest_name(&self, digest: DigestAlgo) -> Option<glib::GString>{
+    fn digest_name(&self, digest: DigestAlgo) -> Option<String>{
         self.parent_digest_name(digest)
     }
     fn encrypt(
@@ -36,8 +36,8 @@ pub trait CryptoContextImpl: CryptoContextExt + ObjectImpl {
         userid: Option<&str>,
         flags: EncryptFlags,
         recipients: &[&str],
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<i32, glib::Error> {
         self.parent_encrypt(sign, userid, flags, recipients, istream, ostream)
     }
@@ -45,24 +45,24 @@ pub trait CryptoContextImpl: CryptoContextExt + ObjectImpl {
     fn encryption_protocol(&self) -> Option<String> {
         self.parent_encryption_protocol()
     }
-    fn key_exchange_protocol(&self) -> Option<glib::GString> {
+    fn key_exchange_protocol(&self) -> Option<String> {
         self.parent_key_exchange_protocol()
     }
-    fn signature_protocol(&self) -> Option<glib::GString> {
+    fn signature_protocol(&self) -> Option<String> {
         self.parent_signature_protocol()
     }
-    fn import_keys(&self, istream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
+    fn import_keys(&self, istream: &Stream) -> Result<i32, glib::Error> {
         self.parent_import_keys(istream)
     }
-    fn export_keys(&self, keys: &[&str], ostream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
+    fn export_keys(&self, keys: &[&str], ostream: &Stream) -> Result<i32, glib::Error> {
         self.parent_export_keys(keys, ostream)
     }
     fn verify(
         &self,
         flags: VerifyFlags,
-        istream: &impl IsA<Stream>,
-        sigstream: Option<&impl IsA<Stream>>,
-        ostream: Option<&impl IsA<Stream>>,
+        istream: &Stream,
+        sigstream: Option<&Stream>,
+        ostream: Option<&Stream>,
     ) -> Result<Option<SignatureList>, glib::Error> {
         self.parent_verify(flags, istream, sigstream, ostream)
     }
@@ -71,8 +71,8 @@ pub trait CryptoContextImpl: CryptoContextExt + ObjectImpl {
         &self,
         detach: bool,
         userid: &str,
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<i32, glib::Error> {
         self.parent_sign(detach, userid, istream, ostream)
     }
@@ -83,46 +83,46 @@ pub trait CryptoContextExt: ObjectSubclass {
         &self,
         flags: DecryptFlags,
         session_key: Option<&str>,
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<DecryptResult, glib::Error>;
 
     fn parent_digest_id(&self, name: &str) -> DigestAlgo;
-    fn parent_digest_name(&self, digest: DigestAlgo) -> Option<glib::GString>;
+    fn parent_digest_name(&self, digest: DigestAlgo) -> Option<String>;
     fn parent_encrypt(
         &self,
         sign: bool,
         userid: Option<&str>,
         flags: EncryptFlags,
         recipients: &[&str],
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<i32, glib::Error>;
 
     fn parent_encryption_protocol(&self) -> Option<String>;
 
-    fn parent_key_exchange_protocol(&self) -> Option<glib::GString>;
+    fn parent_key_exchange_protocol(&self) -> Option<String>;
 
-    fn parent_signature_protocol(&self) -> Option<glib::GString>;
+    fn parent_signature_protocol(&self) -> Option<String>;
 
-    fn parent_import_keys(&self, istream: &impl IsA<Stream>) -> Result<i32, glib::Error>;
+    fn parent_import_keys(&self, istream: &Stream) -> Result<i32, glib::Error>;
 
-    fn parent_export_keys(&self, keys: &[&str], ostream: &impl IsA<Stream>) -> Result<i32, glib::Error>;
+    fn parent_export_keys(&self, keys: &[&str], ostream: &Stream) -> Result<i32, glib::Error>;
 
     fn parent_sign(
         &self,
         detach: bool,
         userid: &str,
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<i32, glib::Error>;
 
     fn parent_verify(
         &self,
         flags: VerifyFlags,
-        istream: &impl IsA<Stream>,
-        sigstream: Option<&impl IsA<Stream>>,
-        ostream: Option<&impl IsA<Stream>>,
+        istream: &Stream,
+        sigstream: Option<&Stream>,
+        ostream: Option<&Stream>,
     ) -> Result<Option<SignatureList>, glib::Error>;
 }
 
@@ -131,8 +131,8 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         &self,
         flags: DecryptFlags,
         session_key: Option<&str>,
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<DecryptResult, glib::Error> {
         unsafe {
             let data = T::type_data();
@@ -145,8 +145,8 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
                 self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
                 flags.into_glib(),
                 session_key.to_glib_none().0,
-                istream.as_ref().to_glib_none().0,
-                ostream.as_ref().to_glib_none().0,
+                istream.to_glib_none().0,
+                ostream.to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -171,7 +171,7 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         }
     }
 
-    fn parent_digest_name(&self, digest: DigestAlgo) -> Option<glib::GString> {
+    fn parent_digest_name(&self, digest: DigestAlgo) -> Option<String> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
@@ -191,8 +191,8 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         userid: Option<&str>,
         flags: EncryptFlags,
         recipients: &[&str],
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<i32, glib::Error> {
         unsafe {
             let data = T::type_data();
@@ -207,8 +207,8 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
                 userid.to_glib_none().0,
                 flags.into_glib(),
                 recipients.to_glib_none().0,
-                istream.as_ref().to_glib_none().0,
-                ostream.as_ref().to_glib_none().0,
+                istream.to_glib_none().0,
+                ostream.to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -232,7 +232,7 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         }
     }
 
-    fn parent_key_exchange_protocol(&self) -> Option<glib::GString> {
+    fn parent_key_exchange_protocol(&self) -> Option<String> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
@@ -245,7 +245,7 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         }
     }
 
-    fn parent_signature_protocol(&self) -> Option<glib::GString> {
+    fn parent_signature_protocol(&self) -> Option<String> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
@@ -258,7 +258,7 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         }
     }
 
-    fn parent_import_keys(&self, istream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
+    fn parent_import_keys(&self, istream: &Stream) -> Result<i32, glib::Error> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
@@ -268,7 +268,7 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
             let mut error = std::ptr::null_mut();
             let ret = f(
                 self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
-                istream.as_ref().to_glib_none().0,
+                istream.to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -279,7 +279,7 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         }
     }
 
-    fn parent_export_keys(&self, keys: &[&str], ostream: &impl IsA<Stream>) -> Result<i32, glib::Error> {
+    fn parent_export_keys(&self, keys: &[&str], ostream: &Stream) -> Result<i32, glib::Error> {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeCryptoContextClass;
@@ -290,7 +290,7 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
             let ret = f(
                 self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
                 keys.to_glib_none().0,
-                ostream.as_ref().to_glib_none().0,
+                ostream.to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -305,8 +305,8 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
         &self,
         detach: bool,
         userid: &str,
-        istream: &impl IsA<Stream>,
-        ostream: &impl IsA<Stream>,
+        istream: &Stream,
+        ostream: &Stream,
     ) -> Result<i32, glib::Error> {
         unsafe {
             let data = T::type_data();
@@ -319,8 +319,8 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
                 self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
                 detach.into_glib(),
                 userid.to_glib_none().0,
-                istream.as_ref().to_glib_none().0,
-                ostream.as_ref().to_glib_none().0,
+                istream.to_glib_none().0,
+                ostream.to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
@@ -334,9 +334,9 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
     fn parent_verify(
         &self,
         flags: VerifyFlags,
-        istream: &impl IsA<Stream>,
-        sigstream: Option<&impl IsA<Stream>>,
-        ostream: Option<&impl IsA<Stream>>,
+        istream: &Stream,
+        sigstream: Option<&Stream>,
+        ostream: Option<&Stream>,
     ) -> Result<Option<SignatureList>, glib::Error> {
         unsafe {
             let data = T::type_data();
@@ -348,9 +348,9 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
             let ret = f(
                 self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
                 flags.into_glib(),
-                istream.as_ref().to_glib_none().0,
-                sigstream.map(|p| p.as_ref()).to_glib_none().0,
-                ostream.map(|p| p.as_ref()).to_glib_none().0,
+                istream.to_glib_none().0,
+                sigstream.to_glib_none().0,
+                ostream.to_glib_none().0,
                 &mut error,
             );
             if error.is_null() {
