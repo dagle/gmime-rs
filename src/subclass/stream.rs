@@ -1,12 +1,15 @@
+#![feature(cstr_from_bytes_until_nul)]
 use std::ffi::CStr;
+use std::io::{Write, Read};
 use glib::Cast;
 
 use crate::{Stream, SeekWhence};
 use glib::translate::*;
 use glib::subclass::prelude::*;
 
-// unsafe impl Send for Stream {}
-// unsafe impl Sync for Stream {}
+// maybe remove this later and use mutex
+unsafe impl Send for Stream {}
+unsafe impl Sync for Stream {}
 
 pub trait StreamImpl: StreamImplExt + ObjectImpl {
     fn close(&self) -> i32 {
@@ -45,7 +48,7 @@ pub trait StreamImpl: StreamImplExt + ObjectImpl {
         self.parent_tell()
 	}
 
-    fn write(&self, buf: &str) -> isize {
+    fn write(&self, buf: &[u8]) -> isize {
         self.parent_write(buf)
 	}
 }
@@ -69,7 +72,7 @@ pub trait StreamImplExt: ObjectSubclass {
 
     fn parent_tell(&self) -> i64;
 
-    fn parent_write(&self, buf: &str) -> isize;
+    fn parent_write(&self, buf: &[u8]) -> isize;
 }
 
 impl<T: StreamImpl> StreamImplExt for T {
@@ -196,7 +199,7 @@ impl<T: StreamImpl> StreamImplExt for T {
         }
     }
 
-    fn parent_write(&self, buf: &str) -> isize {
+    fn parent_write(&self, buf: &[u8]) -> isize {
         unsafe {
             let data = T::type_data();
             let parent_class = data.as_ref().parent_class() as *mut ffi::GMimeStreamClass;
@@ -205,7 +208,7 @@ impl<T: StreamImpl> StreamImplExt for T {
                 .expect("No parent class impl for \"reset\"");
             f(
                 self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
-                buf.to_glib_none().0,
+                buf.to_glib_none().0 as *const libc::c_char,
                 buf.len() as usize
             )
         }
@@ -239,16 +242,12 @@ unsafe extern "C" fn read <T: StreamImpl>(ptr: *mut ffi::GMimeStream, buf: *mut 
     imp.read(std::slice::from_raw_parts(buf, len as usize))
 }
 
-    // pub write: Option<unsafe extern "C" fn(*mut GMimeStream, *const c_char, size_t) -> ssize_t>,
 unsafe extern "C" fn write <T: StreamImpl>(ptr: *mut ffi::GMimeStream, buf: *const libc::c_char, len: libc::size_t) -> libc::ssize_t {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
-    let c_str = CStr::from_ptr(buf);
     
-    match c_str.to_str() {
-        Ok(s) => imp.write(s),
-        Err(_) => 0
-    }
+    let slice = std::slice::from_raw_parts(buf as *const u8, len as usize);
+    imp.write(slice)
 }
 
 unsafe extern "C" fn flush <T: StreamImpl>(ptr: *mut ffi::GMimeStream) -> libc::c_int {

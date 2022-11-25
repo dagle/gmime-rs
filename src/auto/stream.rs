@@ -61,9 +61,6 @@ pub trait StreamExt: 'static {
     #[doc(alias = "g_mime_stream_tell")]
     fn tell(&self) -> i64;
 
-    #[doc(alias = "g_mime_stream_write")]
-    fn write(&self, buf: &str) -> isize;
-
     #[doc(alias = "g_mime_stream_write_string")]
     fn write_string(&self, str: &str) -> isize;
 
@@ -157,12 +154,12 @@ impl<O: IsA<Stream>> StreamExt for O {
         unsafe { ffi::g_mime_stream_tell(self.as_ref().to_glib_none().0) }
     }
 
-    fn write(&self, buf: &str) -> isize {
-        let len = buf.len() as usize;
-        unsafe {
-            ffi::g_mime_stream_write(self.as_ref().to_glib_none().0, buf.to_glib_none().0, len)
-        }
-    }
+    // fn write(&self, buf: &str) -> isize {
+    //     let len = buf.len() as usize;
+    //     unsafe {
+    //         ffi::g_mime_stream_write(self.as_ref().to_glib_none().0, buf.to_glib_none().0, len)
+    //     }
+    // }
 
     fn write_string(&self, str: &str) -> isize {
         unsafe {
