@@ -1,3 +1,5 @@
+use std::ptr;
+
 use glib::Cast;
 
 use crate::CryptoContext;
@@ -286,9 +288,10 @@ impl<T: CryptoContextImpl> CryptoContextExt for T {
                 .export_keys
                 .expect("No parent class impl for \"export_keys\"");
             let mut error = std::ptr::null_mut();
+
             let ret = f(
                 self.obj().unsafe_cast_ref::<CryptoContext>().to_glib_none().0,
-                keys.to_glib_none().0,
+                ToGlibContainerFromSlice::to_glib_none_from_slice(keys).0,
                 ostream.to_glib_none().0,
                 &mut error,
             );
@@ -378,9 +381,6 @@ unsafe impl<T: CryptoContextImpl> IsSubclassable<T> for CryptoContext {
         klass.sign = Some(sign::<T>);
         klass.verify = Some(verify::<T>);
     }
-    // fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-    //     <glib::Object as IsSubclassable<T>>::instance_init(instance);
-    // }
 }
 
 unsafe extern "C" fn decrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, flags: ffi::GMimeDecryptFlags, keys: *const libc::c_char, istream: *mut ffi::GMimeStream, ostream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> *mut ffi::GMimeDecryptResult {
@@ -398,7 +398,10 @@ unsafe extern "C" fn decrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoCon
         &*outstream);
 
     match result {
-        Ok(num) => num.to_glib_full(),
+        Ok(num) => {
+            *error = ptr::null_mut();
+            num.to_glib_full()
+        }
         Err(e) => {
             *error = e.into_glib_ptr();
             std::ptr::null_mut()
@@ -454,7 +457,10 @@ unsafe extern "C" fn verify<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoCont
         outstream.as_ref().as_ref());
 
     match result {
-        Ok(num) => num.to_glib_full(),
+        Ok(num) => {
+            *error = ptr::null_mut();
+            num.to_glib_full()
+        },
         Err(e) => {
             *error = e.into_glib_ptr();
             std::ptr::null_mut()
@@ -481,20 +487,26 @@ unsafe extern "C" fn encrypt<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoCon
         &*outstream);
 
     match result {
-        Ok(num) => num,
+        Ok(num) => {
+            *error = ptr::null_mut();
+            num
+        },
         Err(e) => {
             *error = e.into_glib_ptr();
             -1
         }
     }
-
 }
+
 unsafe extern "C" fn import_keys<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContext, istream: *mut ffi::GMimeStream, error: *mut *mut glib::ffi::GError) -> libc::c_int {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let instream: Borrowed<Stream> = from_glib_borrow(istream);
     match imp.import_keys(&*instream) {
-        Ok(num) => num,
+        Ok(num) => {
+            *error = ptr::null_mut();
+            num
+        },
         Err(e) => {
             *error = e.into_glib_ptr();
             -1
@@ -511,7 +523,10 @@ unsafe extern "C" fn export_keys<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCrypt
     let keys: Vec<&str> = keys.iter().map(|x| x.as_str()).collect();
 
     match imp.export_keys(&*keys, &*outstream) {
-        Ok(num) => num,
+        Ok(num) => {
+            *error = ptr::null_mut();
+            num
+        }
         Err(e) => {
             *error = e.into_glib_ptr();
             -1
@@ -532,7 +547,10 @@ unsafe extern "C" fn sign<T: CryptoContextImpl>(ptr: *mut ffi::GMimeCryptoContex
         &*outstream);
 
     match result {
-        Ok(num) => num,
+        Ok(num) => {
+            *error = ptr::null_mut();
+            num
+        },
         Err(e) => {
             *error = e.into_glib_ptr();
             -1

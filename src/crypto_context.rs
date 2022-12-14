@@ -15,7 +15,7 @@ impl<O: IsA<CryptoContext>> CryptoContextExtManual for O {
             let mut error = ptr::null_mut();
             let ret = ffi::g_mime_crypto_context_export_keys(
                 self.as_ref().to_glib_none().0,
-                keys.to_glib_none().0,
+                ToGlibContainerFromSlice::to_glib_none_from_slice(keys).0,
                 ostream.as_ref().to_glib_none().0,
                 &mut error,
             );

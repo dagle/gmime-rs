@@ -231,9 +231,6 @@ unsafe impl<T: StreamImpl> IsSubclassable<T> for Stream {
         klass.length = Some(length::<T>);
         klass.substream = Some(substream::<T>);
     }
-    fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-        <glib::Object as IsSubclassable<T>>::instance_init(instance);
-    }
 }
 
 unsafe extern "C" fn read <T: StreamImpl>(ptr: *mut ffi::GMimeStream, buf: *mut u8, len: libc::size_t) -> libc::ssize_t {
