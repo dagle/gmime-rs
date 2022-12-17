@@ -1,8 +1,6 @@
 use ffi;
 use glib::object::IsA;
 use glib::translate::*;
-use glib::GString;
-use std::fmt;
 
 use crate::Message;
 use crate::MessagePartial;

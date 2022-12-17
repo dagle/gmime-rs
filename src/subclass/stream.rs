@@ -1,13 +1,9 @@
-#![feature(cstr_from_bytes_until_nul)]
-use std::ffi::CStr;
-use std::io::{Write, Read};
 use glib::Cast;
 
 use crate::{Stream, SeekWhence};
 use glib::translate::*;
 use glib::subclass::prelude::*;
 
-// maybe remove this later and use mutex
 unsafe impl Send for Stream {}
 unsafe impl Sync for Stream {}
 

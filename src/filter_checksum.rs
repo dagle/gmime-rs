@@ -1,5 +1,4 @@
 use crate::FilterChecksum;
-use glib::object::Cast;
 use glib::object::IsA;
 use glib::translate::*;
 use libc::size_t;

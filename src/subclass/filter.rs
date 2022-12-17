@@ -7,7 +7,7 @@ use glib::subclass::prelude::*;
 
 pub trait FilterImpl: FilterImplExt + ObjectImpl {
     fn complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
-        self.parent_filter(inbuf, prespace)
+        self.parent_complete(inbuf, prespace)
     }
 
     fn copy(&self) -> Option<Filter> {
@@ -129,9 +129,10 @@ unsafe extern "C" fn complete<T: FilterImpl>(ptr: *mut ffi::GMimeFilter, inbuf: 
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let ibuf = std::slice::from_raw_parts(inbuf, inlen as usize);
-    let (out, outsize) = imp.complete(ibuf, prespace);
+    let (out, oprespace) = imp.complete(ibuf, prespace);
     *outbuf = out.to_glib_full();
-    *outlen = outsize;
+    *outlen = out.len();
+    *outprespace = oprespace;
 }
 
 unsafe extern "C" fn copy<T: FilterImpl>(ptr: *mut ffi::GMimeFilter) -> *mut ffi::GMimeFilter {
@@ -144,9 +145,10 @@ unsafe extern "C" fn filter<T: FilterImpl>(ptr: *mut ffi::GMimeFilter, inbuf: *m
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let ibuf = std::slice::from_raw_parts(inbuf, inlen as usize);
-    let (out, outsize) = imp.filter(ibuf, prespace);
+    let (out, oprespace) = imp.filter(ibuf, prespace);
     *outbuf = out.to_glib_full();
-    *outlen = outsize;
+    *outlen = out.len();
+    *outprespace = oprespace;
 }
 
 unsafe extern "C" fn reset<T: FilterImpl>(ptr: *mut ffi::GMimeFilter) {
