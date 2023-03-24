@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterChecksum")]
@@ -16,7 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterChecksum {
-    pub const NONE: Option<&'static FilterChecksum> = None;
+        pub const NONE: Option<&'static FilterChecksum> = None;
+    
 
     #[doc(alias = "g_mime_filter_checksum_new")]
     pub fn new(type_: glib::ChecksumType) -> FilterChecksum {
@@ -36,9 +37,7 @@ pub trait FilterChecksumExt: 'static {
 impl<O: IsA<FilterChecksum>> FilterChecksumExt for O {
     fn string(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_filter_checksum_get_string(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_filter_checksum_get_string(self.as_ref().to_glib_none().0))
         }
     }
 }

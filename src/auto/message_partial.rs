@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Object, Part};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Object,Part};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMessagePartial")]
@@ -16,17 +16,14 @@ glib::wrapper! {
 }
 
 impl MessagePartial {
-    pub const NONE: Option<&'static MessagePartial> = None;
+        pub const NONE: Option<&'static MessagePartial> = None;
+    
 
     #[doc(alias = "g_mime_message_partial_new")]
     pub fn new(id: &str, number: i32, total: i32) -> MessagePartial {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_message_partial_new(
-                id.to_glib_none().0,
-                number,
-                total,
-            ))
+            from_glib_full(ffi::g_mime_message_partial_new(id.to_glib_none().0, number, total))
         }
     }
 }
@@ -48,18 +45,20 @@ pub trait MessagePartialExt: 'static {
 impl<O: IsA<MessagePartial>> MessagePartialExt for O {
     fn id(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_partial_get_id(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_message_partial_get_id(self.as_ref().to_glib_none().0))
         }
     }
 
     fn number(&self) -> i32 {
-        unsafe { ffi::g_mime_message_partial_get_number(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_message_partial_get_number(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn total(&self) -> i32 {
-        unsafe { ffi::g_mime_message_partial_get_total(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_message_partial_get_total(self.as_ref().to_glib_none().0)
+        }
     }
 }
 

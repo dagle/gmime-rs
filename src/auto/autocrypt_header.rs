@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{AutocryptPreferEncrypt, InternetAddressMailbox};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{AutocryptPreferEncrypt,InternetAddressMailbox};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeAutocryptHeader")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl AutocryptHeader {
-    pub const NONE: Option<&'static AutocryptHeader> = None;
+        pub const NONE: Option<&'static AutocryptHeader> = None;
+    
 
     #[doc(alias = "g_mime_autocrypt_header_new")]
     pub fn new() -> AutocryptHeader {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_autocrypt_header_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_autocrypt_header_new())
+        }
     }
 
     #[doc(alias = "g_mime_autocrypt_header_new_from_string")]
@@ -29,18 +32,16 @@ impl AutocryptHeader {
     pub fn from_string(string: &str) -> AutocryptHeader {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_autocrypt_header_new_from_string(
-                string.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_autocrypt_header_new_from_string(string.to_glib_none().0))
         }
     }
 }
 
 impl Default for AutocryptHeader {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait AutocryptHeaderExt: 'static {
     #[doc(alias = "g_mime_autocrypt_header_clone")]
@@ -91,112 +92,79 @@ pub trait AutocryptHeaderExt: 'static {
 impl<O: IsA<AutocryptHeader>> AutocryptHeaderExt for O {
     fn clone(&self, src: &impl IsA<AutocryptHeader>) {
         unsafe {
-            ffi::g_mime_autocrypt_header_clone(
-                self.as_ref().to_glib_none().0,
-                src.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_autocrypt_header_clone(self.as_ref().to_glib_none().0, src.as_ref().to_glib_none().0);
         }
     }
 
     fn address(&self) -> Option<InternetAddressMailbox> {
         unsafe {
-            from_glib_none(ffi::g_mime_autocrypt_header_get_address(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_autocrypt_header_get_address(self.as_ref().to_glib_none().0))
         }
     }
 
     fn address_as_string(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_autocrypt_header_get_address_as_string(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_autocrypt_header_get_address_as_string(self.as_ref().to_glib_none().0))
         }
     }
 
     fn effective_date(&self) -> Option<glib::DateTime> {
         unsafe {
-            from_glib_none(ffi::g_mime_autocrypt_header_get_effective_date(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_autocrypt_header_get_effective_date(self.as_ref().to_glib_none().0))
         }
     }
 
     fn keydata(&self) -> Option<glib::Bytes> {
         unsafe {
-            from_glib_none(ffi::g_mime_autocrypt_header_get_keydata(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_autocrypt_header_get_keydata(self.as_ref().to_glib_none().0))
         }
     }
 
     fn prefer_encrypt(&self) -> AutocryptPreferEncrypt {
         unsafe {
-            from_glib(ffi::g_mime_autocrypt_header_get_prefer_encrypt(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_autocrypt_header_get_prefer_encrypt(self.as_ref().to_glib_none().0))
         }
     }
 
     fn is_complete(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_autocrypt_header_is_complete(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_autocrypt_header_is_complete(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_address(&self, address: &impl IsA<InternetAddressMailbox>) {
         unsafe {
-            ffi::g_mime_autocrypt_header_set_address(
-                self.as_ref().to_glib_none().0,
-                address.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_autocrypt_header_set_address(self.as_ref().to_glib_none().0, address.as_ref().to_glib_none().0);
         }
     }
 
     fn set_address_from_string(&self, address: &str) {
         unsafe {
-            ffi::g_mime_autocrypt_header_set_address_from_string(
-                self.as_ref().to_glib_none().0,
-                address.to_glib_none().0,
-            );
+            ffi::g_mime_autocrypt_header_set_address_from_string(self.as_ref().to_glib_none().0, address.to_glib_none().0);
         }
     }
 
     fn set_effective_date(&self, effective_date: &glib::DateTime) {
         unsafe {
-            ffi::g_mime_autocrypt_header_set_effective_date(
-                self.as_ref().to_glib_none().0,
-                effective_date.to_glib_none().0,
-            );
+            ffi::g_mime_autocrypt_header_set_effective_date(self.as_ref().to_glib_none().0, effective_date.to_glib_none().0);
         }
     }
 
     fn set_keydata(&self, data: &glib::Bytes) {
         unsafe {
-            ffi::g_mime_autocrypt_header_set_keydata(
-                self.as_ref().to_glib_none().0,
-                data.to_glib_none().0,
-            );
+            ffi::g_mime_autocrypt_header_set_keydata(self.as_ref().to_glib_none().0, data.to_glib_none().0);
         }
     }
 
     fn set_prefer_encrypt(&self, pref: AutocryptPreferEncrypt) {
         unsafe {
-            ffi::g_mime_autocrypt_header_set_prefer_encrypt(
-                self.as_ref().to_glib_none().0,
-                pref.into_glib(),
-            );
+            ffi::g_mime_autocrypt_header_set_prefer_encrypt(self.as_ref().to_glib_none().0, pref.into_glib());
         }
     }
 
     fn to_string(&self, gossip: bool) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_autocrypt_header_to_string(
-                self.as_ref().to_glib_none().0,
-                gossip.into_glib(),
-            ))
+            from_glib_full(ffi::g_mime_autocrypt_header_to_string(self.as_ref().to_glib_none().0, gossip.into_glib()))
         }
     }
 }

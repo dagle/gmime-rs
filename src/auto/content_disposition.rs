@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{FormatOptions, ParamList, ParserOptions};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{FormatOptions,ParamList,ParserOptions};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeContentDisposition")]
@@ -16,31 +16,31 @@ glib::wrapper! {
 }
 
 impl ContentDisposition {
-    pub const NONE: Option<&'static ContentDisposition> = None;
+        pub const NONE: Option<&'static ContentDisposition> = None;
+    
 
     #[doc(alias = "g_mime_content_disposition_new")]
     pub fn new() -> ContentDisposition {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_content_disposition_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_content_disposition_new())
+        }
     }
 
     #[doc(alias = "g_mime_content_disposition_parse")]
     pub fn parse(options: Option<&ParserOptions>, str: &str) -> Option<ContentDisposition> {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_content_disposition_parse(
-                mut_override(options.to_glib_none().0),
-                str.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_content_disposition_parse(mut_override(options.to_glib_none().0), str.to_glib_none().0))
         }
     }
 }
 
 impl Default for ContentDisposition {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait ContentDispositionExt: 'static {
     #[doc(alias = "g_mime_content_disposition_encode")]
@@ -71,62 +71,43 @@ pub trait ContentDispositionExt: 'static {
 impl<O: IsA<ContentDisposition>> ContentDispositionExt for O {
     fn encode(&self, options: Option<&FormatOptions>) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_content_disposition_encode(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-            ))
+            from_glib_full(ffi::g_mime_content_disposition_encode(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
         }
     }
 
     fn disposition(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_content_disposition_get_disposition(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_content_disposition_get_disposition(self.as_ref().to_glib_none().0))
         }
     }
 
     fn parameter(&self, name: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_content_disposition_get_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_content_disposition_get_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn parameters(&self) -> Option<ParamList> {
         unsafe {
-            from_glib_none(ffi::g_mime_content_disposition_get_parameters(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_content_disposition_get_parameters(self.as_ref().to_glib_none().0))
         }
     }
 
     fn is_attachment(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_content_disposition_is_attachment(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_content_disposition_is_attachment(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_disposition(&self, value: &str) {
         unsafe {
-            ffi::g_mime_content_disposition_set_disposition(
-                self.as_ref().to_glib_none().0,
-                value.to_glib_none().0,
-            );
+            ffi::g_mime_content_disposition_set_disposition(self.as_ref().to_glib_none().0, value.to_glib_none().0);
         }
     }
 
     fn set_parameter(&self, name: &str, value: &str) {
         unsafe {
-            ffi::g_mime_content_disposition_set_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-            );
+            ffi::g_mime_content_disposition_set_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0);
         }
     }
 }

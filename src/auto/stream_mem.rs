@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Stream;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamMem")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl StreamMem {
-    pub const NONE: Option<&'static StreamMem> = None;
+        pub const NONE: Option<&'static StreamMem> = None;
+    
 
     #[doc(alias = "g_mime_stream_mem_new")]
     pub fn new() -> StreamMem {
         assert_initialized_main_thread!();
-        unsafe { Stream::from_glib_full(ffi::g_mime_stream_mem_new()).unsafe_cast() }
+        unsafe {
+            Stream::from_glib_full(ffi::g_mime_stream_mem_new()).unsafe_cast()
+        }
     }
 
     #[doc(alias = "g_mime_stream_mem_new_with_buffer")]
@@ -30,11 +33,7 @@ impl StreamMem {
         assert_initialized_main_thread!();
         let len = buffer.len() as _;
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_mem_new_with_buffer(
-                buffer.to_glib_none().0,
-                len,
-            ))
-            .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_mem_new_with_buffer(buffer.to_glib_none().0, len)).unsafe_cast()
         }
     }
 
@@ -43,19 +42,16 @@ impl StreamMem {
     pub fn with_byte_array(array: &glib::ByteArray) -> StreamMem {
         assert_initialized_main_thread!();
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_mem_new_with_byte_array(
-                array.to_glib_none().0,
-            ))
-            .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_mem_new_with_byte_array(array.to_glib_none().0)).unsafe_cast()
         }
     }
 }
 
 impl Default for StreamMem {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait StreamMemExt: 'static {
     #[doc(alias = "g_mime_stream_mem_get_byte_array")]
@@ -76,26 +72,19 @@ pub trait StreamMemExt: 'static {
 impl<O: IsA<StreamMem>> StreamMemExt for O {
     fn byte_array(&self) -> Option<glib::ByteArray> {
         unsafe {
-            from_glib_none(ffi::g_mime_stream_mem_get_byte_array(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_stream_mem_get_byte_array(self.as_ref().to_glib_none().0))
         }
     }
 
     fn is_owner(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_stream_mem_get_owner(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_stream_mem_get_owner(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_byte_array(&self, array: &glib::ByteArray) {
         unsafe {
-            ffi::g_mime_stream_mem_set_byte_array(
-                self.as_ref().to_glib_none().0,
-                array.to_glib_none().0,
-            );
+            ffi::g_mime_stream_mem_set_byte_array(self.as_ref().to_glib_none().0, array.to_glib_none().0);
         }
     }
 

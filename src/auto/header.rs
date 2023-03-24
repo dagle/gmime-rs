@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{FormatOptions, Stream};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{FormatOptions,Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeHeader")]
@@ -16,65 +16,31 @@ glib::wrapper! {
 }
 
 impl Header {
-    pub const NONE: Option<&'static Header> = None;
+        pub const NONE: Option<&'static Header> = None;
+    
 }
 
 pub trait HeaderExt: 'static {
     #[doc(alias = "g_mime_header_format_addrlist")]
-    fn format_addrlist(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString>;
+    fn format_addrlist(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_header_format_content_disposition")]
-    fn format_content_disposition(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString>;
+    fn format_content_disposition(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_header_format_content_type")]
-    fn format_content_type(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString>;
+    fn format_content_type(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_header_format_default")]
-    fn format_default(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString>;
+    fn format_default(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_header_format_message_id")]
-    fn format_message_id(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString>;
+    fn format_message_id(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_header_format_received")]
-    fn format_received(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString>;
+    fn format_received(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_header_format_references")]
-    fn format_references(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString>;
+    fn format_references(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_header_get_name")]
     #[doc(alias = "get_name")]
@@ -107,173 +73,93 @@ pub trait HeaderExt: 'static {
 }
 
 impl<O: IsA<Header>> HeaderExt for O {
-    fn format_addrlist(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString> {
+    fn format_addrlist(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_format_addrlist(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_header_format_addrlist(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0))
         }
     }
 
-    fn format_content_disposition(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString> {
+    fn format_content_disposition(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_format_content_disposition(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_header_format_content_disposition(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0))
         }
     }
 
-    fn format_content_type(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString> {
+    fn format_content_type(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_format_content_type(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_header_format_content_type(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0))
         }
     }
 
-    fn format_default(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString> {
+    fn format_default(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_format_default(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_header_format_default(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0))
         }
     }
 
-    fn format_message_id(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString> {
+    fn format_message_id(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_format_message_id(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_header_format_message_id(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0))
         }
     }
 
-    fn format_received(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString> {
+    fn format_received(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_format_received(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_header_format_received(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0))
         }
     }
 
-    fn format_references(
-        &self,
-        options: Option<&FormatOptions>,
-        value: &str,
-        charset: &str,
-    ) -> Option<glib::GString> {
+    fn format_references(&self, options: Option<&FormatOptions>, value: &str, charset: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_format_references(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_header_format_references(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0))
         }
     }
 
     fn name(&self) -> Option<glib::GString> {
-        unsafe { from_glib_none(ffi::g_mime_header_get_name(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_header_get_name(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn offset(&self) -> i64 {
-        unsafe { ffi::g_mime_header_get_offset(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_header_get_offset(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn raw_name(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_header_get_raw_name(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_header_get_raw_name(self.as_ref().to_glib_none().0))
         }
     }
 
     fn raw_value(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_header_get_raw_value(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_header_get_raw_value(self.as_ref().to_glib_none().0))
         }
     }
 
     fn value(&self) -> Option<glib::GString> {
-        unsafe { from_glib_none(ffi::g_mime_header_get_value(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_header_get_value(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn set_raw_value(&self, raw_value: &str) {
         unsafe {
-            ffi::g_mime_header_set_raw_value(
-                self.as_ref().to_glib_none().0,
-                raw_value.to_glib_none().0,
-            );
+            ffi::g_mime_header_set_raw_value(self.as_ref().to_glib_none().0, raw_value.to_glib_none().0);
         }
     }
 
     fn set_value(&self, options: Option<&FormatOptions>, value: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_header_set_value(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_header_set_value(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 
     fn write_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize {
         unsafe {
-            ffi::g_mime_header_write_to_stream(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                stream.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_header_write_to_stream(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), stream.as_ref().to_glib_none().0)
         }
     }
 }

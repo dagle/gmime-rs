@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterUnix2Dos")]
@@ -16,14 +16,14 @@ glib::wrapper! {
 }
 
 impl FilterUnix2Dos {
-    pub const NONE: Option<&'static FilterUnix2Dos> = None;
+        pub const NONE: Option<&'static FilterUnix2Dos> = None;
+    
 
     #[doc(alias = "g_mime_filter_unix2dos_new")]
     pub fn new(ensure_newline: bool) -> FilterUnix2Dos {
         assert_initialized_main_thread!();
         unsafe {
-            Filter::from_glib_full(ffi::g_mime_filter_unix2dos_new(ensure_newline.into_glib()))
-                .unsafe_cast()
+            Filter::from_glib_full(ffi::g_mime_filter_unix2dos_new(ensure_newline.into_glib())).unsafe_cast()
         }
     }
 }

@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{FormatOptions, ParamList, ParserOptions};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{FormatOptions,ParamList,ParserOptions};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeContentType")]
@@ -16,16 +16,14 @@ glib::wrapper! {
 }
 
 impl ContentType {
-    pub const NONE: Option<&'static ContentType> = None;
+        pub const NONE: Option<&'static ContentType> = None;
+    
 
     #[doc(alias = "g_mime_content_type_new")]
     pub fn new(type_: &str, subtype: &str) -> ContentType {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_content_type_new(
-                type_.to_glib_none().0,
-                subtype.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_content_type_new(type_.to_glib_none().0, subtype.to_glib_none().0))
         }
     }
 
@@ -33,10 +31,7 @@ impl ContentType {
     pub fn parse(options: Option<&ParserOptions>, str: &str) -> Option<ContentType> {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_content_type_parse(
-                mut_override(options.to_glib_none().0),
-                str.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_content_type_parse(mut_override(options.to_glib_none().0), str.to_glib_none().0))
         }
     }
 }
@@ -81,89 +76,61 @@ pub trait ContentTypeExt: 'static {
 impl<O: IsA<ContentType>> ContentTypeExt for O {
     fn encode(&self, options: Option<&FormatOptions>) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_content_type_encode(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-            ))
+            from_glib_full(ffi::g_mime_content_type_encode(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
         }
     }
 
     fn media_subtype(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_content_type_get_media_subtype(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_content_type_get_media_subtype(self.as_ref().to_glib_none().0))
         }
     }
 
     fn media_type(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_content_type_get_media_type(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_content_type_get_media_type(self.as_ref().to_glib_none().0))
         }
     }
 
     fn mime_type(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_content_type_get_mime_type(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_content_type_get_mime_type(self.as_ref().to_glib_none().0))
         }
     }
 
     fn parameter(&self, name: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_content_type_get_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_content_type_get_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn parameters(&self) -> Option<ParamList> {
         unsafe {
-            from_glib_none(ffi::g_mime_content_type_get_parameters(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_content_type_get_parameters(self.as_ref().to_glib_none().0))
         }
     }
 
     fn is_type(&self, type_: &str, subtype: &str) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_content_type_is_type(
-                self.as_ref().to_glib_none().0,
-                type_.to_glib_none().0,
-                subtype.to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_content_type_is_type(self.as_ref().to_glib_none().0, type_.to_glib_none().0, subtype.to_glib_none().0))
         }
     }
 
     fn set_media_subtype(&self, subtype: &str) {
         unsafe {
-            ffi::g_mime_content_type_set_media_subtype(
-                self.as_ref().to_glib_none().0,
-                subtype.to_glib_none().0,
-            );
+            ffi::g_mime_content_type_set_media_subtype(self.as_ref().to_glib_none().0, subtype.to_glib_none().0);
         }
     }
 
     fn set_media_type(&self, type_: &str) {
         unsafe {
-            ffi::g_mime_content_type_set_media_type(
-                self.as_ref().to_glib_none().0,
-                type_.to_glib_none().0,
-            );
+            ffi::g_mime_content_type_set_media_type(self.as_ref().to_glib_none().0, type_.to_glib_none().0);
         }
     }
 
     fn set_parameter(&self, name: &str, value: &str) {
         unsafe {
-            ffi::g_mime_content_type_set_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-            );
+            ffi::g_mime_content_type_set_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0);
         }
     }
 }

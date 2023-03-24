@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{CertificateList, CipherAlgo, DigestAlgo, SignatureList};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{CertificateList,CipherAlgo,DigestAlgo,SignatureList};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeDecryptResult")]
@@ -16,20 +16,23 @@ glib::wrapper! {
 }
 
 impl DecryptResult {
-    pub const NONE: Option<&'static DecryptResult> = None;
+        pub const NONE: Option<&'static DecryptResult> = None;
+    
 
     #[doc(alias = "g_mime_decrypt_result_new")]
     pub fn new() -> DecryptResult {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_decrypt_result_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_decrypt_result_new())
+        }
     }
 }
 
 impl Default for DecryptResult {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait DecryptResultExt: 'static {
     #[doc(alias = "g_mime_decrypt_result_get_cipher")]
@@ -71,50 +74,37 @@ pub trait DecryptResultExt: 'static {
 impl<O: IsA<DecryptResult>> DecryptResultExt for O {
     fn cipher(&self) -> CipherAlgo {
         unsafe {
-            from_glib(ffi::g_mime_decrypt_result_get_cipher(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_decrypt_result_get_cipher(self.as_ref().to_glib_none().0))
         }
     }
 
     fn mdc(&self) -> DigestAlgo {
         unsafe {
-            from_glib(ffi::g_mime_decrypt_result_get_mdc(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_decrypt_result_get_mdc(self.as_ref().to_glib_none().0))
         }
     }
 
     fn recipients(&self) -> Option<CertificateList> {
         unsafe {
-            from_glib_none(ffi::g_mime_decrypt_result_get_recipients(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_decrypt_result_get_recipients(self.as_ref().to_glib_none().0))
         }
     }
 
     fn session_key(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_decrypt_result_get_session_key(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_decrypt_result_get_session_key(self.as_ref().to_glib_none().0))
         }
     }
 
     fn signatures(&self) -> Option<SignatureList> {
         unsafe {
-            from_glib_none(ffi::g_mime_decrypt_result_get_signatures(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_decrypt_result_get_signatures(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_cipher(&self, cipher: CipherAlgo) {
         unsafe {
-            ffi::g_mime_decrypt_result_set_cipher(
-                self.as_ref().to_glib_none().0,
-                cipher.into_glib(),
-            );
+            ffi::g_mime_decrypt_result_set_cipher(self.as_ref().to_glib_none().0, cipher.into_glib());
         }
     }
 
@@ -126,28 +116,19 @@ impl<O: IsA<DecryptResult>> DecryptResultExt for O {
 
     fn set_recipients(&self, recipients: &impl IsA<CertificateList>) {
         unsafe {
-            ffi::g_mime_decrypt_result_set_recipients(
-                self.as_ref().to_glib_none().0,
-                recipients.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_decrypt_result_set_recipients(self.as_ref().to_glib_none().0, recipients.as_ref().to_glib_none().0);
         }
     }
 
     fn set_session_key(&self, session_key: Option<&str>) {
         unsafe {
-            ffi::g_mime_decrypt_result_set_session_key(
-                self.as_ref().to_glib_none().0,
-                session_key.to_glib_none().0,
-            );
+            ffi::g_mime_decrypt_result_set_session_key(self.as_ref().to_glib_none().0, session_key.to_glib_none().0);
         }
     }
 
     fn set_signatures(&self, signatures: &impl IsA<SignatureList>) {
         unsafe {
-            ffi::g_mime_decrypt_result_set_signatures(
-                self.as_ref().to_glib_none().0,
-                signatures.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_decrypt_result_set_signatures(self.as_ref().to_glib_none().0, signatures.as_ref().to_glib_none().0);
         }
     }
 }

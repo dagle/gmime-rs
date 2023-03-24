@@ -248,6 +248,13 @@ status = "generate"
 name = "GMime.ParserOptions"
 status = "manual"
 
+# [[object]]
+# name = "GMime.ParamList"
+# status = "generate"
+#     [[object.function]]
+#     name = "encode"
+# 	ignore = true
+
 [[object]]
 name = "GMime.MessagePartial"
 status = "generate"

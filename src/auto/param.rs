@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::ParamEncodingMethod;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{ParamEncodingMethod};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeParam")]
@@ -16,7 +16,8 @@ glib::wrapper! {
 }
 
 impl Param {
-    pub const NONE: Option<&'static Param> = None;
+        pub const NONE: Option<&'static Param> = None;
+    
 }
 
 pub trait ParamExt: 'static {
@@ -56,30 +57,32 @@ pub trait ParamExt: 'static {
 impl<O: IsA<Param>> ParamExt for O {
     fn charset(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_param_get_charset(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_param_get_charset(self.as_ref().to_glib_none().0))
         }
     }
 
     fn encoding_method(&self) -> ParamEncodingMethod {
         unsafe {
-            from_glib(ffi::g_mime_param_get_encoding_method(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_param_get_encoding_method(self.as_ref().to_glib_none().0))
         }
     }
 
     fn lang(&self) -> Option<glib::GString> {
-        unsafe { from_glib_none(ffi::g_mime_param_get_lang(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_param_get_lang(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn name(&self) -> Option<glib::GString> {
-        unsafe { from_glib_none(ffi::g_mime_param_get_name(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_param_get_name(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn value(&self) -> Option<glib::GString> {
-        unsafe { from_glib_none(ffi::g_mime_param_get_value(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_param_get_value(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn set_charset(&self, charset: &str) {
@@ -90,10 +93,7 @@ impl<O: IsA<Param>> ParamExt for O {
 
     fn set_encoding_method(&self, method: ParamEncodingMethod) {
         unsafe {
-            ffi::g_mime_param_set_encoding_method(
-                self.as_ref().to_glib_none().0,
-                method.into_glib(),
-            );
+            ffi::g_mime_param_set_encoding_method(self.as_ref().to_glib_none().0, method.into_glib());
         }
     }
 

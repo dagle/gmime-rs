@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Stream;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamMmap")]
@@ -16,7 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamMmap {
-    pub const NONE: Option<&'static StreamMmap> = None;
+        pub const NONE: Option<&'static StreamMmap> = None;
+    
 
     #[doc(alias = "g_mime_stream_mmap_new")]
     pub fn new(fd: i32, prot: i32, flags: i32) -> StreamMmap {
@@ -31,10 +32,7 @@ impl StreamMmap {
     pub fn with_bounds(fd: i32, prot: i32, flags: i32, start: i64, end: i64) -> StreamMmap {
         assert_initialized_main_thread!();
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_mmap_new_with_bounds(
-                fd, prot, flags, start, end,
-            ))
-            .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_mmap_new_with_bounds(fd, prot, flags, start, end)).unsafe_cast()
         }
     }
 }
@@ -57,9 +55,7 @@ impl<O: IsA<StreamMmap>> StreamMmapExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
     fn is_owner(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_stream_mmap_get_owner(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_stream_mmap_get_owner(self.as_ref().to_glib_none().0))
         }
     }
 

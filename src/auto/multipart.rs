@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Object;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Object};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMultipart")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl Multipart {
-    pub const NONE: Option<&'static Multipart> = None;
+        pub const NONE: Option<&'static Multipart> = None;
+    
 
     #[doc(alias = "g_mime_multipart_new")]
     pub fn new() -> Multipart {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_multipart_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_multipart_new())
+        }
     }
 
     #[doc(alias = "g_mime_multipart_new_with_subtype")]
@@ -29,18 +32,16 @@ impl Multipart {
     pub fn with_subtype(subtype: &str) -> Multipart {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_multipart_new_with_subtype(
-                subtype.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_multipart_new_with_subtype(subtype.to_glib_none().0))
         }
     }
 }
 
 impl Default for Multipart {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait MultipartExt: 'static {
     #[doc(alias = "g_mime_multipart_add")]
@@ -107,10 +108,7 @@ pub trait MultipartExt: 'static {
 impl<O: IsA<Multipart>> MultipartExt for O {
     fn add(&self, part: &impl IsA<Object>) {
         unsafe {
-            ffi::g_mime_multipart_add(
-                self.as_ref().to_glib_none().0,
-                part.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_multipart_add(self.as_ref().to_glib_none().0, part.as_ref().to_glib_none().0);
         }
     }
 
@@ -122,20 +120,13 @@ impl<O: IsA<Multipart>> MultipartExt for O {
 
     fn contains(&self, part: &impl IsA<Object>) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_multipart_contains(
-                self.as_ref().to_glib_none().0,
-                part.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_multipart_contains(self.as_ref().to_glib_none().0, part.as_ref().to_glib_none().0))
         }
     }
 
     fn foreach<P: FnMut(&Object, &Object)>(&self, callback: P) {
         let callback_data: P = callback;
-        unsafe extern "C" fn callback_func<P: FnMut(&Object, &Object)>(
-            parent: *mut ffi::GMimeObject,
-            part: *mut ffi::GMimeObject,
-            user_data: glib::ffi::gpointer,
-        ) {
+        unsafe extern "C" fn callback_func<P: FnMut(&Object, &Object)>(parent: *mut ffi::GMimeObject, part: *mut ffi::GMimeObject, user_data: glib::ffi::gpointer) {
             let parent = from_glib_borrow(parent);
             let part = from_glib_borrow(part);
             let callback: *mut P = user_data as *const _ as usize as *mut P;
@@ -144,131 +135,91 @@ impl<O: IsA<Multipart>> MultipartExt for O {
         let callback = Some(callback_func::<P> as _);
         let super_callback0: &P = &callback_data;
         unsafe {
-            ffi::g_mime_multipart_foreach(
-                self.as_ref().to_glib_none().0,
-                callback,
-                super_callback0 as *const _ as usize as *mut _,
-            );
+            ffi::g_mime_multipart_foreach(self.as_ref().to_glib_none().0, callback, super_callback0 as *const _ as usize as *mut _);
         }
     }
 
     fn boundary(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_multipart_get_boundary(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_multipart_get_boundary(self.as_ref().to_glib_none().0))
         }
     }
 
     fn count(&self) -> i32 {
-        unsafe { ffi::g_mime_multipart_get_count(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_multipart_get_count(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn epilogue(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_multipart_get_epilogue(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_multipart_get_epilogue(self.as_ref().to_glib_none().0))
         }
     }
 
     fn part(&self, index: i32) -> Option<Object> {
         unsafe {
-            from_glib_none(ffi::g_mime_multipart_get_part(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib_none(ffi::g_mime_multipart_get_part(self.as_ref().to_glib_none().0, index))
         }
     }
 
     fn prologue(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_multipart_get_prologue(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_multipart_get_prologue(self.as_ref().to_glib_none().0))
         }
     }
 
     fn subpart_from_content_id(&self, content_id: &str) -> Option<Object> {
         unsafe {
-            from_glib_none(ffi::g_mime_multipart_get_subpart_from_content_id(
-                self.as_ref().to_glib_none().0,
-                content_id.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_multipart_get_subpart_from_content_id(self.as_ref().to_glib_none().0, content_id.to_glib_none().0))
         }
     }
 
     fn index_of(&self, part: &impl IsA<Object>) -> i32 {
         unsafe {
-            ffi::g_mime_multipart_index_of(
-                self.as_ref().to_glib_none().0,
-                part.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_multipart_index_of(self.as_ref().to_glib_none().0, part.as_ref().to_glib_none().0)
         }
     }
 
     fn insert(&self, index: i32, part: &impl IsA<Object>) {
         unsafe {
-            ffi::g_mime_multipart_insert(
-                self.as_ref().to_glib_none().0,
-                index,
-                part.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_multipart_insert(self.as_ref().to_glib_none().0, index, part.as_ref().to_glib_none().0);
         }
     }
 
     fn remove(&self, part: &impl IsA<Object>) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_multipart_remove(
-                self.as_ref().to_glib_none().0,
-                part.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_multipart_remove(self.as_ref().to_glib_none().0, part.as_ref().to_glib_none().0))
         }
     }
 
     fn remove_at(&self, index: i32) -> Option<Object> {
         unsafe {
-            from_glib_full(ffi::g_mime_multipart_remove_at(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib_full(ffi::g_mime_multipart_remove_at(self.as_ref().to_glib_none().0, index))
         }
     }
 
     fn replace(&self, index: i32, replacement: &impl IsA<Object>) -> Option<Object> {
         unsafe {
-            from_glib_full(ffi::g_mime_multipart_replace(
-                self.as_ref().to_glib_none().0,
-                index,
-                replacement.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_multipart_replace(self.as_ref().to_glib_none().0, index, replacement.as_ref().to_glib_none().0))
         }
     }
 
     fn set_boundary(&self, boundary: &str) {
         unsafe {
-            ffi::g_mime_multipart_set_boundary(
-                self.as_ref().to_glib_none().0,
-                boundary.to_glib_none().0,
-            );
+            ffi::g_mime_multipart_set_boundary(self.as_ref().to_glib_none().0, boundary.to_glib_none().0);
         }
     }
 
     fn set_epilogue(&self, epilogue: &str) {
         unsafe {
-            ffi::g_mime_multipart_set_epilogue(
-                self.as_ref().to_glib_none().0,
-                epilogue.to_glib_none().0,
-            );
+            ffi::g_mime_multipart_set_epilogue(self.as_ref().to_glib_none().0, epilogue.to_glib_none().0);
         }
     }
 
     fn set_prologue(&self, prologue: &str) {
         unsafe {
-            ffi::g_mime_multipart_set_prologue(
-                self.as_ref().to_glib_none().0,
-                prologue.to_glib_none().0,
-            );
+            ffi::g_mime_multipart_set_prologue(self.as_ref().to_glib_none().0, prologue.to_glib_none().0);
         }
     }
 }

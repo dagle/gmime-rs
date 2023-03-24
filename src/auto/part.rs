@@ -2,12 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{
-    ContentEncoding, DataWrapper, DecryptFlags, DecryptResult, EncodingConstraint, EncryptFlags,
-    Object, OpenPGPData, SignatureList, VerifyFlags,
-};
-use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
+use crate::{ContentEncoding,DataWrapper,DecryptFlags,DecryptResult,EncodingConstraint,EncryptFlags,Object,OpenPGPData,SignatureList,VerifyFlags};
+use glib::{prelude::*,translate::*};
+use std::{fmt,ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimePart")]
@@ -19,12 +16,15 @@ glib::wrapper! {
 }
 
 impl Part {
-    pub const NONE: Option<&'static Part> = None;
+        pub const NONE: Option<&'static Part> = None;
+    
 
     #[doc(alias = "g_mime_part_new")]
     pub fn new() -> Part {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_part_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_part_new())
+        }
     }
 
     #[doc(alias = "g_mime_part_new_with_type")]
@@ -32,19 +32,16 @@ impl Part {
     pub fn with_type(type_: &str, subtype: &str) -> Part {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_part_new_with_type(
-                type_.to_glib_none().0,
-                subtype.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_part_new_with_type(type_.to_glib_none().0, subtype.to_glib_none().0))
         }
     }
 }
 
 impl Default for Part {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait PartExt: 'static {
     #[doc(alias = "g_mime_part_get_best_content_encoding")]
@@ -87,20 +84,10 @@ pub trait PartExt: 'static {
     fn is_attachment(&self) -> bool;
 
     #[doc(alias = "g_mime_part_openpgp_decrypt")]
-    fn openpgp_decrypt(
-        &self,
-        flags: DecryptFlags,
-        session_key: Option<&str>,
-    ) -> Result<Option<DecryptResult>, glib::Error>;
+    fn openpgp_decrypt(&self, flags: DecryptFlags, session_key: Option<&str>) -> Result<Option<DecryptResult>, glib::Error>;
 
     #[doc(alias = "g_mime_part_openpgp_encrypt")]
-    fn openpgp_encrypt(
-        &self,
-        sign: bool,
-        userid: Option<&str>,
-        flags: EncryptFlags,
-        recipients: &[&str],
-    ) -> Result<(), glib::Error>;
+    fn openpgp_encrypt(&self, sign: bool, userid: Option<&str>, flags: EncryptFlags, recipients: &[&str]) -> Result<(), glib::Error>;
 
     #[doc(alias = "g_mime_part_openpgp_sign")]
     fn openpgp_sign(&self, userid: &str) -> Result<(), glib::Error>;
@@ -139,221 +126,137 @@ pub trait PartExt: 'static {
 impl<O: IsA<Part>> PartExt for O {
     fn best_content_encoding(&self, constraint: EncodingConstraint) -> ContentEncoding {
         unsafe {
-            from_glib(ffi::g_mime_part_get_best_content_encoding(
-                self.as_ref().to_glib_none().0,
-                constraint.into_glib(),
-            ))
+            from_glib(ffi::g_mime_part_get_best_content_encoding(self.as_ref().to_glib_none().0, constraint.into_glib()))
         }
     }
 
     fn content(&self) -> Option<DataWrapper> {
-        unsafe { from_glib_none(ffi::g_mime_part_get_content(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_part_get_content(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn content_description(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_part_get_content_description(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_part_get_content_description(self.as_ref().to_glib_none().0))
         }
     }
 
     fn content_encoding(&self) -> ContentEncoding {
         unsafe {
-            from_glib(ffi::g_mime_part_get_content_encoding(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_part_get_content_encoding(self.as_ref().to_glib_none().0))
         }
     }
 
     fn content_id(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_part_get_content_id(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_part_get_content_id(self.as_ref().to_glib_none().0))
         }
     }
 
     fn content_location(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_part_get_content_location(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_part_get_content_location(self.as_ref().to_glib_none().0))
         }
     }
 
     fn content_md5(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_part_get_content_md5(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_part_get_content_md5(self.as_ref().to_glib_none().0))
         }
     }
 
     fn filename(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_part_get_filename(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_part_get_filename(self.as_ref().to_glib_none().0))
         }
     }
 
     fn openpgp_data(&self) -> OpenPGPData {
         unsafe {
-            from_glib(ffi::g_mime_part_get_openpgp_data(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_part_get_openpgp_data(self.as_ref().to_glib_none().0))
         }
     }
 
     fn is_attachment(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_part_is_attachment(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_part_is_attachment(self.as_ref().to_glib_none().0))
         }
     }
 
-    fn openpgp_decrypt(
-        &self,
-        flags: DecryptFlags,
-        session_key: Option<&str>,
-    ) -> Result<Option<DecryptResult>, glib::Error> {
+    fn openpgp_decrypt(&self, flags: DecryptFlags, session_key: Option<&str>) -> Result<Option<DecryptResult>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let ret = ffi::g_mime_part_openpgp_decrypt(
-                self.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                session_key.to_glib_none().0,
-                &mut error,
-            );
-            if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            }
+            let ret = ffi::g_mime_part_openpgp_decrypt(self.as_ref().to_glib_none().0, flags.into_glib(), session_key.to_glib_none().0, &mut error);
+            if error.is_null() { Ok(from_glib_full(ret)) } else { Err(from_glib_full(error)) }
         }
     }
 
-    fn openpgp_encrypt(
-        &self,
-        sign: bool,
-        userid: Option<&str>,
-        flags: EncryptFlags,
-        recipients: &[&str],
-    ) -> Result<(), glib::Error> {
+    fn openpgp_encrypt(&self, sign: bool, userid: Option<&str>, flags: EncryptFlags, recipients: &[&str]) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let is_ok = ffi::g_mime_part_openpgp_encrypt(
-                self.as_ref().to_glib_none().0,
-                sign.into_glib(),
-                userid.to_glib_none().0,
-                flags.into_glib(),
-                recipients.to_glib_none().0,
-                &mut error,
-            );
+            let is_ok = ffi::g_mime_part_openpgp_encrypt(self.as_ref().to_glib_none().0, sign.into_glib(), userid.to_glib_none().0, flags.into_glib(), recipients.to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
+            if error.is_null() { Ok(()) } else { Err(from_glib_full(error)) }
         }
     }
 
     fn openpgp_sign(&self, userid: &str) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let is_ok = ffi::g_mime_part_openpgp_sign(
-                self.as_ref().to_glib_none().0,
-                userid.to_glib_none().0,
-                &mut error,
-            );
+            let is_ok = ffi::g_mime_part_openpgp_sign(self.as_ref().to_glib_none().0, userid.to_glib_none().0, &mut error);
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
+            if error.is_null() { Ok(()) } else { Err(from_glib_full(error)) }
         }
     }
 
     fn openpgp_verify(&self, flags: VerifyFlags) -> Result<Option<SignatureList>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let ret = ffi::g_mime_part_openpgp_verify(
-                self.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                &mut error,
-            );
-            if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            }
+            let ret = ffi::g_mime_part_openpgp_verify(self.as_ref().to_glib_none().0, flags.into_glib(), &mut error);
+            if error.is_null() { Ok(from_glib_full(ret)) } else { Err(from_glib_full(error)) }
         }
     }
 
     fn set_content(&self, content: &impl IsA<DataWrapper>) {
         unsafe {
-            ffi::g_mime_part_set_content(
-                self.as_ref().to_glib_none().0,
-                content.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_part_set_content(self.as_ref().to_glib_none().0, content.as_ref().to_glib_none().0);
         }
     }
 
     fn set_content_description(&self, description: &str) {
         unsafe {
-            ffi::g_mime_part_set_content_description(
-                self.as_ref().to_glib_none().0,
-                description.to_glib_none().0,
-            );
+            ffi::g_mime_part_set_content_description(self.as_ref().to_glib_none().0, description.to_glib_none().0);
         }
     }
 
     fn set_content_encoding(&self, encoding: ContentEncoding) {
         unsafe {
-            ffi::g_mime_part_set_content_encoding(
-                self.as_ref().to_glib_none().0,
-                encoding.into_glib(),
-            );
+            ffi::g_mime_part_set_content_encoding(self.as_ref().to_glib_none().0, encoding.into_glib());
         }
     }
 
     fn set_content_id(&self, content_id: &str) {
         unsafe {
-            ffi::g_mime_part_set_content_id(
-                self.as_ref().to_glib_none().0,
-                content_id.to_glib_none().0,
-            );
+            ffi::g_mime_part_set_content_id(self.as_ref().to_glib_none().0, content_id.to_glib_none().0);
         }
     }
 
     fn set_content_location(&self, content_location: &str) {
         unsafe {
-            ffi::g_mime_part_set_content_location(
-                self.as_ref().to_glib_none().0,
-                content_location.to_glib_none().0,
-            );
+            ffi::g_mime_part_set_content_location(self.as_ref().to_glib_none().0, content_location.to_glib_none().0);
         }
     }
 
     fn set_content_md5(&self, content_md5: &str) {
         unsafe {
-            ffi::g_mime_part_set_content_md5(
-                self.as_ref().to_glib_none().0,
-                content_md5.to_glib_none().0,
-            );
+            ffi::g_mime_part_set_content_md5(self.as_ref().to_glib_none().0, content_md5.to_glib_none().0);
         }
     }
 
     fn set_filename(&self, filename: &str) {
         unsafe {
-            ffi::g_mime_part_set_filename(
-                self.as_ref().to_glib_none().0,
-                filename.to_glib_none().0,
-            );
+            ffi::g_mime_part_set_filename(self.as_ref().to_glib_none().0, filename.to_glib_none().0);
         }
     }
 
@@ -365,9 +268,7 @@ impl<O: IsA<Part>> PartExt for O {
 
     fn verify_content_md5(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_part_verify_content_md5(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_part_verify_content_md5(self.as_ref().to_glib_none().0))
         }
     }
 }

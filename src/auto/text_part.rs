@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Object, Part};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Object,Part};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeTextPart")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl TextPart {
-    pub const NONE: Option<&'static TextPart> = None;
+        pub const NONE: Option<&'static TextPart> = None;
+    
 
     #[doc(alias = "g_mime_text_part_new")]
     pub fn new() -> TextPart {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_text_part_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_text_part_new())
+        }
     }
 
     #[doc(alias = "g_mime_text_part_new_with_subtype")]
@@ -29,18 +32,16 @@ impl TextPart {
     pub fn with_subtype(subtype: &str) -> TextPart {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_text_part_new_with_subtype(
-                subtype.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_text_part_new_with_subtype(subtype.to_glib_none().0))
         }
     }
 }
 
 impl Default for TextPart {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait TextPartExt: 'static {
     #[doc(alias = "g_mime_text_part_get_charset")]
@@ -61,26 +62,19 @@ pub trait TextPartExt: 'static {
 impl<O: IsA<TextPart>> TextPartExt for O {
     fn charset(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_text_part_get_charset(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_text_part_get_charset(self.as_ref().to_glib_none().0))
         }
     }
 
     fn text(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_text_part_get_text(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_text_part_get_text(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_charset(&self, charset: &str) {
         unsafe {
-            ffi::g_mime_text_part_set_charset(
-                self.as_ref().to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_text_part_set_charset(self.as_ref().to_glib_none().0, charset.to_glib_none().0);
         }
     }
 

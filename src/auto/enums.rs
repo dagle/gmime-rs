@@ -2,10 +2,11 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use glib::translate::*;
-use std::fmt;
+use glib::{translate::*};
+use std::{fmt};
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeAddressType")]
 pub enum AddressType {
@@ -21,25 +22,21 @@ pub enum AddressType {
     Cc,
     #[doc(alias = "GMIME_ADDRESS_TYPE_BCC")]
     Bcc,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for AddressType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "AddressType::{}",
-            match *self {
-                Self::Sender => "Sender",
-                Self::From => "From",
-                Self::ReplyTo => "ReplyTo",
-                Self::To => "To",
-                Self::Cc => "Cc",
-                Self::Bcc => "Bcc",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "AddressType::{}", match *self {
+            Self::Sender => "Sender",
+            Self::From => "From",
+            Self::ReplyTo => "ReplyTo",
+            Self::To => "To",
+            Self::Cc => "Cc",
+            Self::Bcc => "Bcc",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -48,8 +45,8 @@ impl IntoGlib for AddressType {
     type GlibType = ffi::GMimeAddressType;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeAddressType {
-        match self {
+fn into_glib(self) -> ffi::GMimeAddressType {
+match self {
             Self::Sender => ffi::GMIME_ADDRESS_TYPE_SENDER,
             Self::From => ffi::GMIME_ADDRESS_TYPE_FROM,
             Self::ReplyTo => ffi::GMIME_ADDRESS_TYPE_REPLY_TO,
@@ -57,17 +54,17 @@ impl IntoGlib for AddressType {
             Self::Cc => ffi::GMIME_ADDRESS_TYPE_CC,
             Self::Bcc => ffi::GMIME_ADDRESS_TYPE_BCC,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeAddressType> for AddressType {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeAddressType) -> Self {
+unsafe fn from_glib(value: ffi::GMimeAddressType) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_ADDRESS_TYPE_SENDER => Self::Sender,
             ffi::GMIME_ADDRESS_TYPE_FROM => Self::From,
             ffi::GMIME_ADDRESS_TYPE_REPLY_TO => Self::ReplyTo,
@@ -75,11 +72,12 @@ impl FromGlib<ffi::GMimeAddressType> for AddressType {
             ffi::GMIME_ADDRESS_TYPE_CC => Self::Cc,
             ffi::GMIME_ADDRESS_TYPE_BCC => Self::Bcc,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeAutocryptPreferEncrypt")]
 pub enum AutocryptPreferEncrypt {
@@ -87,21 +85,17 @@ pub enum AutocryptPreferEncrypt {
     None,
     #[doc(alias = "GMIME_AUTOCRYPT_PREFER_ENCRYPT_MUTUAL")]
     Mutual,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for AutocryptPreferEncrypt {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "AutocryptPreferEncrypt::{}",
-            match *self {
-                Self::None => "None",
-                Self::Mutual => "Mutual",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "AutocryptPreferEncrypt::{}", match *self {
+            Self::None => "None",
+            Self::Mutual => "Mutual",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -110,30 +104,31 @@ impl IntoGlib for AutocryptPreferEncrypt {
     type GlibType = ffi::GMimeAutocryptPreferEncrypt;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeAutocryptPreferEncrypt {
-        match self {
+fn into_glib(self) -> ffi::GMimeAutocryptPreferEncrypt {
+match self {
             Self::None => ffi::GMIME_AUTOCRYPT_PREFER_ENCRYPT_NONE,
             Self::Mutual => ffi::GMIME_AUTOCRYPT_PREFER_ENCRYPT_MUTUAL,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeAutocryptPreferEncrypt> for AutocryptPreferEncrypt {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeAutocryptPreferEncrypt) -> Self {
+unsafe fn from_glib(value: ffi::GMimeAutocryptPreferEncrypt) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_AUTOCRYPT_PREFER_ENCRYPT_NONE => Self::None,
             ffi::GMIME_AUTOCRYPT_PREFER_ENCRYPT_MUTUAL => Self::Mutual,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeCipherAlgo")]
 pub enum CipherAlgo {
@@ -161,31 +156,27 @@ pub enum CipherAlgo {
     Camellia192,
     #[doc(alias = "GMIME_CIPHER_ALGO_CAMELLIA256")]
     Camellia256,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for CipherAlgo {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "CipherAlgo::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::Idea => "Idea",
-                Self::_3des => "_3des",
-                Self::Cast5 => "Cast5",
-                Self::Blowfish => "Blowfish",
-                Self::Aes => "Aes",
-                Self::Aes192 => "Aes192",
-                Self::Aes256 => "Aes256",
-                Self::Twofish => "Twofish",
-                Self::Camellia128 => "Camellia128",
-                Self::Camellia192 => "Camellia192",
-                Self::Camellia256 => "Camellia256",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "CipherAlgo::{}", match *self {
+            Self::Default => "Default",
+            Self::Idea => "Idea",
+            Self::_3des => "_3des",
+            Self::Cast5 => "Cast5",
+            Self::Blowfish => "Blowfish",
+            Self::Aes => "Aes",
+            Self::Aes192 => "Aes192",
+            Self::Aes256 => "Aes256",
+            Self::Twofish => "Twofish",
+            Self::Camellia128 => "Camellia128",
+            Self::Camellia192 => "Camellia192",
+            Self::Camellia256 => "Camellia256",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -194,8 +185,8 @@ impl IntoGlib for CipherAlgo {
     type GlibType = ffi::GMimeCipherAlgo;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeCipherAlgo {
-        match self {
+fn into_glib(self) -> ffi::GMimeCipherAlgo {
+match self {
             Self::Default => ffi::GMIME_CIPHER_ALGO_DEFAULT,
             Self::Idea => ffi::GMIME_CIPHER_ALGO_IDEA,
             Self::_3des => ffi::GMIME_CIPHER_ALGO_3DES,
@@ -209,17 +200,17 @@ impl IntoGlib for CipherAlgo {
             Self::Camellia192 => ffi::GMIME_CIPHER_ALGO_CAMELLIA192,
             Self::Camellia256 => ffi::GMIME_CIPHER_ALGO_CAMELLIA256,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeCipherAlgo> for CipherAlgo {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeCipherAlgo) -> Self {
+unsafe fn from_glib(value: ffi::GMimeCipherAlgo) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_CIPHER_ALGO_DEFAULT => Self::Default,
             ffi::GMIME_CIPHER_ALGO_IDEA => Self::Idea,
             ffi::GMIME_CIPHER_ALGO_3DES => Self::_3des,
@@ -233,11 +224,12 @@ impl FromGlib<ffi::GMimeCipherAlgo> for CipherAlgo {
             ffi::GMIME_CIPHER_ALGO_CAMELLIA192 => Self::Camellia192,
             ffi::GMIME_CIPHER_ALGO_CAMELLIA256 => Self::Camellia256,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeContentEncoding")]
 pub enum ContentEncoding {
@@ -255,26 +247,22 @@ pub enum ContentEncoding {
     Quotedprintable,
     #[doc(alias = "GMIME_CONTENT_ENCODING_UUENCODE")]
     Uuencode,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for ContentEncoding {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "ContentEncoding::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::_7bit => "_7bit",
-                Self::_8bit => "_8bit",
-                Self::Binary => "Binary",
-                Self::Base64 => "Base64",
-                Self::Quotedprintable => "Quotedprintable",
-                Self::Uuencode => "Uuencode",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "ContentEncoding::{}", match *self {
+            Self::Default => "Default",
+            Self::_7bit => "_7bit",
+            Self::_8bit => "_8bit",
+            Self::Binary => "Binary",
+            Self::Base64 => "Base64",
+            Self::Quotedprintable => "Quotedprintable",
+            Self::Uuencode => "Uuencode",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -283,8 +271,8 @@ impl IntoGlib for ContentEncoding {
     type GlibType = ffi::GMimeContentEncoding;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeContentEncoding {
-        match self {
+fn into_glib(self) -> ffi::GMimeContentEncoding {
+match self {
             Self::Default => ffi::GMIME_CONTENT_ENCODING_DEFAULT,
             Self::_7bit => ffi::GMIME_CONTENT_ENCODING_7BIT,
             Self::_8bit => ffi::GMIME_CONTENT_ENCODING_8BIT,
@@ -293,17 +281,17 @@ impl IntoGlib for ContentEncoding {
             Self::Quotedprintable => ffi::GMIME_CONTENT_ENCODING_QUOTEDPRINTABLE,
             Self::Uuencode => ffi::GMIME_CONTENT_ENCODING_UUENCODE,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeContentEncoding> for ContentEncoding {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeContentEncoding) -> Self {
+unsafe fn from_glib(value: ffi::GMimeContentEncoding) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_CONTENT_ENCODING_DEFAULT => Self::Default,
             ffi::GMIME_CONTENT_ENCODING_7BIT => Self::_7bit,
             ffi::GMIME_CONTENT_ENCODING_8BIT => Self::_8bit,
@@ -312,11 +300,12 @@ impl FromGlib<ffi::GMimeContentEncoding> for ContentEncoding {
             ffi::GMIME_CONTENT_ENCODING_QUOTEDPRINTABLE => Self::Quotedprintable,
             ffi::GMIME_CONTENT_ENCODING_UUENCODE => Self::Uuencode,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeDigestAlgo")]
 pub enum DigestAlgo {
@@ -350,34 +339,30 @@ pub enum DigestAlgo {
     Crc32Rfc1510,
     #[doc(alias = "GMIME_DIGEST_ALGO_CRC32_RFC2440")]
     Crc32Rfc2440,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for DigestAlgo {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "DigestAlgo::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::Md5 => "Md5",
-                Self::Sha1 => "Sha1",
-                Self::Ripemd160 => "Ripemd160",
-                Self::Md2 => "Md2",
-                Self::Tiger192 => "Tiger192",
-                Self::Haval5160 => "Haval5160",
-                Self::Sha256 => "Sha256",
-                Self::Sha384 => "Sha384",
-                Self::Sha512 => "Sha512",
-                Self::Sha224 => "Sha224",
-                Self::Md4 => "Md4",
-                Self::Crc32 => "Crc32",
-                Self::Crc32Rfc1510 => "Crc32Rfc1510",
-                Self::Crc32Rfc2440 => "Crc32Rfc2440",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "DigestAlgo::{}", match *self {
+            Self::Default => "Default",
+            Self::Md5 => "Md5",
+            Self::Sha1 => "Sha1",
+            Self::Ripemd160 => "Ripemd160",
+            Self::Md2 => "Md2",
+            Self::Tiger192 => "Tiger192",
+            Self::Haval5160 => "Haval5160",
+            Self::Sha256 => "Sha256",
+            Self::Sha384 => "Sha384",
+            Self::Sha512 => "Sha512",
+            Self::Sha224 => "Sha224",
+            Self::Md4 => "Md4",
+            Self::Crc32 => "Crc32",
+            Self::Crc32Rfc1510 => "Crc32Rfc1510",
+            Self::Crc32Rfc2440 => "Crc32Rfc2440",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -386,7 +371,7 @@ impl IntoGlib for DigestAlgo {
     type GlibType = ffi::GMimeDigestAlgo;
 
     fn into_glib(self) -> ffi::GMimeDigestAlgo {
-        match self {
+match self {
             Self::Default => ffi::GMIME_DIGEST_ALGO_DEFAULT,
             Self::Md5 => ffi::GMIME_DIGEST_ALGO_MD5,
             Self::Sha1 => ffi::GMIME_DIGEST_ALGO_SHA1,
@@ -403,16 +388,16 @@ impl IntoGlib for DigestAlgo {
             Self::Crc32Rfc1510 => ffi::GMIME_DIGEST_ALGO_CRC32_RFC1510,
             Self::Crc32Rfc2440 => ffi::GMIME_DIGEST_ALGO_CRC32_RFC2440,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeDigestAlgo> for DigestAlgo {
     unsafe fn from_glib(value: ffi::GMimeDigestAlgo) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_DIGEST_ALGO_DEFAULT => Self::Default,
             ffi::GMIME_DIGEST_ALGO_MD5 => Self::Md5,
             ffi::GMIME_DIGEST_ALGO_SHA1 => Self::Sha1,
@@ -429,11 +414,12 @@ impl FromGlib<ffi::GMimeDigestAlgo> for DigestAlgo {
             ffi::GMIME_DIGEST_ALGO_CRC32_RFC1510 => Self::Crc32Rfc1510,
             ffi::GMIME_DIGEST_ALGO_CRC32_RFC2440 => Self::Crc32Rfc2440,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeEncodingConstraint")]
 pub enum EncodingConstraint {
@@ -443,22 +429,18 @@ pub enum EncodingConstraint {
     _8bit,
     #[doc(alias = "GMIME_ENCODING_CONSTRAINT_BINARY")]
     Binary,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for EncodingConstraint {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "EncodingConstraint::{}",
-            match *self {
-                Self::_7bit => "_7bit",
-                Self::_8bit => "_8bit",
-                Self::Binary => "Binary",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "EncodingConstraint::{}", match *self {
+            Self::_7bit => "_7bit",
+            Self::_8bit => "_8bit",
+            Self::Binary => "Binary",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -467,32 +449,33 @@ impl IntoGlib for EncodingConstraint {
     type GlibType = ffi::GMimeEncodingConstraint;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeEncodingConstraint {
-        match self {
+fn into_glib(self) -> ffi::GMimeEncodingConstraint {
+match self {
             Self::_7bit => ffi::GMIME_ENCODING_CONSTRAINT_7BIT,
             Self::_8bit => ffi::GMIME_ENCODING_CONSTRAINT_8BIT,
             Self::Binary => ffi::GMIME_ENCODING_CONSTRAINT_BINARY,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeEncodingConstraint> for EncodingConstraint {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeEncodingConstraint) -> Self {
+unsafe fn from_glib(value: ffi::GMimeEncodingConstraint) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_ENCODING_CONSTRAINT_7BIT => Self::_7bit,
             ffi::GMIME_ENCODING_CONSTRAINT_8BIT => Self::_8bit,
             ffi::GMIME_ENCODING_CONSTRAINT_BINARY => Self::Binary,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeEncryptFlags")]
 pub enum EncryptFlags {
@@ -506,24 +489,20 @@ pub enum EncryptFlags {
     Symmetric,
     #[doc(alias = "GMIME_ENCRYPT_THROW_KEYIDS")]
     ThrowKeyids,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for EncryptFlags {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "EncryptFlags::{}",
-            match *self {
-                Self::None => "None",
-                Self::AlwaysTrust => "AlwaysTrust",
-                Self::NoCompress => "NoCompress",
-                Self::Symmetric => "Symmetric",
-                Self::ThrowKeyids => "ThrowKeyids",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "EncryptFlags::{}", match *self {
+            Self::None => "None",
+            Self::AlwaysTrust => "AlwaysTrust",
+            Self::NoCompress => "NoCompress",
+            Self::Symmetric => "Symmetric",
+            Self::ThrowKeyids => "ThrowKeyids",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -532,36 +511,37 @@ impl IntoGlib for EncryptFlags {
     type GlibType = ffi::GMimeEncryptFlags;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeEncryptFlags {
-        match self {
+fn into_glib(self) -> ffi::GMimeEncryptFlags {
+match self {
             Self::None => ffi::GMIME_ENCRYPT_NONE,
             Self::AlwaysTrust => ffi::GMIME_ENCRYPT_ALWAYS_TRUST,
             Self::NoCompress => ffi::GMIME_ENCRYPT_NO_COMPRESS,
             Self::Symmetric => ffi::GMIME_ENCRYPT_SYMMETRIC,
             Self::ThrowKeyids => ffi::GMIME_ENCRYPT_THROW_KEYIDS,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeEncryptFlags> for EncryptFlags {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeEncryptFlags) -> Self {
+unsafe fn from_glib(value: ffi::GMimeEncryptFlags) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_ENCRYPT_NONE => Self::None,
             ffi::GMIME_ENCRYPT_ALWAYS_TRUST => Self::AlwaysTrust,
             ffi::GMIME_ENCRYPT_NO_COMPRESS => Self::NoCompress,
             ffi::GMIME_ENCRYPT_SYMMETRIC => Self::Symmetric,
             ffi::GMIME_ENCRYPT_THROW_KEYIDS => Self::ThrowKeyids,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeFilterFromMode")]
 pub enum FilterFromMode {
@@ -569,21 +549,17 @@ pub enum FilterFromMode {
     Default,
     #[doc(alias = "GMIME_FILTER_FROM_MODE_ARMOR")]
     Armor,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for FilterFromMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "FilterFromMode::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::Armor => "Armor",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "FilterFromMode::{}", match *self {
+            Self::Default => "Default",
+            Self::Armor => "Armor",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -592,30 +568,31 @@ impl IntoGlib for FilterFromMode {
     type GlibType = ffi::GMimeFilterFromMode;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeFilterFromMode {
-        match self {
+fn into_glib(self) -> ffi::GMimeFilterFromMode {
+match self {
             Self::Default => ffi::GMIME_FILTER_FROM_MODE_DEFAULT,
             Self::Armor => ffi::GMIME_FILTER_FROM_MODE_ARMOR,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeFilterFromMode> for FilterFromMode {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeFilterFromMode) -> Self {
+unsafe fn from_glib(value: ffi::GMimeFilterFromMode) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_FILTER_FROM_MODE_DEFAULT => Self::Default,
             ffi::GMIME_FILTER_FROM_MODE_ARMOR => Self::Armor,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeFilterGZipMode")]
 pub enum FilterGZipMode {
@@ -623,21 +600,17 @@ pub enum FilterGZipMode {
     Zip,
     #[doc(alias = "GMIME_FILTER_GZIP_MODE_UNZIP")]
     Unzip,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for FilterGZipMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "FilterGZipMode::{}",
-            match *self {
-                Self::Zip => "Zip",
-                Self::Unzip => "Unzip",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "FilterGZipMode::{}", match *self {
+            Self::Zip => "Zip",
+            Self::Unzip => "Unzip",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -646,30 +619,31 @@ impl IntoGlib for FilterGZipMode {
     type GlibType = ffi::GMimeFilterGZipMode;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeFilterGZipMode {
-        match self {
+fn into_glib(self) -> ffi::GMimeFilterGZipMode {
+match self {
             Self::Zip => ffi::GMIME_FILTER_GZIP_MODE_ZIP,
             Self::Unzip => ffi::GMIME_FILTER_GZIP_MODE_UNZIP,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeFilterGZipMode> for FilterGZipMode {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeFilterGZipMode) -> Self {
+unsafe fn from_glib(value: ffi::GMimeFilterGZipMode) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_FILTER_GZIP_MODE_ZIP => Self::Zip,
             ffi::GMIME_FILTER_GZIP_MODE_UNZIP => Self::Unzip,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeFormat")]
 pub enum Format {
@@ -679,22 +653,18 @@ pub enum Format {
     Mbox,
     #[doc(alias = "GMIME_FORMAT_MMDF")]
     Mmdf,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for Format {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Format::{}",
-            match *self {
-                Self::Message => "Message",
-                Self::Mbox => "Mbox",
-                Self::Mmdf => "Mmdf",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "Format::{}", match *self {
+            Self::Message => "Message",
+            Self::Mbox => "Mbox",
+            Self::Mmdf => "Mmdf",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -703,32 +673,33 @@ impl IntoGlib for Format {
     type GlibType = ffi::GMimeFormat;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeFormat {
-        match self {
+fn into_glib(self) -> ffi::GMimeFormat {
+match self {
             Self::Message => ffi::GMIME_FORMAT_MESSAGE,
             Self::Mbox => ffi::GMIME_FORMAT_MBOX,
             Self::Mmdf => ffi::GMIME_FORMAT_MMDF,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeFormat> for Format {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeFormat) -> Self {
+unsafe fn from_glib(value: ffi::GMimeFormat) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_FORMAT_MESSAGE => Self::Message,
             ffi::GMIME_FORMAT_MBOX => Self::Mbox,
             ffi::GMIME_FORMAT_MMDF => Self::Mmdf,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeNewLineFormat")]
 pub enum NewLineFormat {
@@ -736,21 +707,17 @@ pub enum NewLineFormat {
     Unix,
     #[doc(alias = "GMIME_NEWLINE_FORMAT_DOS")]
     Dos,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for NewLineFormat {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "NewLineFormat::{}",
-            match *self {
-                Self::Unix => "Unix",
-                Self::Dos => "Dos",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "NewLineFormat::{}", match *self {
+            Self::Unix => "Unix",
+            Self::Dos => "Dos",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -759,30 +726,31 @@ impl IntoGlib for NewLineFormat {
     type GlibType = ffi::GMimeNewLineFormat;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeNewLineFormat {
-        match self {
+fn into_glib(self) -> ffi::GMimeNewLineFormat {
+match self {
             Self::Unix => ffi::GMIME_NEWLINE_FORMAT_UNIX,
             Self::Dos => ffi::GMIME_NEWLINE_FORMAT_DOS,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeNewLineFormat> for NewLineFormat {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeNewLineFormat) -> Self {
+unsafe fn from_glib(value: ffi::GMimeNewLineFormat) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_NEWLINE_FORMAT_UNIX => Self::Unix,
             ffi::GMIME_NEWLINE_FORMAT_DOS => Self::Dos,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeOpenPGPData")]
 pub enum OpenPGPData {
@@ -796,24 +764,20 @@ pub enum OpenPGPData {
     PublicKey,
     #[doc(alias = "GMIME_OPENPGP_DATA_PRIVATE_KEY")]
     PrivateKey,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for OpenPGPData {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "OpenPGPData::{}",
-            match *self {
-                Self::None => "None",
-                Self::Encrypted => "Encrypted",
-                Self::Signed => "Signed",
-                Self::PublicKey => "PublicKey",
-                Self::PrivateKey => "PrivateKey",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "OpenPGPData::{}", match *self {
+            Self::None => "None",
+            Self::Encrypted => "Encrypted",
+            Self::Signed => "Signed",
+            Self::PublicKey => "PublicKey",
+            Self::PrivateKey => "PrivateKey",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -822,36 +786,37 @@ impl IntoGlib for OpenPGPData {
     type GlibType = ffi::GMimeOpenPGPData;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeOpenPGPData {
-        match self {
+fn into_glib(self) -> ffi::GMimeOpenPGPData {
+match self {
             Self::None => ffi::GMIME_OPENPGP_DATA_NONE,
             Self::Encrypted => ffi::GMIME_OPENPGP_DATA_ENCRYPTED,
             Self::Signed => ffi::GMIME_OPENPGP_DATA_SIGNED,
             Self::PublicKey => ffi::GMIME_OPENPGP_DATA_PUBLIC_KEY,
             Self::PrivateKey => ffi::GMIME_OPENPGP_DATA_PRIVATE_KEY,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeOpenPGPData> for OpenPGPData {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeOpenPGPData) -> Self {
+unsafe fn from_glib(value: ffi::GMimeOpenPGPData) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_OPENPGP_DATA_NONE => Self::None,
             ffi::GMIME_OPENPGP_DATA_ENCRYPTED => Self::Encrypted,
             ffi::GMIME_OPENPGP_DATA_SIGNED => Self::Signed,
             ffi::GMIME_OPENPGP_DATA_PUBLIC_KEY => Self::PublicKey,
             ffi::GMIME_OPENPGP_DATA_PRIVATE_KEY => Self::PrivateKey,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeParamEncodingMethod")]
 pub enum ParamEncodingMethod {
@@ -861,22 +826,18 @@ pub enum ParamEncodingMethod {
     Rfc2231,
     #[doc(alias = "GMIME_PARAM_ENCODING_METHOD_RFC2047")]
     Rfc2047,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for ParamEncodingMethod {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "ParamEncodingMethod::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::Rfc2231 => "Rfc2231",
-                Self::Rfc2047 => "Rfc2047",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "ParamEncodingMethod::{}", match *self {
+            Self::Default => "Default",
+            Self::Rfc2231 => "Rfc2231",
+            Self::Rfc2047 => "Rfc2047",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -885,32 +846,33 @@ impl IntoGlib for ParamEncodingMethod {
     type GlibType = ffi::GMimeParamEncodingMethod;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeParamEncodingMethod {
-        match self {
+fn into_glib(self) -> ffi::GMimeParamEncodingMethod {
+match self {
             Self::Default => ffi::GMIME_PARAM_ENCODING_METHOD_DEFAULT,
             Self::Rfc2231 => ffi::GMIME_PARAM_ENCODING_METHOD_RFC2231,
             Self::Rfc2047 => ffi::GMIME_PARAM_ENCODING_METHOD_RFC2047,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeParamEncodingMethod> for ParamEncodingMethod {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeParamEncodingMethod) -> Self {
+unsafe fn from_glib(value: ffi::GMimeParamEncodingMethod) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_PARAM_ENCODING_METHOD_DEFAULT => Self::Default,
             ffi::GMIME_PARAM_ENCODING_METHOD_RFC2231 => Self::Rfc2231,
             ffi::GMIME_PARAM_ENCODING_METHOD_RFC2047 => Self::Rfc2047,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeParserWarning")]
 pub enum ParserWarning {
@@ -944,34 +906,30 @@ pub enum ParserWarning {
     WarnInvalidAddressList,
     #[doc(alias = "GMIME_CRIT_NESTING_OVERFLOW")]
     CritNestingOverflow,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for ParserWarning {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "ParserWarning::{}",
-            match *self {
-                Self::WarnDuplicatedHeader => "WarnDuplicatedHeader",
-                Self::WarnDuplicatedParameter => "WarnDuplicatedParameter",
-                Self::WarnUnencoded8bitHeader => "WarnUnencoded8bitHeader",
-                Self::WarnInvalidContentType => "WarnInvalidContentType",
-                Self::WarnInvalidRfc2047HeaderValue => "WarnInvalidRfc2047HeaderValue",
-                Self::WarnMalformedMultipart => "WarnMalformedMultipart",
-                Self::WarnTruncatedMessage => "WarnTruncatedMessage",
-                Self::WarnMalformedMessage => "WarnMalformedMessage",
-                Self::CritInvalidHeaderName => "CritInvalidHeaderName",
-                Self::CritConflictingHeader => "CritConflictingHeader",
-                Self::CritConflictingParameter => "CritConflictingParameter",
-                Self::CritMultipartWithoutBoundary => "CritMultipartWithoutBoundary",
-                Self::WarnInvalidParameter => "WarnInvalidParameter",
-                Self::WarnInvalidAddressList => "WarnInvalidAddressList",
-                Self::CritNestingOverflow => "CritNestingOverflow",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "ParserWarning::{}", match *self {
+            Self::WarnDuplicatedHeader => "WarnDuplicatedHeader",
+            Self::WarnDuplicatedParameter => "WarnDuplicatedParameter",
+            Self::WarnUnencoded8bitHeader => "WarnUnencoded8bitHeader",
+            Self::WarnInvalidContentType => "WarnInvalidContentType",
+            Self::WarnInvalidRfc2047HeaderValue => "WarnInvalidRfc2047HeaderValue",
+            Self::WarnMalformedMultipart => "WarnMalformedMultipart",
+            Self::WarnTruncatedMessage => "WarnTruncatedMessage",
+            Self::WarnMalformedMessage => "WarnMalformedMessage",
+            Self::CritInvalidHeaderName => "CritInvalidHeaderName",
+            Self::CritConflictingHeader => "CritConflictingHeader",
+            Self::CritConflictingParameter => "CritConflictingParameter",
+            Self::CritMultipartWithoutBoundary => "CritMultipartWithoutBoundary",
+            Self::WarnInvalidParameter => "WarnInvalidParameter",
+            Self::WarnInvalidAddressList => "WarnInvalidAddressList",
+            Self::CritNestingOverflow => "CritNestingOverflow",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -980,7 +938,7 @@ impl IntoGlib for ParserWarning {
     type GlibType = ffi::GMimeParserWarning;
 
     fn into_glib(self) -> ffi::GMimeParserWarning {
-        match self {
+match self {
             Self::WarnDuplicatedHeader => ffi::GMIME_WARN_DUPLICATED_HEADER,
             Self::WarnDuplicatedParameter => ffi::GMIME_WARN_DUPLICATED_PARAMETER,
             Self::WarnUnencoded8bitHeader => ffi::GMIME_WARN_UNENCODED_8BIT_HEADER,
@@ -997,16 +955,16 @@ impl IntoGlib for ParserWarning {
             Self::WarnInvalidAddressList => ffi::GMIME_WARN_INVALID_ADDRESS_LIST,
             Self::CritNestingOverflow => ffi::GMIME_CRIT_NESTING_OVERFLOW,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeParserWarning> for ParserWarning {
     unsafe fn from_glib(value: ffi::GMimeParserWarning) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_WARN_DUPLICATED_HEADER => Self::WarnDuplicatedHeader,
             ffi::GMIME_WARN_DUPLICATED_PARAMETER => Self::WarnDuplicatedParameter,
             ffi::GMIME_WARN_UNENCODED_8BIT_HEADER => Self::WarnUnencoded8bitHeader,
@@ -1023,11 +981,12 @@ impl FromGlib<ffi::GMimeParserWarning> for ParserWarning {
             ffi::GMIME_WARN_INVALID_ADDRESS_LIST => Self::WarnInvalidAddressList,
             ffi::GMIME_CRIT_NESTING_OVERFLOW => Self::CritNestingOverflow,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimePubKeyAlgo")]
 pub enum PubKeyAlgo {
@@ -1053,30 +1012,26 @@ pub enum PubKeyAlgo {
     Ecdh,
     #[doc(alias = "GMIME_PUBKEY_ALGO_EDDSA")]
     Eddsa,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for PubKeyAlgo {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "PubKeyAlgo::{}",
-            match *self {
-                Self::Default => "Default",
-                Self::Rsa => "Rsa",
-                Self::RsaE => "RsaE",
-                Self::RsaS => "RsaS",
-                Self::ElgE => "ElgE",
-                Self::Dsa => "Dsa",
-                Self::Ecc => "Ecc",
-                Self::Elg => "Elg",
-                Self::Ecdsa => "Ecdsa",
-                Self::Ecdh => "Ecdh",
-                Self::Eddsa => "Eddsa",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "PubKeyAlgo::{}", match *self {
+            Self::Default => "Default",
+            Self::Rsa => "Rsa",
+            Self::RsaE => "RsaE",
+            Self::RsaS => "RsaS",
+            Self::ElgE => "ElgE",
+            Self::Dsa => "Dsa",
+            Self::Ecc => "Ecc",
+            Self::Elg => "Elg",
+            Self::Ecdsa => "Ecdsa",
+            Self::Ecdh => "Ecdh",
+            Self::Eddsa => "Eddsa",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1085,8 +1040,8 @@ impl IntoGlib for PubKeyAlgo {
     type GlibType = ffi::GMimePubKeyAlgo;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimePubKeyAlgo {
-        match self {
+fn into_glib(self) -> ffi::GMimePubKeyAlgo {
+match self {
             Self::Default => ffi::GMIME_PUBKEY_ALGO_DEFAULT,
             Self::Rsa => ffi::GMIME_PUBKEY_ALGO_RSA,
             Self::RsaE => ffi::GMIME_PUBKEY_ALGO_RSA_E,
@@ -1099,17 +1054,17 @@ impl IntoGlib for PubKeyAlgo {
             Self::Ecdh => ffi::GMIME_PUBKEY_ALGO_ECDH,
             Self::Eddsa => ffi::GMIME_PUBKEY_ALGO_EDDSA,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimePubKeyAlgo> for PubKeyAlgo {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimePubKeyAlgo) -> Self {
+unsafe fn from_glib(value: ffi::GMimePubKeyAlgo) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_PUBKEY_ALGO_DEFAULT => Self::Default,
             ffi::GMIME_PUBKEY_ALGO_RSA => Self::Rsa,
             ffi::GMIME_PUBKEY_ALGO_RSA_E => Self::RsaE,
@@ -1122,11 +1077,12 @@ impl FromGlib<ffi::GMimePubKeyAlgo> for PubKeyAlgo {
             ffi::GMIME_PUBKEY_ALGO_ECDH => Self::Ecdh,
             ffi::GMIME_PUBKEY_ALGO_EDDSA => Self::Eddsa,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeRfcComplianceMode")]
 pub enum RfcComplianceMode {
@@ -1134,21 +1090,17 @@ pub enum RfcComplianceMode {
     Loose,
     #[doc(alias = "GMIME_RFC_COMPLIANCE_STRICT")]
     Strict,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for RfcComplianceMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "RfcComplianceMode::{}",
-            match *self {
-                Self::Loose => "Loose",
-                Self::Strict => "Strict",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "RfcComplianceMode::{}", match *self {
+            Self::Loose => "Loose",
+            Self::Strict => "Strict",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1157,30 +1109,31 @@ impl IntoGlib for RfcComplianceMode {
     type GlibType = ffi::GMimeRfcComplianceMode;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeRfcComplianceMode {
-        match self {
+fn into_glib(self) -> ffi::GMimeRfcComplianceMode {
+match self {
             Self::Loose => ffi::GMIME_RFC_COMPLIANCE_LOOSE,
             Self::Strict => ffi::GMIME_RFC_COMPLIANCE_STRICT,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeRfcComplianceMode> for RfcComplianceMode {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeRfcComplianceMode) -> Self {
+unsafe fn from_glib(value: ffi::GMimeRfcComplianceMode) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_RFC_COMPLIANCE_LOOSE => Self::Loose,
             ffi::GMIME_RFC_COMPLIANCE_STRICT => Self::Strict,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeSecureMimeType")]
 pub enum SecureMimeType {
@@ -1194,24 +1147,20 @@ pub enum SecureMimeType {
     CertsOnly,
     #[doc(alias = "GMIME_SECURE_MIME_TYPE_UNKNOWN")]
     Unknown,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for SecureMimeType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "SecureMimeType::{}",
-            match *self {
-                Self::CompressedData => "CompressedData",
-                Self::EnvelopedData => "EnvelopedData",
-                Self::SignedData => "SignedData",
-                Self::CertsOnly => "CertsOnly",
-                Self::Unknown => "Unknown",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "SecureMimeType::{}", match *self {
+            Self::CompressedData => "CompressedData",
+            Self::EnvelopedData => "EnvelopedData",
+            Self::SignedData => "SignedData",
+            Self::CertsOnly => "CertsOnly",
+            Self::Unknown => "Unknown",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1220,36 +1169,37 @@ impl IntoGlib for SecureMimeType {
     type GlibType = ffi::GMimeSecureMimeType;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeSecureMimeType {
-        match self {
+fn into_glib(self) -> ffi::GMimeSecureMimeType {
+match self {
             Self::CompressedData => ffi::GMIME_SECURE_MIME_TYPE_COMPRESSED_DATA,
             Self::EnvelopedData => ffi::GMIME_SECURE_MIME_TYPE_ENVELOPED_DATA,
             Self::SignedData => ffi::GMIME_SECURE_MIME_TYPE_SIGNED_DATA,
             Self::CertsOnly => ffi::GMIME_SECURE_MIME_TYPE_CERTS_ONLY,
             Self::Unknown => ffi::GMIME_SECURE_MIME_TYPE_UNKNOWN,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeSecureMimeType> for SecureMimeType {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeSecureMimeType) -> Self {
+unsafe fn from_glib(value: ffi::GMimeSecureMimeType) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_SECURE_MIME_TYPE_COMPRESSED_DATA => Self::CompressedData,
             ffi::GMIME_SECURE_MIME_TYPE_ENVELOPED_DATA => Self::EnvelopedData,
             ffi::GMIME_SECURE_MIME_TYPE_SIGNED_DATA => Self::SignedData,
             ffi::GMIME_SECURE_MIME_TYPE_CERTS_ONLY => Self::CertsOnly,
             ffi::GMIME_SECURE_MIME_TYPE_UNKNOWN => Self::Unknown,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeSeekWhence")]
 pub enum SeekWhence {
@@ -1259,22 +1209,18 @@ pub enum SeekWhence {
     Cur,
     #[doc(alias = "GMIME_STREAM_SEEK_END")]
     End,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for SeekWhence {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "SeekWhence::{}",
-            match *self {
-                Self::Set => "Set",
-                Self::Cur => "Cur",
-                Self::End => "End",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "SeekWhence::{}", match *self {
+            Self::Set => "Set",
+            Self::Cur => "Cur",
+            Self::End => "End",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1283,32 +1229,33 @@ impl IntoGlib for SeekWhence {
     type GlibType = ffi::GMimeSeekWhence;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeSeekWhence {
-        match self {
+fn into_glib(self) -> ffi::GMimeSeekWhence {
+match self {
             Self::Set => ffi::GMIME_STREAM_SEEK_SET,
             Self::Cur => ffi::GMIME_STREAM_SEEK_CUR,
             Self::End => ffi::GMIME_STREAM_SEEK_END,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeSeekWhence> for SeekWhence {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeSeekWhence) -> Self {
+unsafe fn from_glib(value: ffi::GMimeSeekWhence) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_STREAM_SEEK_SET => Self::Set,
             ffi::GMIME_STREAM_SEEK_CUR => Self::Cur,
             ffi::GMIME_STREAM_SEEK_END => Self::End,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeSignatureStatus")]
 pub enum SignatureStatus {
@@ -1336,31 +1283,27 @@ pub enum SignatureStatus {
     SysError,
     #[doc(alias = "GMIME_SIGNATURE_STATUS_TOFU_CONFLICT")]
     TofuConflict,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for SignatureStatus {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "SignatureStatus::{}",
-            match *self {
-                Self::Valid => "Valid",
-                Self::Green => "Green",
-                Self::Red => "Red",
-                Self::KeyRevoked => "KeyRevoked",
-                Self::KeyExpired => "KeyExpired",
-                Self::SigExpired => "SigExpired",
-                Self::KeyMissing => "KeyMissing",
-                Self::CrlMissing => "CrlMissing",
-                Self::CrlTooOld => "CrlTooOld",
-                Self::BadPolicy => "BadPolicy",
-                Self::SysError => "SysError",
-                Self::TofuConflict => "TofuConflict",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "SignatureStatus::{}", match *self {
+            Self::Valid => "Valid",
+            Self::Green => "Green",
+            Self::Red => "Red",
+            Self::KeyRevoked => "KeyRevoked",
+            Self::KeyExpired => "KeyExpired",
+            Self::SigExpired => "SigExpired",
+            Self::KeyMissing => "KeyMissing",
+            Self::CrlMissing => "CrlMissing",
+            Self::CrlTooOld => "CrlTooOld",
+            Self::BadPolicy => "BadPolicy",
+            Self::SysError => "SysError",
+            Self::TofuConflict => "TofuConflict",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1369,8 +1312,8 @@ impl IntoGlib for SignatureStatus {
     type GlibType = ffi::GMimeSignatureStatus;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeSignatureStatus {
-        match self {
+fn into_glib(self) -> ffi::GMimeSignatureStatus {
+match self {
             Self::Valid => ffi::GMIME_SIGNATURE_STATUS_VALID,
             Self::Green => ffi::GMIME_SIGNATURE_STATUS_GREEN,
             Self::Red => ffi::GMIME_SIGNATURE_STATUS_RED,
@@ -1384,17 +1327,17 @@ impl IntoGlib for SignatureStatus {
             Self::SysError => ffi::GMIME_SIGNATURE_STATUS_SYS_ERROR,
             Self::TofuConflict => ffi::GMIME_SIGNATURE_STATUS_TOFU_CONFLICT,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeSignatureStatus> for SignatureStatus {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeSignatureStatus) -> Self {
+unsafe fn from_glib(value: ffi::GMimeSignatureStatus) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_SIGNATURE_STATUS_VALID => Self::Valid,
             ffi::GMIME_SIGNATURE_STATUS_GREEN => Self::Green,
             ffi::GMIME_SIGNATURE_STATUS_RED => Self::Red,
@@ -1408,11 +1351,12 @@ impl FromGlib<ffi::GMimeSignatureStatus> for SignatureStatus {
             ffi::GMIME_SIGNATURE_STATUS_SYS_ERROR => Self::SysError,
             ffi::GMIME_SIGNATURE_STATUS_TOFU_CONFLICT => Self::TofuConflict,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeStreamBufferMode")]
 pub enum StreamBufferMode {
@@ -1420,21 +1364,17 @@ pub enum StreamBufferMode {
     Read,
     #[doc(alias = "GMIME_STREAM_BUFFER_BLOCK_WRITE")]
     Write,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for StreamBufferMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "StreamBufferMode::{}",
-            match *self {
-                Self::Read => "Read",
-                Self::Write => "Write",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "StreamBufferMode::{}", match *self {
+            Self::Read => "Read",
+            Self::Write => "Write",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1443,30 +1383,31 @@ impl IntoGlib for StreamBufferMode {
     type GlibType = ffi::GMimeStreamBufferMode;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeStreamBufferMode {
-        match self {
+fn into_glib(self) -> ffi::GMimeStreamBufferMode {
+match self {
             Self::Read => ffi::GMIME_STREAM_BUFFER_BLOCK_READ,
             Self::Write => ffi::GMIME_STREAM_BUFFER_BLOCK_WRITE,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeStreamBufferMode> for StreamBufferMode {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeStreamBufferMode) -> Self {
+unsafe fn from_glib(value: ffi::GMimeStreamBufferMode) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_STREAM_BUFFER_BLOCK_READ => Self::Read,
             ffi::GMIME_STREAM_BUFFER_BLOCK_WRITE => Self::Write,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeTrust")]
 pub enum Trust {
@@ -1482,25 +1423,21 @@ pub enum Trust {
     Full,
     #[doc(alias = "GMIME_TRUST_ULTIMATE")]
     Ultimate,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for Trust {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Trust::{}",
-            match *self {
-                Self::Unknown => "Unknown",
-                Self::Undefined => "Undefined",
-                Self::Never => "Never",
-                Self::Marginal => "Marginal",
-                Self::Full => "Full",
-                Self::Ultimate => "Ultimate",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "Trust::{}", match *self {
+            Self::Unknown => "Unknown",
+            Self::Undefined => "Undefined",
+            Self::Never => "Never",
+            Self::Marginal => "Marginal",
+            Self::Full => "Full",
+            Self::Ultimate => "Ultimate",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1509,8 +1446,8 @@ impl IntoGlib for Trust {
     type GlibType = ffi::GMimeTrust;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeTrust {
-        match self {
+fn into_glib(self) -> ffi::GMimeTrust {
+match self {
             Self::Unknown => ffi::GMIME_TRUST_UNKNOWN,
             Self::Undefined => ffi::GMIME_TRUST_UNDEFINED,
             Self::Never => ffi::GMIME_TRUST_NEVER,
@@ -1518,17 +1455,17 @@ impl IntoGlib for Trust {
             Self::Full => ffi::GMIME_TRUST_FULL,
             Self::Ultimate => ffi::GMIME_TRUST_ULTIMATE,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeTrust> for Trust {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeTrust) -> Self {
+unsafe fn from_glib(value: ffi::GMimeTrust) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_TRUST_UNKNOWN => Self::Unknown,
             ffi::GMIME_TRUST_UNDEFINED => Self::Undefined,
             ffi::GMIME_TRUST_NEVER => Self::Never,
@@ -1536,11 +1473,12 @@ impl FromGlib<ffi::GMimeTrust> for Trust {
             ffi::GMIME_TRUST_FULL => Self::Full,
             ffi::GMIME_TRUST_ULTIMATE => Self::Ultimate,
             value => Self::__Unknown(value),
-        }
-    }
+}
+}
 }
 
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GMimeValidity")]
 pub enum Validity {
@@ -1556,25 +1494,21 @@ pub enum Validity {
     Full,
     #[doc(alias = "GMIME_VALIDITY_ULTIMATE")]
     Ultimate,
-    #[doc(hidden)]
+#[doc(hidden)]
     __Unknown(i32),
 }
 
 impl fmt::Display for Validity {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Validity::{}",
-            match *self {
-                Self::Unknown => "Unknown",
-                Self::Undefined => "Undefined",
-                Self::Never => "Never",
-                Self::Marginal => "Marginal",
-                Self::Full => "Full",
-                Self::Ultimate => "Ultimate",
-                _ => "Unknown",
-            }
-        )
+        write!(f, "Validity::{}", match *self {
+            Self::Unknown => "Unknown",
+            Self::Undefined => "Undefined",
+            Self::Never => "Never",
+            Self::Marginal => "Marginal",
+            Self::Full => "Full",
+            Self::Ultimate => "Ultimate",
+            _ => "Unknown",
+        })
     }
 }
 
@@ -1583,8 +1517,8 @@ impl IntoGlib for Validity {
     type GlibType = ffi::GMimeValidity;
 
     #[inline]
-    fn into_glib(self) -> ffi::GMimeValidity {
-        match self {
+fn into_glib(self) -> ffi::GMimeValidity {
+match self {
             Self::Unknown => ffi::GMIME_VALIDITY_UNKNOWN,
             Self::Undefined => ffi::GMIME_VALIDITY_UNDEFINED,
             Self::Never => ffi::GMIME_VALIDITY_NEVER,
@@ -1592,17 +1526,17 @@ impl IntoGlib for Validity {
             Self::Full => ffi::GMIME_VALIDITY_FULL,
             Self::Ultimate => ffi::GMIME_VALIDITY_ULTIMATE,
             Self::__Unknown(value) => value,
-        }
-    }
+}
+}
 }
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeValidity> for Validity {
     #[inline]
-    unsafe fn from_glib(value: ffi::GMimeValidity) -> Self {
+unsafe fn from_glib(value: ffi::GMimeValidity) -> Self {
         skip_assert_initialized!();
-
-        match value {
+        
+match value {
             ffi::GMIME_VALIDITY_UNKNOWN => Self::Unknown,
             ffi::GMIME_VALIDITY_UNDEFINED => Self::Undefined,
             ffi::GMIME_VALIDITY_NEVER => Self::Never,
@@ -1610,6 +1544,7 @@ impl FromGlib<ffi::GMimeValidity> for Validity {
             ffi::GMIME_VALIDITY_FULL => Self::Full,
             ffi::GMIME_VALIDITY_ULTIMATE => Self::Ultimate,
             value => Self::__Unknown(value),
-        }
-    }
 }
+}
+}
+

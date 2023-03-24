@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{AutocryptHeader, InternetAddressList, InternetAddressMailbox};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{AutocryptHeader,InternetAddressList,InternetAddressMailbox};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeAutocryptHeaderList")]
@@ -16,20 +16,23 @@ glib::wrapper! {
 }
 
 impl AutocryptHeaderList {
-    pub const NONE: Option<&'static AutocryptHeaderList> = None;
+        pub const NONE: Option<&'static AutocryptHeaderList> = None;
+    
 
     #[doc(alias = "g_mime_autocrypt_header_list_new")]
     pub fn new() -> AutocryptHeaderList {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_autocrypt_header_list_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_autocrypt_header_list_new())
+        }
     }
 }
 
 impl Default for AutocryptHeaderList {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait AutocryptHeaderListExt: 'static {
     #[doc(alias = "g_mime_autocrypt_header_list_add")]
@@ -48,10 +51,7 @@ pub trait AutocryptHeaderListExt: 'static {
 
     #[doc(alias = "g_mime_autocrypt_header_list_get_header_for_address")]
     #[doc(alias = "get_header_for_address")]
-    fn header_for_address(
-        &self,
-        mailbox: &impl IsA<InternetAddressMailbox>,
-    ) -> Option<AutocryptHeader>;
+    fn header_for_address(&self, mailbox: &impl IsA<InternetAddressMailbox>) -> Option<AutocryptHeader>;
 
     #[doc(alias = "g_mime_autocrypt_header_list_remove_incomplete")]
     fn remove_incomplete(&self);
@@ -60,44 +60,31 @@ pub trait AutocryptHeaderListExt: 'static {
 impl<O: IsA<AutocryptHeaderList>> AutocryptHeaderListExt for O {
     fn add(&self, header: &impl IsA<AutocryptHeader>) {
         unsafe {
-            ffi::g_mime_autocrypt_header_list_add(
-                self.as_ref().to_glib_none().0,
-                header.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_autocrypt_header_list_add(self.as_ref().to_glib_none().0, header.as_ref().to_glib_none().0);
         }
     }
 
     fn add_missing_addresses(&self, addresses: &impl IsA<InternetAddressList>) -> u32 {
         unsafe {
-            ffi::g_mime_autocrypt_header_list_add_missing_addresses(
-                self.as_ref().to_glib_none().0,
-                addresses.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_autocrypt_header_list_add_missing_addresses(self.as_ref().to_glib_none().0, addresses.as_ref().to_glib_none().0)
         }
     }
 
     fn count(&self) -> u32 {
-        unsafe { ffi::g_mime_autocrypt_header_list_get_count(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_autocrypt_header_list_get_count(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn header_at(&self, index: u32) -> Option<AutocryptHeader> {
         unsafe {
-            from_glib_none(ffi::g_mime_autocrypt_header_list_get_header_at(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib_none(ffi::g_mime_autocrypt_header_list_get_header_at(self.as_ref().to_glib_none().0, index))
         }
     }
 
-    fn header_for_address(
-        &self,
-        mailbox: &impl IsA<InternetAddressMailbox>,
-    ) -> Option<AutocryptHeader> {
+    fn header_for_address(&self, mailbox: &impl IsA<InternetAddressMailbox>) -> Option<AutocryptHeader> {
         unsafe {
-            from_glib_none(ffi::g_mime_autocrypt_header_list_get_header_for_address(
-                self.as_ref().to_glib_none().0,
-                mailbox.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_autocrypt_header_list_get_header_for_address(self.as_ref().to_glib_none().0, mailbox.as_ref().to_glib_none().0))
         }
     }
 

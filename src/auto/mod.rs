@@ -229,7 +229,7 @@ pub mod traits {
     pub use super::filter_checksum::FilterChecksumExt;
     pub use super::filter_gzip::FilterGZipExt;
     #[cfg(any(feature = "v3_2", feature = "dox"))]
-    #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
+#[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
     pub use super::filter_open_pgp::FilterOpenPGPExt;
     pub use super::filter_windows::FilterWindowsExt;
     pub use super::filter_yenc::FilterYencExt;

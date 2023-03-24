@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Stream;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamNull")]
@@ -16,20 +16,23 @@ glib::wrapper! {
 }
 
 impl StreamNull {
-    pub const NONE: Option<&'static StreamNull> = None;
+        pub const NONE: Option<&'static StreamNull> = None;
+    
 
     #[doc(alias = "g_mime_stream_null_new")]
     pub fn new() -> StreamNull {
         assert_initialized_main_thread!();
-        unsafe { Stream::from_glib_full(ffi::g_mime_stream_null_new()).unsafe_cast() }
+        unsafe {
+            Stream::from_glib_full(ffi::g_mime_stream_null_new()).unsafe_cast()
+        }
     }
 }
 
 impl Default for StreamNull {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait StreamNullExt: 'static {
     #[doc(alias = "g_mime_stream_null_get_count_newlines")]
@@ -43,18 +46,13 @@ pub trait StreamNullExt: 'static {
 impl<O: IsA<StreamNull>> StreamNullExt for O {
     fn is_count_newlines(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_stream_null_get_count_newlines(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_stream_null_get_count_newlines(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_count_newlines(&self, count: bool) {
         unsafe {
-            ffi::g_mime_stream_null_set_count_newlines(
-                self.as_ref().to_glib_none().0,
-                count.into_glib(),
-            );
+            ffi::g_mime_stream_null_set_count_newlines(self.as_ref().to_glib_none().0, count.into_glib());
         }
     }
 }

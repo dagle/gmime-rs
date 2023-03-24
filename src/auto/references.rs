@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::ParserOptions;
-use glib::translate::*;
+use crate::{ParserOptions};
+use glib::{translate::*};
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -20,7 +20,9 @@ impl References {
     #[doc(alias = "g_mime_references_new")]
     pub fn new() -> References {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_references_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_references_new())
+        }
     }
 
     #[doc(alias = "g_mime_references_append")]
@@ -41,26 +43,21 @@ impl References {
     #[doc(alias = "get_message_id")]
     pub fn message_id(&mut self, index: i32) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_references_get_message_id(
-                self.to_glib_none_mut().0,
-                index,
-            ))
+            from_glib_none(ffi::g_mime_references_get_message_id(self.to_glib_none_mut().0, index))
         }
     }
 
     #[doc(alias = "g_mime_references_length")]
     pub fn length(&mut self) -> i32 {
-        unsafe { ffi::g_mime_references_length(self.to_glib_none_mut().0) }
+        unsafe {
+            ffi::g_mime_references_length(self.to_glib_none_mut().0)
+        }
     }
 
     #[doc(alias = "g_mime_references_set_message_id")]
     pub fn set_message_id(&mut self, index: i32, msgid: &str) {
         unsafe {
-            ffi::g_mime_references_set_message_id(
-                self.to_glib_none_mut().0,
-                index,
-                msgid.to_glib_none().0,
-            );
+            ffi::g_mime_references_set_message_id(self.to_glib_none_mut().0, index, msgid.to_glib_none().0);
         }
     }
 
@@ -68,16 +65,13 @@ impl References {
     pub fn parse(options: Option<&ParserOptions>, text: &str) -> Option<References> {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_references_parse(
-                mut_override(options.to_glib_none().0),
-                text.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_references_parse(mut_override(options.to_glib_none().0), text.to_glib_none().0))
         }
     }
 }
 
 impl Default for References {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }

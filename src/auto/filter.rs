@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use glib::{prelude::*, translate::*};
-use std::{fmt, mem, ptr};
+use glib::{prelude::*,translate::*};
+use std::{fmt,mem,ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilter")]
@@ -15,7 +15,8 @@ glib::wrapper! {
 }
 
 impl Filter {
-    pub const NONE: Option<&'static Filter> = None;
+        pub const NONE: Option<&'static Filter> = None;
+    
 }
 
 pub trait FilterExt: 'static {
@@ -26,7 +27,7 @@ pub trait FilterExt: 'static {
     fn complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize);
 
     #[doc(alias = "g_mime_filter_copy")]
-    #[must_use]
+#[must_use]
     fn copy(&self) -> Option<Filter>;
 
     #[doc(alias = "g_mime_filter_filter")]
@@ -43,11 +44,7 @@ impl<O: IsA<Filter>> FilterExt for O {
     fn backup(&self, data: &[u8]) {
         let length = data.len() as _;
         unsafe {
-            ffi::g_mime_filter_backup(
-                self.as_ref().to_glib_none().0,
-                data.to_glib_none().0,
-                length,
-            );
+            ffi::g_mime_filter_backup(self.as_ref().to_glib_none().0, data.to_glib_none().0, length);
         }
     }
 
@@ -57,24 +54,15 @@ impl<O: IsA<Filter>> FilterExt for O {
             let mut outbuf = ptr::null_mut();
             let mut outlen = mem::MaybeUninit::uninit();
             let mut outprespace = mem::MaybeUninit::uninit();
-            ffi::g_mime_filter_complete(
-                self.as_ref().to_glib_none().0,
-                inbuf.to_glib_none().0,
-                inlen,
-                prespace,
-                &mut outbuf,
-                outlen.as_mut_ptr(),
-                outprespace.as_mut_ptr(),
-            );
-            (
-                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as _),
-                outprespace.assume_init(),
-            )
+            ffi::g_mime_filter_complete(self.as_ref().to_glib_none().0, inbuf.to_glib_none().0, inlen, prespace, &mut outbuf, outlen.as_mut_ptr(), outprespace.as_mut_ptr());
+            (FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as _), outprespace.assume_init())
         }
     }
 
     fn copy(&self) -> Option<Filter> {
-        unsafe { from_glib_full(ffi::g_mime_filter_copy(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_full(ffi::g_mime_filter_copy(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn filter(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
@@ -83,19 +71,8 @@ impl<O: IsA<Filter>> FilterExt for O {
             let mut outbuf = ptr::null_mut();
             let mut outlen = mem::MaybeUninit::uninit();
             let mut outprespace = mem::MaybeUninit::uninit();
-            ffi::g_mime_filter_filter(
-                self.as_ref().to_glib_none().0,
-                inbuf.to_glib_none().0,
-                inlen,
-                prespace,
-                &mut outbuf,
-                outlen.as_mut_ptr(),
-                outprespace.as_mut_ptr(),
-            );
-            (
-                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as _),
-                outprespace.assume_init(),
-            )
+            ffi::g_mime_filter_filter(self.as_ref().to_glib_none().0, inbuf.to_glib_none().0, inlen, prespace, &mut outbuf, outlen.as_mut_ptr(), outprespace.as_mut_ptr());
+            (FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as _), outprespace.assume_init())
         }
     }
 

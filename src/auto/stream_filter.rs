@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Filter, Stream};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter,Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamFilter")]
@@ -16,16 +16,14 @@ glib::wrapper! {
 }
 
 impl StreamFilter {
-    pub const NONE: Option<&'static StreamFilter> = None;
+        pub const NONE: Option<&'static StreamFilter> = None;
+    
 
     #[doc(alias = "g_mime_stream_filter_new")]
     pub fn new(stream: &impl IsA<Stream>) -> StreamFilter {
         skip_assert_initialized!();
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_filter_new(
-                stream.as_ref().to_glib_none().0,
-            ))
-            .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_filter_new(stream.as_ref().to_glib_none().0)).unsafe_cast()
         }
     }
 }
@@ -48,18 +46,13 @@ pub trait StreamFilterExt: 'static {
 impl<O: IsA<StreamFilter>> StreamFilterExt for O {
     fn add(&self, filter: &impl IsA<Filter>) -> i32 {
         unsafe {
-            ffi::g_mime_stream_filter_add(
-                self.as_ref().to_glib_none().0,
-                filter.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_stream_filter_add(self.as_ref().to_glib_none().0, filter.as_ref().to_glib_none().0)
         }
     }
 
     fn is_owner(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_stream_filter_get_owner(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_stream_filter_get_owner(self.as_ref().to_glib_none().0))
         }
     }
 

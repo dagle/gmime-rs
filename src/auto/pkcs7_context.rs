@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::CryptoContext;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{CryptoContext};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimePkcs7Context")]
@@ -19,15 +19,17 @@ impl Pkcs7Context {
     #[doc(alias = "g_mime_pkcs7_context_new")]
     pub fn new() -> Pkcs7Context {
         assert_initialized_main_thread!();
-        unsafe { CryptoContext::from_glib_full(ffi::g_mime_pkcs7_context_new()).unsafe_cast() }
+        unsafe {
+            CryptoContext::from_glib_full(ffi::g_mime_pkcs7_context_new()).unsafe_cast()
+        }
     }
 }
 
 impl Default for Pkcs7Context {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 impl fmt::Display for Pkcs7Context {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

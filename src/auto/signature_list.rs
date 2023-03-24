@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Signature;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Signature};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeSignatureList")]
@@ -16,20 +16,23 @@ glib::wrapper! {
 }
 
 impl SignatureList {
-    pub const NONE: Option<&'static SignatureList> = None;
+        pub const NONE: Option<&'static SignatureList> = None;
+    
 
     #[doc(alias = "g_mime_signature_list_new")]
     pub fn new() -> SignatureList {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_signature_list_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_signature_list_new())
+        }
     }
 }
 
 impl Default for SignatureList {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait SignatureListExt: 'static {
     #[doc(alias = "g_mime_signature_list_add")]
@@ -67,10 +70,7 @@ pub trait SignatureListExt: 'static {
 impl<O: IsA<SignatureList>> SignatureListExt for O {
     fn add(&self, sig: &impl IsA<Signature>) -> i32 {
         unsafe {
-            ffi::g_mime_signature_list_add(
-                self.as_ref().to_glib_none().0,
-                sig.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_signature_list_add(self.as_ref().to_glib_none().0, sig.as_ref().to_glib_none().0)
         }
     }
 
@@ -82,70 +82,49 @@ impl<O: IsA<SignatureList>> SignatureListExt for O {
 
     fn contains(&self, sig: &impl IsA<Signature>) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_signature_list_contains(
-                self.as_ref().to_glib_none().0,
-                sig.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_signature_list_contains(self.as_ref().to_glib_none().0, sig.as_ref().to_glib_none().0))
         }
     }
 
     fn signature(&self, index: i32) -> Option<Signature> {
         unsafe {
-            from_glib_none(ffi::g_mime_signature_list_get_signature(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib_none(ffi::g_mime_signature_list_get_signature(self.as_ref().to_glib_none().0, index))
         }
     }
 
     fn index_of(&self, sig: &impl IsA<Signature>) -> i32 {
         unsafe {
-            ffi::g_mime_signature_list_index_of(
-                self.as_ref().to_glib_none().0,
-                sig.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_signature_list_index_of(self.as_ref().to_glib_none().0, sig.as_ref().to_glib_none().0)
         }
     }
 
     fn insert(&self, index: i32, sig: &impl IsA<Signature>) {
         unsafe {
-            ffi::g_mime_signature_list_insert(
-                self.as_ref().to_glib_none().0,
-                index,
-                sig.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_signature_list_insert(self.as_ref().to_glib_none().0, index, sig.as_ref().to_glib_none().0);
         }
     }
 
     fn length(&self) -> i32 {
-        unsafe { ffi::g_mime_signature_list_length(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_signature_list_length(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn remove(&self, sig: &impl IsA<Signature>) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_signature_list_remove(
-                self.as_ref().to_glib_none().0,
-                sig.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_signature_list_remove(self.as_ref().to_glib_none().0, sig.as_ref().to_glib_none().0))
         }
     }
 
     fn remove_at(&self, index: i32) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_signature_list_remove_at(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib(ffi::g_mime_signature_list_remove_at(self.as_ref().to_glib_none().0, index))
         }
     }
 
     fn set_signature(&self, index: i32, sig: &impl IsA<Signature>) {
         unsafe {
-            ffi::g_mime_signature_list_set_signature(
-                self.as_ref().to_glib_none().0,
-                index,
-                sig.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_signature_list_set_signature(self.as_ref().to_glib_none().0, index, sig.as_ref().to_glib_none().0);
         }
     }
 }

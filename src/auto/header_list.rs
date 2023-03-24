@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{FormatOptions, Header, ParserOptions, Stream};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{FormatOptions,Header,ParserOptions,Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeHeaderList")]
@@ -16,15 +16,14 @@ glib::wrapper! {
 }
 
 impl HeaderList {
-    pub const NONE: Option<&'static HeaderList> = None;
+        pub const NONE: Option<&'static HeaderList> = None;
+    
 
     #[doc(alias = "g_mime_header_list_new")]
     pub fn new(options: Option<&ParserOptions>) -> HeaderList {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_header_list_new(mut_override(
-                options.to_glib_none().0,
-            )))
+            from_glib_full(ffi::g_mime_header_list_new(mut_override(options.to_glib_none().0)))
         }
     }
 }
@@ -73,12 +72,7 @@ pub trait HeaderListExt: 'static {
 impl<O: IsA<HeaderList>> HeaderListExt for O {
     fn append(&self, name: &str, value: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_header_list_append(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_header_list_append(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 
@@ -90,52 +84,37 @@ impl<O: IsA<HeaderList>> HeaderListExt for O {
 
     fn contains(&self, name: &str) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_header_list_contains(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_header_list_contains(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn count(&self) -> i32 {
-        unsafe { ffi::g_mime_header_list_get_count(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_header_list_get_count(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn header(&self, name: &str) -> Option<Header> {
         unsafe {
-            from_glib_none(ffi::g_mime_header_list_get_header(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_header_list_get_header(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn header_at(&self, index: i32) -> Option<Header> {
         unsafe {
-            from_glib_none(ffi::g_mime_header_list_get_header_at(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib_none(ffi::g_mime_header_list_get_header_at(self.as_ref().to_glib_none().0, index))
         }
     }
 
     fn prepend(&self, name: &str, value: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_header_list_prepend(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_header_list_prepend(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 
     fn remove(&self, name: &str) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_header_list_remove(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_header_list_remove(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
@@ -147,31 +126,19 @@ impl<O: IsA<HeaderList>> HeaderListExt for O {
 
     fn set(&self, name: &str, value: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_header_list_set(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_header_list_set(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 
     fn to_string(&self, options: Option<&FormatOptions>) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_header_list_to_string(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-            ))
+            from_glib_full(ffi::g_mime_header_list_to_string(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
         }
     }
 
     fn write_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize {
         unsafe {
-            ffi::g_mime_header_list_write_to_stream(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                stream.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_header_list_write_to_stream(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), stream.as_ref().to_glib_none().0)
         }
     }
 }

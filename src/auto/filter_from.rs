@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Filter, FilterFromMode};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter,FilterFromMode};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterFrom")]
@@ -16,7 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterFrom {
-    pub const NONE: Option<&'static FilterFrom> = None;
+        pub const NONE: Option<&'static FilterFrom> = None;
+    
 
     #[doc(alias = "g_mime_filter_from_new")]
     pub fn new(mode: FilterFromMode) -> FilterFrom {

@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{CryptoContext, DecryptFlags, DecryptResult, EncryptFlags, Multipart, Object};
-use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
+use crate::{CryptoContext,DecryptFlags,DecryptResult,EncryptFlags,Multipart,Object};
+use glib::{prelude::*,translate::*};
+use std::{fmt,ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMultipartEncrypted")]
@@ -16,80 +16,46 @@ glib::wrapper! {
 }
 
 impl MultipartEncrypted {
-    pub const NONE: Option<&'static MultipartEncrypted> = None;
+        pub const NONE: Option<&'static MultipartEncrypted> = None;
+    
 
     #[doc(alias = "g_mime_multipart_encrypted_new")]
     pub fn new() -> MultipartEncrypted {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_multipart_encrypted_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_multipart_encrypted_new())
+        }
     }
 
     #[doc(alias = "g_mime_multipart_encrypted_encrypt")]
-    pub fn encrypt(
-        ctx: &impl IsA<CryptoContext>,
-        entity: &impl IsA<Object>,
-        sign: bool,
-        userid: Option<&str>,
-        flags: EncryptFlags,
-        recipients: &[&str],
-    ) -> Result<Option<MultipartEncrypted>, glib::Error> {
+    pub fn encrypt(ctx: &impl IsA<CryptoContext>, entity: &impl IsA<Object>, sign: bool, userid: Option<&str>, flags: EncryptFlags, recipients: &[&str]) -> Result<Option<MultipartEncrypted>, glib::Error> {
         skip_assert_initialized!();
         unsafe {
             let mut error = ptr::null_mut();
-            let ret = ffi::g_mime_multipart_encrypted_encrypt(
-                ctx.as_ref().to_glib_none().0,
-                entity.as_ref().to_glib_none().0,
-                sign.into_glib(),
-                userid.to_glib_none().0,
-                flags.into_glib(),
-                recipients.to_glib_none().0,
-                &mut error,
-            );
-            if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            }
+            let ret = ffi::g_mime_multipart_encrypted_encrypt(ctx.as_ref().to_glib_none().0, entity.as_ref().to_glib_none().0, sign.into_glib(), userid.to_glib_none().0, flags.into_glib(), recipients.to_glib_none().0, &mut error);
+            if error.is_null() { Ok(from_glib_full(ret)) } else { Err(from_glib_full(error)) }
         }
     }
 }
 
 impl Default for MultipartEncrypted {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait MultipartEncryptedExt: 'static {
     #[doc(alias = "g_mime_multipart_encrypted_decrypt")]
-    fn decrypt(
-        &self,
-        flags: DecryptFlags,
-        session_key: &str,
-    ) -> Result<(Option<Object>, DecryptResult), glib::Error>;
+    fn decrypt(&self, flags: DecryptFlags, session_key: &str) -> Result<(Option<Object>, DecryptResult), glib::Error>;
 }
 
 impl<O: IsA<MultipartEncrypted>> MultipartEncryptedExt for O {
-    fn decrypt(
-        &self,
-        flags: DecryptFlags,
-        session_key: &str,
-    ) -> Result<(Option<Object>, DecryptResult), glib::Error> {
+    fn decrypt(&self, flags: DecryptFlags, session_key: &str) -> Result<(Option<Object>, DecryptResult), glib::Error> {
         unsafe {
             let mut result = ptr::null_mut();
             let mut error = ptr::null_mut();
-            let ret = ffi::g_mime_multipart_encrypted_decrypt(
-                self.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                session_key.to_glib_none().0,
-                &mut result,
-                &mut error,
-            );
-            if error.is_null() {
-                Ok((from_glib_full(ret), from_glib_full(result)))
-            } else {
-                Err(from_glib_full(error))
-            }
+            let ret = ffi::g_mime_multipart_encrypted_decrypt(self.as_ref().to_glib_none().0, flags.into_glib(), session_key.to_glib_none().0, &mut result, &mut error);
+            if error.is_null() { Ok((from_glib_full(ret), from_glib_full(result))) } else { Err(from_glib_full(error)) }
         }
     }
 }

@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Message, Object};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Message,Object};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMessagePart")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl MessagePart {
-    pub const NONE: Option<&'static MessagePart> = None;
+        pub const NONE: Option<&'static MessagePart> = None;
+    
 
     #[doc(alias = "g_mime_message_part_new")]
     pub fn new(subtype: &str) -> MessagePart {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_message_part_new(subtype.to_glib_none().0)) }
+        unsafe {
+            from_glib_full(ffi::g_mime_message_part_new(subtype.to_glib_none().0))
+        }
     }
 
     #[doc(alias = "g_mime_message_part_new_with_message")]
@@ -29,10 +32,7 @@ impl MessagePart {
     pub fn with_message(subtype: &str, message: &impl IsA<Message>) -> MessagePart {
         skip_assert_initialized!();
         unsafe {
-            from_glib_full(ffi::g_mime_message_part_new_with_message(
-                subtype.to_glib_none().0,
-                message.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_message_part_new_with_message(subtype.to_glib_none().0, message.as_ref().to_glib_none().0))
         }
     }
 }
@@ -49,18 +49,13 @@ pub trait MessagePartExt: 'static {
 impl<O: IsA<MessagePart>> MessagePartExt for O {
     fn message(&self) -> Option<Message> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_part_get_message(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_message_part_get_message(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_message(&self, message: &impl IsA<Message>) {
         unsafe {
-            ffi::g_mime_message_part_set_message(
-                self.as_ref().to_glib_none().0,
-                message.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_message_part_set_message(self.as_ref().to_glib_none().0, message.as_ref().to_glib_none().0);
         }
     }
 }

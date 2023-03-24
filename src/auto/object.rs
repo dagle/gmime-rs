@@ -2,12 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{
-    AutocryptHeaderList, ContentDisposition, ContentType, EncodingConstraint, FormatOptions,
-    HeaderList, InternetAddressList, ParserOptions, Stream,
-};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{AutocryptHeaderList,ContentDisposition,ContentType,EncodingConstraint,FormatOptions,HeaderList,InternetAddressList,ParserOptions,Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeObject")]
@@ -19,16 +16,14 @@ glib::wrapper! {
 }
 
 impl Object {
-    pub const NONE: Option<&'static Object> = None;
+        pub const NONE: Option<&'static Object> = None;
+    
 
     #[doc(alias = "g_mime_object_new")]
     pub fn new(options: Option<&ParserOptions>, content_type: &impl IsA<ContentType>) -> Object {
         skip_assert_initialized!();
         unsafe {
-            from_glib_full(ffi::g_mime_object_new(
-                mut_override(options.to_glib_none().0),
-                content_type.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_object_new(mut_override(options.to_glib_none().0), content_type.as_ref().to_glib_none().0))
         }
     }
 
@@ -36,11 +31,7 @@ impl Object {
     pub fn new_type(options: Option<&ParserOptions>, type_: &str, subtype: &str) -> Object {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_object_new_type(
-                mut_override(options.to_glib_none().0),
-                type_.to_glib_none().0,
-                subtype.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_object_new_type(mut_override(options.to_glib_none().0), type_.to_glib_none().0, subtype.to_glib_none().0))
         }
     }
 
@@ -48,11 +39,7 @@ impl Object {
     pub fn register_type(type_: &str, subtype: &str, object_type: glib::types::Type) {
         assert_initialized_main_thread!();
         unsafe {
-            ffi::g_mime_object_register_type(
-                type_.to_glib_none().0,
-                subtype.to_glib_none().0,
-                object_type.into_glib(),
-            );
+            ffi::g_mime_object_register_type(type_.to_glib_none().0, subtype.to_glib_none().0, object_type.into_glib());
         }
     }
 
@@ -82,13 +69,7 @@ pub trait ObjectExt: 'static {
 
     #[doc(alias = "g_mime_object_get_autocrypt_headers")]
     #[doc(alias = "get_autocrypt_headers")]
-    fn autocrypt_headers(
-        &self,
-        effective_date: &glib::DateTime,
-        matchheader: &str,
-        addresses: &impl IsA<InternetAddressList>,
-        keep_incomplete: bool,
-    ) -> Option<AutocryptHeaderList>;
+    fn autocrypt_headers(&self, effective_date: &glib::DateTime, matchheader: &str, addresses: &impl IsA<InternetAddressList>, keep_incomplete: bool) -> Option<AutocryptHeaderList>;
 
     #[doc(alias = "g_mime_object_get_content_disposition")]
     #[doc(alias = "get_content_disposition")]
@@ -163,12 +144,7 @@ pub trait ObjectExt: 'static {
 impl<O: IsA<Object>> ObjectExt for O {
     fn append_header(&self, header: &str, value: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_object_append_header(
-                self.as_ref().to_glib_none().0,
-                header.to_glib_none().0,
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_object_append_header(self.as_ref().to_glib_none().0, header.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 
@@ -178,203 +154,129 @@ impl<O: IsA<Object>> ObjectExt for O {
         }
     }
 
-    fn autocrypt_headers(
-        &self,
-        effective_date: &glib::DateTime,
-        matchheader: &str,
-        addresses: &impl IsA<InternetAddressList>,
-        keep_incomplete: bool,
-    ) -> Option<AutocryptHeaderList> {
+    fn autocrypt_headers(&self, effective_date: &glib::DateTime, matchheader: &str, addresses: &impl IsA<InternetAddressList>, keep_incomplete: bool) -> Option<AutocryptHeaderList> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_autocrypt_headers(
-                self.as_ref().to_glib_none().0,
-                effective_date.to_glib_none().0,
-                matchheader.to_glib_none().0,
-                addresses.as_ref().to_glib_none().0,
-                keep_incomplete.into_glib(),
-            ))
+            from_glib_none(ffi::g_mime_object_get_autocrypt_headers(self.as_ref().to_glib_none().0, effective_date.to_glib_none().0, matchheader.to_glib_none().0, addresses.as_ref().to_glib_none().0, keep_incomplete.into_glib()))
         }
     }
 
     fn content_disposition(&self) -> Option<ContentDisposition> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_content_disposition(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_content_disposition(self.as_ref().to_glib_none().0))
         }
     }
 
     fn content_disposition_parameter(&self, name: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_content_disposition_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_content_disposition_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn content_id(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_content_id(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_content_id(self.as_ref().to_glib_none().0))
         }
     }
 
     fn content_type(&self) -> Option<ContentType> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_content_type(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_content_type(self.as_ref().to_glib_none().0))
         }
     }
 
     fn content_type_parameter(&self, name: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_content_type_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_content_type_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn disposition(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_disposition(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_disposition(self.as_ref().to_glib_none().0))
         }
     }
 
     fn header(&self, header: &str) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_header(
-                self.as_ref().to_glib_none().0,
-                header.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_header(self.as_ref().to_glib_none().0, header.to_glib_none().0))
         }
     }
 
     fn header_list(&self) -> Option<HeaderList> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_header_list(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_object_get_header_list(self.as_ref().to_glib_none().0))
         }
     }
 
     fn headers(&self, options: Option<&FormatOptions>) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_object_get_headers(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-            ))
+            from_glib_full(ffi::g_mime_object_get_headers(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
         }
     }
 
     fn prepend_header(&self, header: &str, value: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_object_prepend_header(
-                self.as_ref().to_glib_none().0,
-                header.to_glib_none().0,
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_object_prepend_header(self.as_ref().to_glib_none().0, header.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 
     fn remove_header(&self, header: &str) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_object_remove_header(
-                self.as_ref().to_glib_none().0,
-                header.to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_object_remove_header(self.as_ref().to_glib_none().0, header.to_glib_none().0))
         }
     }
 
     fn set_content_disposition(&self, disposition: &impl IsA<ContentDisposition>) {
         unsafe {
-            ffi::g_mime_object_set_content_disposition(
-                self.as_ref().to_glib_none().0,
-                disposition.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_object_set_content_disposition(self.as_ref().to_glib_none().0, disposition.as_ref().to_glib_none().0);
         }
     }
 
     fn set_content_disposition_parameter(&self, name: &str, value: &str) {
         unsafe {
-            ffi::g_mime_object_set_content_disposition_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-            );
+            ffi::g_mime_object_set_content_disposition_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0);
         }
     }
 
     fn set_content_id(&self, content_id: &str) {
         unsafe {
-            ffi::g_mime_object_set_content_id(
-                self.as_ref().to_glib_none().0,
-                content_id.to_glib_none().0,
-            );
+            ffi::g_mime_object_set_content_id(self.as_ref().to_glib_none().0, content_id.to_glib_none().0);
         }
     }
 
     fn set_content_type(&self, content_type: &impl IsA<ContentType>) {
         unsafe {
-            ffi::g_mime_object_set_content_type(
-                self.as_ref().to_glib_none().0,
-                content_type.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_object_set_content_type(self.as_ref().to_glib_none().0, content_type.as_ref().to_glib_none().0);
         }
     }
 
     fn set_content_type_parameter(&self, name: &str, value: &str) {
         unsafe {
-            ffi::g_mime_object_set_content_type_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-            );
+            ffi::g_mime_object_set_content_type_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0);
         }
     }
 
     fn set_disposition(&self, disposition: &str) {
         unsafe {
-            ffi::g_mime_object_set_disposition(
-                self.as_ref().to_glib_none().0,
-                disposition.to_glib_none().0,
-            );
+            ffi::g_mime_object_set_disposition(self.as_ref().to_glib_none().0, disposition.to_glib_none().0);
         }
     }
 
     fn set_header(&self, header: &str, value: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_object_set_header(
-                self.as_ref().to_glib_none().0,
-                header.to_glib_none().0,
-                value.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_object_set_header(self.as_ref().to_glib_none().0, header.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 
     fn to_string(&self, options: Option<&FormatOptions>) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_object_to_string(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-            ))
+            from_glib_full(ffi::g_mime_object_to_string(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
         }
     }
 
     fn write_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize {
         unsafe {
-            ffi::g_mime_object_write_to_stream(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-                stream.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_object_write_to_stream(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), stream.as_ref().to_glib_none().0)
         }
     }
 }

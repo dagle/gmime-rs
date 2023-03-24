@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Stream;
-use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
+use crate::{Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt,ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamFs")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl StreamFs {
-    pub const NONE: Option<&'static StreamFs> = None;
+        pub const NONE: Option<&'static StreamFs> = None;
+    
 
     #[doc(alias = "g_mime_stream_fs_new")]
     pub fn new(fd: i32) -> StreamFs {
         assert_initialized_main_thread!();
-        unsafe { Stream::from_glib_full(ffi::g_mime_stream_fs_new(fd)).unsafe_cast() }
+        unsafe {
+            Stream::from_glib_full(ffi::g_mime_stream_fs_new(fd)).unsafe_cast()
+        }
     }
 
     #[doc(alias = "g_mime_stream_fs_new_with_bounds")]
@@ -29,8 +32,7 @@ impl StreamFs {
     pub fn with_bounds(fd: i32, start: i64, end: i64) -> StreamFs {
         assert_initialized_main_thread!();
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_fs_new_with_bounds(fd, start, end))
-                .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_fs_new_with_bounds(fd, start, end)).unsafe_cast()
         }
     }
 
@@ -40,11 +42,7 @@ impl StreamFs {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_mime_stream_fs_open(path.to_glib_none().0, flags, mode, &mut error);
-            if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            }
+            if error.is_null() { Ok(from_glib_full(ret)) } else { Err(from_glib_full(error)) }
         }
     }
 }
@@ -61,9 +59,7 @@ pub trait StreamFsExt: 'static {
 impl<O: IsA<StreamFs>> StreamFsExt for O {
     fn is_owner(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_stream_fs_get_owner(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_stream_fs_get_owner(self.as_ref().to_glib_none().0))
         }
     }
 

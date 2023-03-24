@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{ContentEncoding, Stream};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{ContentEncoding,Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeDataWrapper")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl DataWrapper {
-    pub const NONE: Option<&'static DataWrapper> = None;
+        pub const NONE: Option<&'static DataWrapper> = None;
+    
 
     #[doc(alias = "g_mime_data_wrapper_new")]
     pub fn new() -> DataWrapper {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_data_wrapper_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_data_wrapper_new())
+        }
     }
 
     #[doc(alias = "g_mime_data_wrapper_new_with_stream")]
@@ -29,19 +32,16 @@ impl DataWrapper {
     pub fn with_stream(stream: &impl IsA<Stream>, encoding: ContentEncoding) -> DataWrapper {
         skip_assert_initialized!();
         unsafe {
-            from_glib_full(ffi::g_mime_data_wrapper_new_with_stream(
-                stream.as_ref().to_glib_none().0,
-                encoding.into_glib(),
-            ))
+            from_glib_full(ffi::g_mime_data_wrapper_new_with_stream(stream.as_ref().to_glib_none().0, encoding.into_glib()))
         }
     }
 }
 
 impl Default for DataWrapper {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait DataWrapperExt: 'static {
     #[doc(alias = "g_mime_data_wrapper_get_encoding")]
@@ -65,44 +65,31 @@ pub trait DataWrapperExt: 'static {
 impl<O: IsA<DataWrapper>> DataWrapperExt for O {
     fn encoding(&self) -> ContentEncoding {
         unsafe {
-            from_glib(ffi::g_mime_data_wrapper_get_encoding(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_data_wrapper_get_encoding(self.as_ref().to_glib_none().0))
         }
     }
 
     fn stream(&self) -> Option<Stream> {
         unsafe {
-            from_glib_none(ffi::g_mime_data_wrapper_get_stream(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_data_wrapper_get_stream(self.as_ref().to_glib_none().0))
         }
     }
 
     fn set_encoding(&self, encoding: ContentEncoding) {
         unsafe {
-            ffi::g_mime_data_wrapper_set_encoding(
-                self.as_ref().to_glib_none().0,
-                encoding.into_glib(),
-            );
+            ffi::g_mime_data_wrapper_set_encoding(self.as_ref().to_glib_none().0, encoding.into_glib());
         }
     }
 
     fn set_stream(&self, stream: &impl IsA<Stream>) {
         unsafe {
-            ffi::g_mime_data_wrapper_set_stream(
-                self.as_ref().to_glib_none().0,
-                stream.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_data_wrapper_set_stream(self.as_ref().to_glib_none().0, stream.as_ref().to_glib_none().0);
         }
     }
 
     fn write_to_stream(&self, stream: &impl IsA<Stream>) -> isize {
         unsafe {
-            ffi::g_mime_data_wrapper_write_to_stream(
-                self.as_ref().to_glib_none().0,
-                stream.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_data_wrapper_write_to_stream(self.as_ref().to_glib_none().0, stream.as_ref().to_glib_none().0)
         }
     }
 }

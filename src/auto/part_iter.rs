@@ -2,8 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Object;
-use glib::{prelude::*, translate::*};
+use crate::{Object};
+use glib::{prelude::*,translate::*};
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -21,83 +21,89 @@ impl PartIter {
     pub fn new(toplevel: &impl IsA<Object>) -> PartIter {
         skip_assert_initialized!();
         unsafe {
-            from_glib_full(ffi::g_mime_part_iter_new(
-                toplevel.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_part_iter_new(toplevel.as_ref().to_glib_none().0))
         }
     }
 
     #[doc(alias = "g_mime_part_iter_clone")]
-    #[must_use]
+#[must_use]
     pub fn clone(&mut self) -> Option<PartIter> {
-        unsafe { from_glib_full(ffi::g_mime_part_iter_clone(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib_full(ffi::g_mime_part_iter_clone(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_get_current")]
     #[doc(alias = "get_current")]
     pub fn current(&mut self) -> Option<Object> {
-        unsafe { from_glib_none(ffi::g_mime_part_iter_get_current(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_part_iter_get_current(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_get_parent")]
     #[doc(alias = "get_parent")]
     pub fn parent(&mut self) -> Option<Object> {
-        unsafe { from_glib_none(ffi::g_mime_part_iter_get_parent(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_part_iter_get_parent(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_get_path")]
     #[doc(alias = "get_path")]
     pub fn path(&mut self) -> Option<glib::GString> {
-        unsafe { from_glib_full(ffi::g_mime_part_iter_get_path(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib_full(ffi::g_mime_part_iter_get_path(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_get_toplevel")]
     #[doc(alias = "get_toplevel")]
     pub fn toplevel(&mut self) -> Option<Object> {
         unsafe {
-            from_glib_none(ffi::g_mime_part_iter_get_toplevel(
-                self.to_glib_none_mut().0,
-            ))
+            from_glib_none(ffi::g_mime_part_iter_get_toplevel(self.to_glib_none_mut().0))
         }
     }
 
     #[doc(alias = "g_mime_part_iter_is_valid")]
     pub fn is_valid(&mut self) -> bool {
-        unsafe { from_glib(ffi::g_mime_part_iter_is_valid(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib(ffi::g_mime_part_iter_is_valid(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_jump_to")]
     pub fn jump_to(&mut self, path: &str) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_part_iter_jump_to(
-                self.to_glib_none_mut().0,
-                path.to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_part_iter_jump_to(self.to_glib_none_mut().0, path.to_glib_none().0))
         }
     }
 
     #[doc(alias = "g_mime_part_iter_next")]
     pub fn next(&mut self) -> bool {
-        unsafe { from_glib(ffi::g_mime_part_iter_next(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib(ffi::g_mime_part_iter_next(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_prev")]
     pub fn prev(&mut self) -> bool {
-        unsafe { from_glib(ffi::g_mime_part_iter_prev(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib(ffi::g_mime_part_iter_prev(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_remove")]
     pub fn remove(&mut self) -> bool {
-        unsafe { from_glib(ffi::g_mime_part_iter_remove(self.to_glib_none_mut().0)) }
+        unsafe {
+            from_glib(ffi::g_mime_part_iter_remove(self.to_glib_none_mut().0))
+        }
     }
 
     #[doc(alias = "g_mime_part_iter_replace")]
     pub fn replace(&mut self, replacement: &impl IsA<Object>) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_part_iter_replace(
-                self.to_glib_none_mut().0,
-                replacement.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_part_iter_replace(self.to_glib_none_mut().0, replacement.as_ref().to_glib_none().0))
         }
     }
 

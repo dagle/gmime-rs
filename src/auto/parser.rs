@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Format, Message, Object, ParserOptions, Stream};
-use glib::{prelude::*, translate::*};
-use std::{boxed::Box as Box_, fmt};
+use crate::{Format,Message,Object,ParserOptions,Stream};
+use glib::{prelude::*,translate::*};
+use std::{boxed::Box as Box_,fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeParser")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl Parser {
-    pub const NONE: Option<&'static Parser> = None;
+        pub const NONE: Option<&'static Parser> = None;
+    
 
     #[doc(alias = "g_mime_parser_new")]
     pub fn new() -> Parser {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_parser_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_parser_new())
+        }
     }
 
     #[doc(alias = "g_mime_parser_new_with_stream")]
@@ -29,18 +32,16 @@ impl Parser {
     pub fn with_stream(stream: &impl IsA<Stream>) -> Parser {
         skip_assert_initialized!();
         unsafe {
-            from_glib_full(ffi::g_mime_parser_new_with_stream(
-                stream.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_parser_new_with_stream(stream.as_ref().to_glib_none().0))
         }
     }
 }
 
 impl Default for Parser {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait ParserExt: 'static {
     #[doc(alias = "g_mime_parser_construct_message")]
@@ -87,11 +88,7 @@ pub trait ParserExt: 'static {
     fn set_format(&self, format: Format);
 
     #[doc(alias = "g_mime_parser_set_header_regex")]
-    fn set_header_regex<P: Fn(&Parser, &str, &str, i64) + 'static>(
-        &self,
-        regex: &str,
-        header_cb: P,
-    );
+    fn set_header_regex<P: Fn(&Parser, &str, &str, i64) + 'static>(&self, regex: &str, header_cb: P);
 
     #[doc(alias = "g_mime_parser_set_persist_stream")]
     fn set_persist_stream(&self, persist: bool);
@@ -106,76 +103,67 @@ pub trait ParserExt: 'static {
 impl<O: IsA<Parser>> ParserExt for O {
     fn construct_message(&self, options: Option<&ParserOptions>) -> Option<Message> {
         unsafe {
-            from_glib_full(ffi::g_mime_parser_construct_message(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-            ))
+            from_glib_full(ffi::g_mime_parser_construct_message(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
         }
     }
 
     fn construct_part(&self, options: Option<&ParserOptions>) -> Option<Object> {
         unsafe {
-            from_glib_full(ffi::g_mime_parser_construct_part(
-                self.as_ref().to_glib_none().0,
-                mut_override(options.to_glib_none().0),
-            ))
+            from_glib_full(ffi::g_mime_parser_construct_part(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
         }
     }
 
     fn eos(&self) -> bool {
-        unsafe { from_glib(ffi::g_mime_parser_eos(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib(ffi::g_mime_parser_eos(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn format(&self) -> Format {
         unsafe {
-            from_glib(ffi::g_mime_parser_get_format(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_parser_get_format(self.as_ref().to_glib_none().0))
         }
     }
 
     fn headers_begin(&self) -> i64 {
-        unsafe { ffi::g_mime_parser_get_headers_begin(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_parser_get_headers_begin(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn headers_end(&self) -> i64 {
-        unsafe { ffi::g_mime_parser_get_headers_end(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_parser_get_headers_end(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn mbox_marker(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_full(ffi::g_mime_parser_get_mbox_marker(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_parser_get_mbox_marker(self.as_ref().to_glib_none().0))
         }
     }
 
     fn mbox_marker_offset(&self) -> i64 {
-        unsafe { ffi::g_mime_parser_get_mbox_marker_offset(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_parser_get_mbox_marker_offset(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn is_persist_stream(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_parser_get_persist_stream(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_parser_get_persist_stream(self.as_ref().to_glib_none().0))
         }
     }
 
     fn is_respect_content_length(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_parser_get_respect_content_length(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_parser_get_respect_content_length(self.as_ref().to_glib_none().0))
         }
     }
 
     fn init_with_stream(&self, stream: &impl IsA<Stream>) {
         unsafe {
-            ffi::g_mime_parser_init_with_stream(
-                self.as_ref().to_glib_none().0,
-                stream.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_parser_init_with_stream(self.as_ref().to_glib_none().0, stream.as_ref().to_glib_none().0);
         }
     }
 
@@ -185,19 +173,9 @@ impl<O: IsA<Parser>> ParserExt for O {
         }
     }
 
-    fn set_header_regex<P: Fn(&Parser, &str, &str, i64) + 'static>(
-        &self,
-        regex: &str,
-        header_cb: P,
-    ) {
+    fn set_header_regex<P: Fn(&Parser, &str, &str, i64) + 'static>(&self, regex: &str, header_cb: P) {
         let header_cb_data: Box_<P> = Box_::new(header_cb);
-        unsafe extern "C" fn header_cb_func<P: Fn(&Parser, &str, &str, i64) + 'static>(
-            parser: *mut ffi::GMimeParser,
-            header: *const libc::c_char,
-            value: *const libc::c_char,
-            offset: i64,
-            user_data: glib::ffi::gpointer,
-        ) {
+        unsafe extern "C" fn header_cb_func<P: Fn(&Parser, &str, &str, i64) + 'static>(parser: *mut ffi::GMimeParser, header: *const libc::c_char, value: *const libc::c_char, offset: i64, user_data: glib::ffi::gpointer) {
             let parser = from_glib_borrow(parser);
             let header: Borrowed<glib::GString> = from_glib_borrow(header);
             let value: Borrowed<glib::GString> = from_glib_borrow(value);
@@ -207,35 +185,26 @@ impl<O: IsA<Parser>> ParserExt for O {
         let header_cb = Some(header_cb_func::<P> as _);
         let super_callback0: Box_<P> = header_cb_data;
         unsafe {
-            ffi::g_mime_parser_set_header_regex(
-                self.as_ref().to_glib_none().0,
-                regex.to_glib_none().0,
-                header_cb,
-                Box_::into_raw(super_callback0) as *mut _,
-            );
+            ffi::g_mime_parser_set_header_regex(self.as_ref().to_glib_none().0, regex.to_glib_none().0, header_cb, Box_::into_raw(super_callback0) as *mut _);
         }
     }
 
     fn set_persist_stream(&self, persist: bool) {
         unsafe {
-            ffi::g_mime_parser_set_persist_stream(
-                self.as_ref().to_glib_none().0,
-                persist.into_glib(),
-            );
+            ffi::g_mime_parser_set_persist_stream(self.as_ref().to_glib_none().0, persist.into_glib());
         }
     }
 
     fn set_respect_content_length(&self, respect_content_length: bool) {
         unsafe {
-            ffi::g_mime_parser_set_respect_content_length(
-                self.as_ref().to_glib_none().0,
-                respect_content_length.into_glib(),
-            );
+            ffi::g_mime_parser_set_respect_content_length(self.as_ref().to_glib_none().0, respect_content_length.into_glib());
         }
     }
 
     fn tell(&self) -> i64 {
-        unsafe { ffi::g_mime_parser_tell(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_parser_tell(self.as_ref().to_glib_none().0)
+        }
     }
 }
 

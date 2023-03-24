@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterSmtpData")]
@@ -16,20 +16,23 @@ glib::wrapper! {
 }
 
 impl FilterSmtpData {
-    pub const NONE: Option<&'static FilterSmtpData> = None;
+        pub const NONE: Option<&'static FilterSmtpData> = None;
+    
 
     #[doc(alias = "g_mime_filter_smtp_data_new")]
     pub fn new() -> FilterSmtpData {
         assert_initialized_main_thread!();
-        unsafe { Filter::from_glib_full(ffi::g_mime_filter_smtp_data_new()).unsafe_cast() }
+        unsafe {
+            Filter::from_glib_full(ffi::g_mime_filter_smtp_data_new()).unsafe_cast()
+        }
     }
 }
 
 impl Default for FilterSmtpData {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 impl fmt::Display for FilterSmtpData {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

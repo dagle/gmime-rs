@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use bitflags::bitflags;
-use glib::translate::*;
-use std::fmt;
+use bitflags::{bitflags};
+use glib::{translate::*};
+use std::{fmt};
 
 bitflags! {
     #[doc(alias = "GMimeDecryptFlags")]
@@ -177,3 +177,4 @@ impl FromGlib<ffi::GMimeVerifyFlags> for VerifyFlags {
         Self::from_bits_truncate(value)
     }
 }
+

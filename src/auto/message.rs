@@ -2,11 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{
-    AddressType, AutocryptHeader, AutocryptHeaderList, DecryptFlags, InternetAddressList, Object,
-};
-use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
+use crate::{AddressType,AutocryptHeader,AutocryptHeaderList,DecryptFlags,InternetAddressList,Object};
+use glib::{prelude::*,translate::*};
+use std::{fmt,ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMessage")]
@@ -18,12 +16,15 @@ glib::wrapper! {
 }
 
 impl Message {
-    pub const NONE: Option<&'static Message> = None;
+        pub const NONE: Option<&'static Message> = None;
+    
 
     #[doc(alias = "g_mime_message_new")]
     pub fn new(pretty_headers: bool) -> Message {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_message_new(pretty_headers.into_glib())) }
+        unsafe {
+            from_glib_full(ffi::g_mime_message_new(pretty_headers.into_glib()))
+        }
     }
 }
 
@@ -44,20 +45,11 @@ pub trait MessageExt: 'static {
 
     #[doc(alias = "g_mime_message_get_autocrypt_gossip_headers")]
     #[doc(alias = "get_autocrypt_gossip_headers")]
-    fn autocrypt_gossip_headers(
-        &self,
-        now: &glib::DateTime,
-        flags: DecryptFlags,
-        session_key: &str,
-    ) -> Result<AutocryptHeaderList, glib::Error>;
+    fn autocrypt_gossip_headers(&self, now: &glib::DateTime, flags: DecryptFlags, session_key: &str) -> Result<AutocryptHeaderList, glib::Error>;
 
     #[doc(alias = "g_mime_message_get_autocrypt_gossip_headers_from_inner_part")]
     #[doc(alias = "get_autocrypt_gossip_headers_from_inner_part")]
-    fn autocrypt_gossip_headers_from_inner_part(
-        &self,
-        now: &glib::DateTime,
-        inner_part: &impl IsA<Object>,
-    ) -> Option<AutocryptHeaderList>;
+    fn autocrypt_gossip_headers_from_inner_part(&self, now: &glib::DateTime, inner_part: &impl IsA<Object>) -> Option<AutocryptHeaderList>;
 
     #[doc(alias = "g_mime_message_get_autocrypt_header")]
     #[doc(alias = "get_autocrypt_header")]
@@ -123,22 +115,13 @@ pub trait MessageExt: 'static {
 impl<O: IsA<Message>> MessageExt for O {
     fn add_mailbox(&self, type_: AddressType, name: &str, addr: &str) {
         unsafe {
-            ffi::g_mime_message_add_mailbox(
-                self.as_ref().to_glib_none().0,
-                type_.into_glib(),
-                name.to_glib_none().0,
-                addr.to_glib_none().0,
-            );
+            ffi::g_mime_message_add_mailbox(self.as_ref().to_glib_none().0, type_.into_glib(), name.to_glib_none().0, addr.to_glib_none().0);
         }
     }
 
     fn foreach<P: FnMut(&Object, &Object)>(&self, callback: P) {
         let callback_data: P = callback;
-        unsafe extern "C" fn callback_func<P: FnMut(&Object, &Object)>(
-            parent: *mut ffi::GMimeObject,
-            part: *mut ffi::GMimeObject,
-            user_data: glib::ffi::gpointer,
-        ) {
+        unsafe extern "C" fn callback_func<P: FnMut(&Object, &Object)>(parent: *mut ffi::GMimeObject, part: *mut ffi::GMimeObject, user_data: glib::ffi::gpointer) {
             let parent = from_glib_borrow(parent);
             let part = from_glib_borrow(part);
             let callback: *mut P = user_data as *const _ as usize as *mut P;
@@ -147,141 +130,106 @@ impl<O: IsA<Message>> MessageExt for O {
         let callback = Some(callback_func::<P> as _);
         let super_callback0: &P = &callback_data;
         unsafe {
-            ffi::g_mime_message_foreach(
-                self.as_ref().to_glib_none().0,
-                callback,
-                super_callback0 as *const _ as usize as *mut _,
-            );
+            ffi::g_mime_message_foreach(self.as_ref().to_glib_none().0, callback, super_callback0 as *const _ as usize as *mut _);
         }
     }
 
     fn addresses(&self, type_: AddressType) -> Option<InternetAddressList> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_get_addresses(
-                self.as_ref().to_glib_none().0,
-                type_.into_glib(),
-            ))
+            from_glib_none(ffi::g_mime_message_get_addresses(self.as_ref().to_glib_none().0, type_.into_glib()))
         }
     }
 
     fn all_recipients(&self) -> Option<InternetAddressList> {
         unsafe {
-            from_glib_full(ffi::g_mime_message_get_all_recipients(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_message_get_all_recipients(self.as_ref().to_glib_none().0))
         }
     }
 
-    fn autocrypt_gossip_headers(
-        &self,
-        now: &glib::DateTime,
-        flags: DecryptFlags,
-        session_key: &str,
-    ) -> Result<AutocryptHeaderList, glib::Error> {
+    fn autocrypt_gossip_headers(&self, now: &glib::DateTime, flags: DecryptFlags, session_key: &str) -> Result<AutocryptHeaderList, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let ret = ffi::g_mime_message_get_autocrypt_gossip_headers(
-                self.as_ref().to_glib_none().0,
-                now.to_glib_none().0,
-                flags.into_glib(),
-                session_key.to_glib_none().0,
-                &mut error,
-            );
-            if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            }
+            let ret = ffi::g_mime_message_get_autocrypt_gossip_headers(self.as_ref().to_glib_none().0, now.to_glib_none().0, flags.into_glib(), session_key.to_glib_none().0, &mut error);
+            if error.is_null() { Ok(from_glib_full(ret)) } else { Err(from_glib_full(error)) }
         }
     }
 
-    fn autocrypt_gossip_headers_from_inner_part(
-        &self,
-        now: &glib::DateTime,
-        inner_part: &impl IsA<Object>,
-    ) -> Option<AutocryptHeaderList> {
+    fn autocrypt_gossip_headers_from_inner_part(&self, now: &glib::DateTime, inner_part: &impl IsA<Object>) -> Option<AutocryptHeaderList> {
         unsafe {
-            from_glib_full(
-                ffi::g_mime_message_get_autocrypt_gossip_headers_from_inner_part(
-                    self.as_ref().to_glib_none().0,
-                    now.to_glib_none().0,
-                    inner_part.as_ref().to_glib_none().0,
-                ),
-            )
+            from_glib_full(ffi::g_mime_message_get_autocrypt_gossip_headers_from_inner_part(self.as_ref().to_glib_none().0, now.to_glib_none().0, inner_part.as_ref().to_glib_none().0))
         }
     }
 
     fn autocrypt_header(&self, now: &glib::DateTime) -> Option<AutocryptHeader> {
         unsafe {
-            from_glib_full(ffi::g_mime_message_get_autocrypt_header(
-                self.as_ref().to_glib_none().0,
-                now.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_message_get_autocrypt_header(self.as_ref().to_glib_none().0, now.to_glib_none().0))
         }
     }
 
     fn bcc(&self) -> Option<InternetAddressList> {
-        unsafe { from_glib_none(ffi::g_mime_message_get_bcc(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_message_get_bcc(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn body(&self) -> Option<Object> {
-        unsafe { from_glib_none(ffi::g_mime_message_get_body(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_message_get_body(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn cc(&self) -> Option<InternetAddressList> {
-        unsafe { from_glib_none(ffi::g_mime_message_get_cc(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_message_get_cc(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn date(&self) -> Option<glib::DateTime> {
-        unsafe { from_glib_full(ffi::g_mime_message_get_date(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_full(ffi::g_mime_message_get_date(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn from(&self) -> Option<InternetAddressList> {
-        unsafe { from_glib_none(ffi::g_mime_message_get_from(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_message_get_from(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn message_id(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_get_message_id(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_message_get_message_id(self.as_ref().to_glib_none().0))
         }
     }
 
     fn mime_part(&self) -> Option<Object> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_get_mime_part(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_message_get_mime_part(self.as_ref().to_glib_none().0))
         }
     }
 
     fn reply_to(&self) -> Option<InternetAddressList> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_get_reply_to(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_message_get_reply_to(self.as_ref().to_glib_none().0))
         }
     }
 
     fn sender(&self) -> Option<InternetAddressList> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_get_sender(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_message_get_sender(self.as_ref().to_glib_none().0))
         }
     }
 
     fn subject(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_message_get_subject(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_message_get_subject(self.as_ref().to_glib_none().0))
         }
     }
 
     fn to(&self) -> Option<InternetAddressList> {
-        unsafe { from_glib_none(ffi::g_mime_message_get_to(self.as_ref().to_glib_none().0)) }
+        unsafe {
+            from_glib_none(ffi::g_mime_message_get_to(self.as_ref().to_glib_none().0))
+        }
     }
 
     fn set_date(&self, date: &glib::DateTime) {
@@ -292,29 +240,19 @@ impl<O: IsA<Message>> MessageExt for O {
 
     fn set_message_id(&self, message_id: &str) {
         unsafe {
-            ffi::g_mime_message_set_message_id(
-                self.as_ref().to_glib_none().0,
-                message_id.to_glib_none().0,
-            );
+            ffi::g_mime_message_set_message_id(self.as_ref().to_glib_none().0, message_id.to_glib_none().0);
         }
     }
 
     fn set_mime_part(&self, mime_part: &impl IsA<Object>) {
         unsafe {
-            ffi::g_mime_message_set_mime_part(
-                self.as_ref().to_glib_none().0,
-                mime_part.as_ref().to_glib_none().0,
-            );
+            ffi::g_mime_message_set_mime_part(self.as_ref().to_glib_none().0, mime_part.as_ref().to_glib_none().0);
         }
     }
 
     fn set_subject(&self, subject: &str, charset: &str) {
         unsafe {
-            ffi::g_mime_message_set_subject(
-                self.as_ref().to_glib_none().0,
-                subject.to_glib_none().0,
-                charset.to_glib_none().0,
-            );
+            ffi::g_mime_message_set_subject(self.as_ref().to_glib_none().0, subject.to_glib_none().0, charset.to_glib_none().0);
         }
     }
 }

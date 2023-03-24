@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{ContentEncoding, EncodingConstraint, Filter, FilterBestFlags};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{ContentEncoding,EncodingConstraint,Filter,FilterBestFlags};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterBest")]
@@ -16,7 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterBest {
-    pub const NONE: Option<&'static FilterBest> = None;
+        pub const NONE: Option<&'static FilterBest> = None;
+    
 
     #[doc(alias = "g_mime_filter_best_new")]
     pub fn new(flags: FilterBestFlags) -> FilterBest {
@@ -38,18 +39,13 @@ pub trait FilterBestExt: 'static {
 impl<O: IsA<FilterBest>> FilterBestExt for O {
     fn charset(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_filter_best_charset(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_filter_best_charset(self.as_ref().to_glib_none().0))
         }
     }
 
     fn encoding(&self, constraint: EncodingConstraint) -> ContentEncoding {
         unsafe {
-            from_glib(ffi::g_mime_filter_best_encoding(
-                self.as_ref().to_glib_none().0,
-                constraint.into_glib(),
-            ))
+            from_glib(ffi::g_mime_filter_best_encoding(self.as_ref().to_glib_none().0, constraint.into_glib()))
         }
     }
 }

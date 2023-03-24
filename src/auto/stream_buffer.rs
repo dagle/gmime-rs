@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Stream, StreamBufferMode};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Stream,StreamBufferMode};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamBuffer")]
@@ -16,17 +16,14 @@ glib::wrapper! {
 }
 
 impl StreamBuffer {
-    pub const NONE: Option<&'static StreamBuffer> = None;
+        pub const NONE: Option<&'static StreamBuffer> = None;
+    
 
     #[doc(alias = "g_mime_stream_buffer_new")]
     pub fn new(source: &impl IsA<Stream>, mode: StreamBufferMode) -> StreamBuffer {
         skip_assert_initialized!();
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_buffer_new(
-                source.as_ref().to_glib_none().0,
-                mode.into_glib(),
-            ))
-            .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_buffer_new(source.as_ref().to_glib_none().0, mode.into_glib())).unsafe_cast()
         }
     }
 }

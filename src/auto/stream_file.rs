@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Stream;
-use glib::{prelude::*, translate::*};
-use std::{fmt, ptr};
+use crate::{Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt,ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamFile")]
@@ -16,7 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamFile {
-    pub const NONE: Option<&'static StreamFile> = None;
+        pub const NONE: Option<&'static StreamFile> = None;
+    
 
     //#[doc(alias = "g_mime_stream_file_new")]
     //pub fn new(fp: /*Unimplemented*/Option<Basic: Pointer>) -> StreamFile {
@@ -34,16 +35,8 @@ impl StreamFile {
         assert_initialized_main_thread!();
         unsafe {
             let mut error = ptr::null_mut();
-            let ret = ffi::g_mime_stream_file_open(
-                path.to_glib_none().0,
-                mode.to_glib_none().0,
-                &mut error,
-            );
-            if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            }
+            let ret = ffi::g_mime_stream_file_open(path.to_glib_none().0, mode.to_glib_none().0, &mut error);
+            if error.is_null() { Ok(from_glib_full(ret)) } else { Err(from_glib_full(error)) }
         }
     }
 }
@@ -60,9 +53,7 @@ pub trait StreamFileExt: 'static {
 impl<O: IsA<StreamFile>> StreamFileExt for O {
     fn is_owner(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_stream_file_get_owner(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_stream_file_get_owner(self.as_ref().to_glib_none().0))
         }
     }
 

@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterYenc")]
@@ -16,7 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterYenc {
-    pub const NONE: Option<&'static FilterYenc> = None;
+        pub const NONE: Option<&'static FilterYenc> = None;
+    
 
     #[doc(alias = "g_mime_filter_yenc_new")]
     pub fn new(encode: bool) -> FilterYenc {
@@ -45,11 +46,15 @@ pub trait FilterYencExt: 'static {
 
 impl<O: IsA<FilterYenc>> FilterYencExt for O {
     fn crc(&self) -> u32 {
-        unsafe { ffi::g_mime_filter_yenc_get_crc(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_filter_yenc_get_crc(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn pcrc(&self) -> u32 {
-        unsafe { ffi::g_mime_filter_yenc_get_pcrc(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_filter_yenc_get_pcrc(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn set_crc(&self, crc: u32) {

@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{FormatOptions, Param, ParserOptions};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{FormatOptions,Param,ParserOptions};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeParamList")]
@@ -16,31 +16,31 @@ glib::wrapper! {
 }
 
 impl ParamList {
-    pub const NONE: Option<&'static ParamList> = None;
+        pub const NONE: Option<&'static ParamList> = None;
+    
 
     #[doc(alias = "g_mime_param_list_new")]
     pub fn new() -> ParamList {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_param_list_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_param_list_new())
+        }
     }
 
     #[doc(alias = "g_mime_param_list_parse")]
     pub fn parse(options: &mut ParserOptions, str: &str) -> Option<ParamList> {
         assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::g_mime_param_list_parse(
-                options.to_glib_none_mut().0,
-                str.to_glib_none().0,
-            ))
+            from_glib_full(ffi::g_mime_param_list_parse(options.to_glib_none_mut().0, str.to_glib_none().0))
         }
     }
 }
 
 impl Default for ParamList {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait ParamListExt: 'static {
     #[doc(alias = "g_mime_param_list_clear")]
@@ -79,62 +79,43 @@ impl<O: IsA<ParamList>> ParamListExt for O {
 
     fn encode(&self, options: &mut FormatOptions, fold: bool, str: &mut glib::String) {
         unsafe {
-            ffi::g_mime_param_list_encode(
-                self.as_ref().to_glib_none().0,
-                options.to_glib_none_mut().0,
-                fold.into_glib(),
-                str.to_glib_none_mut().0,
-            );
+            ffi::g_mime_param_list_encode(self.as_ref().to_glib_none().0, options.to_glib_none_mut().0, fold.into_glib(), str.to_glib_none_mut().0);
         }
     }
 
     fn parameter(&self, name: &str) -> Option<Param> {
         unsafe {
-            from_glib_none(ffi::g_mime_param_list_get_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_param_list_get_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn parameter_at(&self, index: i32) -> Option<Param> {
         unsafe {
-            from_glib_none(ffi::g_mime_param_list_get_parameter_at(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib_none(ffi::g_mime_param_list_get_parameter_at(self.as_ref().to_glib_none().0, index))
         }
     }
 
     fn length(&self) -> i32 {
-        unsafe { ffi::g_mime_param_list_length(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_param_list_length(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn remove(&self, name: &str) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_param_list_remove(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_param_list_remove(self.as_ref().to_glib_none().0, name.to_glib_none().0))
         }
     }
 
     fn remove_at(&self, index: i32) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_param_list_remove_at(
-                self.as_ref().to_glib_none().0,
-                index,
-            ))
+            from_glib(ffi::g_mime_param_list_remove_at(self.as_ref().to_glib_none().0, index))
         }
     }
 
     fn set_parameter(&self, name: &str, value: &str) {
         unsafe {
-            ffi::g_mime_param_list_set_parameter(
-                self.as_ref().to_glib_none().0,
-                name.to_glib_none().0,
-                value.to_glib_none().0,
-            );
+            ffi::g_mime_param_list_set_parameter(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0);
         }
     }
 }

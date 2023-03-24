@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterWindows")]
@@ -16,16 +16,14 @@ glib::wrapper! {
 }
 
 impl FilterWindows {
-    pub const NONE: Option<&'static FilterWindows> = None;
+        pub const NONE: Option<&'static FilterWindows> = None;
+    
 
     #[doc(alias = "g_mime_filter_windows_new")]
     pub fn new(claimed_charset: &str) -> FilterWindows {
         assert_initialized_main_thread!();
         unsafe {
-            Filter::from_glib_full(ffi::g_mime_filter_windows_new(
-                claimed_charset.to_glib_none().0,
-            ))
-            .unsafe_cast()
+            Filter::from_glib_full(ffi::g_mime_filter_windows_new(claimed_charset.to_glib_none().0)).unsafe_cast()
         }
     }
 }
@@ -41,17 +39,13 @@ pub trait FilterWindowsExt: 'static {
 impl<O: IsA<FilterWindows>> FilterWindowsExt for O {
     fn is_windows_charset(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_filter_windows_is_windows_charset(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_filter_windows_is_windows_charset(self.as_ref().to_glib_none().0))
         }
     }
 
     fn real_charset(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_filter_windows_real_charset(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_filter_windows_real_charset(self.as_ref().to_glib_none().0))
         }
     }
 }

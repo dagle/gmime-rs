@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterHTML")]
@@ -16,12 +16,15 @@ glib::wrapper! {
 }
 
 impl FilterHTML {
-    pub const NONE: Option<&'static FilterHTML> = None;
+        pub const NONE: Option<&'static FilterHTML> = None;
+    
 
     #[doc(alias = "g_mime_filter_html_new")]
     pub fn new(flags: u32, colour: u32) -> FilterHTML {
         assert_initialized_main_thread!();
-        unsafe { Filter::from_glib_full(ffi::g_mime_filter_html_new(flags, colour)).unsafe_cast() }
+        unsafe {
+            Filter::from_glib_full(ffi::g_mime_filter_html_new(flags, colour)).unsafe_cast()
+        }
     }
 }
 

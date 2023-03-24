@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Stream;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamGIO")]
@@ -16,14 +16,14 @@ glib::wrapper! {
 }
 
 impl StreamGIO {
-    pub const NONE: Option<&'static StreamGIO> = None;
+        pub const NONE: Option<&'static StreamGIO> = None;
+    
 
     #[doc(alias = "g_mime_stream_gio_new")]
     pub fn new(file: &impl IsA<gio::File>) -> StreamGIO {
         assert_initialized_main_thread!();
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_gio_new(file.as_ref().to_glib_none().0))
-                .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_gio_new(file.as_ref().to_glib_none().0)).unsafe_cast()
         }
     }
 
@@ -32,12 +32,7 @@ impl StreamGIO {
     pub fn with_bounds(file: &impl IsA<gio::File>, start: i64, end: i64) -> StreamGIO {
         assert_initialized_main_thread!();
         unsafe {
-            Stream::from_glib_full(ffi::g_mime_stream_gio_new_with_bounds(
-                file.as_ref().to_glib_none().0,
-                start,
-                end,
-            ))
-            .unsafe_cast()
+            Stream::from_glib_full(ffi::g_mime_stream_gio_new_with_bounds(file.as_ref().to_glib_none().0, start, end)).unsafe_cast()
         }
     }
 }
@@ -54,9 +49,7 @@ pub trait StreamGIOExt: 'static {
 impl<O: IsA<StreamGIO>> StreamGIOExt for O {
     fn is_owner(&self) -> bool {
         unsafe {
-            from_glib(ffi::g_mime_stream_gio_get_owner(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_stream_gio_get_owner(self.as_ref().to_glib_none().0))
         }
     }
 

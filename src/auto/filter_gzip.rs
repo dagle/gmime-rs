@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{Filter, FilterGZipMode};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Filter,FilterGZipMode};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilterGZip")]
@@ -16,14 +16,14 @@ glib::wrapper! {
 }
 
 impl FilterGZip {
-    pub const NONE: Option<&'static FilterGZip> = None;
+        pub const NONE: Option<&'static FilterGZip> = None;
+    
 
     #[doc(alias = "g_mime_filter_gzip_new")]
     pub fn new(mode: FilterGZipMode, level: i32) -> FilterGZip {
         assert_initialized_main_thread!();
         unsafe {
-            Filter::from_glib_full(ffi::g_mime_filter_gzip_new(mode.into_glib(), level))
-                .unsafe_cast()
+            Filter::from_glib_full(ffi::g_mime_filter_gzip_new(mode.into_glib(), level)).unsafe_cast()
         }
     }
 }
@@ -57,9 +57,7 @@ impl<O: IsA<FilterGZip>> FilterGZipExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
     fn comment(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_filter_gzip_get_comment(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_filter_gzip_get_comment(self.as_ref().to_glib_none().0))
         }
     }
 
@@ -67,9 +65,7 @@ impl<O: IsA<FilterGZip>> FilterGZipExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
     fn filename(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_filter_gzip_get_filename(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_filter_gzip_get_filename(self.as_ref().to_glib_none().0))
         }
     }
 
@@ -77,10 +73,7 @@ impl<O: IsA<FilterGZip>> FilterGZipExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
     fn set_comment(&self, comment: &str) {
         unsafe {
-            ffi::g_mime_filter_gzip_set_comment(
-                self.as_ref().to_glib_none().0,
-                comment.to_glib_none().0,
-            );
+            ffi::g_mime_filter_gzip_set_comment(self.as_ref().to_glib_none().0, comment.to_glib_none().0);
         }
     }
 
@@ -88,10 +81,7 @@ impl<O: IsA<FilterGZip>> FilterGZipExt for O {
     #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
     fn set_filename(&self, filename: &str) {
         unsafe {
-            ffi::g_mime_filter_gzip_set_filename(
-                self.as_ref().to_glib_none().0,
-                filename.to_glib_none().0,
-            );
+            ffi::g_mime_filter_gzip_set_filename(self.as_ref().to_glib_none().0, filename.to_glib_none().0);
         }
     }
 }

@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Stream;
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{Stream};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamCat")]
@@ -16,20 +16,23 @@ glib::wrapper! {
 }
 
 impl StreamCat {
-    pub const NONE: Option<&'static StreamCat> = None;
+        pub const NONE: Option<&'static StreamCat> = None;
+    
 
     #[doc(alias = "g_mime_stream_cat_new")]
     pub fn new() -> StreamCat {
         assert_initialized_main_thread!();
-        unsafe { Stream::from_glib_full(ffi::g_mime_stream_cat_new()).unsafe_cast() }
+        unsafe {
+            Stream::from_glib_full(ffi::g_mime_stream_cat_new()).unsafe_cast()
+        }
     }
 }
 
 impl Default for StreamCat {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait StreamCatExt: 'static {
     #[doc(alias = "g_mime_stream_cat_add_source")]
@@ -39,10 +42,7 @@ pub trait StreamCatExt: 'static {
 impl<O: IsA<StreamCat>> StreamCatExt for O {
     fn add_source(&self, source: &impl IsA<Stream>) -> i32 {
         unsafe {
-            ffi::g_mime_stream_cat_add_source(
-                self.as_ref().to_glib_none().0,
-                source.as_ref().to_glib_none().0,
-            )
+            ffi::g_mime_stream_cat_add_source(self.as_ref().to_glib_none().0, source.as_ref().to_glib_none().0)
         }
     }
 }

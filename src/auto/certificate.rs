@@ -2,9 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{DigestAlgo, PubKeyAlgo, Trust, Validity};
-use glib::{prelude::*, translate::*};
-use std::fmt;
+use crate::{DigestAlgo,PubKeyAlgo,Trust,Validity};
+use glib::{prelude::*,translate::*};
+use std::{fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeCertificate")]
@@ -16,20 +16,23 @@ glib::wrapper! {
 }
 
 impl Certificate {
-    pub const NONE: Option<&'static Certificate> = None;
+        pub const NONE: Option<&'static Certificate> = None;
+    
 
     #[doc(alias = "g_mime_certificate_new")]
     pub fn new() -> Certificate {
         assert_initialized_main_thread!();
-        unsafe { from_glib_full(ffi::g_mime_certificate_new()) }
+        unsafe {
+            from_glib_full(ffi::g_mime_certificate_new())
+        }
     }
 }
 
 impl Default for Certificate {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+                     fn default() -> Self {
+                         Self::new()
+                     }
+                 }
 
 pub trait CertificateExt: 'static {
     #[doc(alias = "g_mime_certificate_get_created")]
@@ -134,106 +137,92 @@ pub trait CertificateExt: 'static {
 
 impl<O: IsA<Certificate>> CertificateExt for O {
     fn created(&self) -> libc::c_long {
-        unsafe { ffi::g_mime_certificate_get_created(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_certificate_get_created(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn created64(&self) -> i64 {
-        unsafe { ffi::g_mime_certificate_get_created64(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_certificate_get_created64(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn digest_algo(&self) -> DigestAlgo {
         unsafe {
-            from_glib(ffi::g_mime_certificate_get_digest_algo(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_certificate_get_digest_algo(self.as_ref().to_glib_none().0))
         }
     }
 
     fn email(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_certificate_get_email(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_certificate_get_email(self.as_ref().to_glib_none().0))
         }
     }
 
     fn expires(&self) -> libc::c_long {
-        unsafe { ffi::g_mime_certificate_get_expires(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_certificate_get_expires(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn expires64(&self) -> i64 {
-        unsafe { ffi::g_mime_certificate_get_expires64(self.as_ref().to_glib_none().0) }
+        unsafe {
+            ffi::g_mime_certificate_get_expires64(self.as_ref().to_glib_none().0)
+        }
     }
 
     fn fingerprint(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_certificate_get_fingerprint(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_certificate_get_fingerprint(self.as_ref().to_glib_none().0))
         }
     }
 
     fn id_validity(&self) -> Validity {
         unsafe {
-            from_glib(ffi::g_mime_certificate_get_id_validity(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_certificate_get_id_validity(self.as_ref().to_glib_none().0))
         }
     }
 
     fn issuer_name(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_certificate_get_issuer_name(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_certificate_get_issuer_name(self.as_ref().to_glib_none().0))
         }
     }
 
     fn issuer_serial(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_certificate_get_issuer_serial(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_certificate_get_issuer_serial(self.as_ref().to_glib_none().0))
         }
     }
 
     fn key_id(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_certificate_get_key_id(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_certificate_get_key_id(self.as_ref().to_glib_none().0))
         }
     }
 
     fn name(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_certificate_get_name(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_certificate_get_name(self.as_ref().to_glib_none().0))
         }
     }
 
     fn pubkey_algo(&self) -> PubKeyAlgo {
         unsafe {
-            from_glib(ffi::g_mime_certificate_get_pubkey_algo(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_certificate_get_pubkey_algo(self.as_ref().to_glib_none().0))
         }
     }
 
     fn trust(&self) -> Trust {
         unsafe {
-            from_glib(ffi::g_mime_certificate_get_trust(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib(ffi::g_mime_certificate_get_trust(self.as_ref().to_glib_none().0))
         }
     }
 
     fn user_id(&self) -> Option<glib::GString> {
         unsafe {
-            from_glib_none(ffi::g_mime_certificate_get_user_id(
-                self.as_ref().to_glib_none().0,
-            ))
+            from_glib_none(ffi::g_mime_certificate_get_user_id(self.as_ref().to_glib_none().0))
         }
     }
 
@@ -245,19 +234,13 @@ impl<O: IsA<Certificate>> CertificateExt for O {
 
     fn set_digest_algo(&self, algo: DigestAlgo) {
         unsafe {
-            ffi::g_mime_certificate_set_digest_algo(
-                self.as_ref().to_glib_none().0,
-                algo.into_glib(),
-            );
+            ffi::g_mime_certificate_set_digest_algo(self.as_ref().to_glib_none().0, algo.into_glib());
         }
     }
 
     fn set_email(&self, email: &str) {
         unsafe {
-            ffi::g_mime_certificate_set_email(
-                self.as_ref().to_glib_none().0,
-                email.to_glib_none().0,
-            );
+            ffi::g_mime_certificate_set_email(self.as_ref().to_glib_none().0, email.to_glib_none().0);
         }
     }
 
@@ -269,46 +252,31 @@ impl<O: IsA<Certificate>> CertificateExt for O {
 
     fn set_fingerprint(&self, fingerprint: &str) {
         unsafe {
-            ffi::g_mime_certificate_set_fingerprint(
-                self.as_ref().to_glib_none().0,
-                fingerprint.to_glib_none().0,
-            );
+            ffi::g_mime_certificate_set_fingerprint(self.as_ref().to_glib_none().0, fingerprint.to_glib_none().0);
         }
     }
 
     fn set_id_validity(&self, validity: Validity) {
         unsafe {
-            ffi::g_mime_certificate_set_id_validity(
-                self.as_ref().to_glib_none().0,
-                validity.into_glib(),
-            );
+            ffi::g_mime_certificate_set_id_validity(self.as_ref().to_glib_none().0, validity.into_glib());
         }
     }
 
     fn set_issuer_name(&self, issuer_name: &str) {
         unsafe {
-            ffi::g_mime_certificate_set_issuer_name(
-                self.as_ref().to_glib_none().0,
-                issuer_name.to_glib_none().0,
-            );
+            ffi::g_mime_certificate_set_issuer_name(self.as_ref().to_glib_none().0, issuer_name.to_glib_none().0);
         }
     }
 
     fn set_issuer_serial(&self, issuer_serial: &str) {
         unsafe {
-            ffi::g_mime_certificate_set_issuer_serial(
-                self.as_ref().to_glib_none().0,
-                issuer_serial.to_glib_none().0,
-            );
+            ffi::g_mime_certificate_set_issuer_serial(self.as_ref().to_glib_none().0, issuer_serial.to_glib_none().0);
         }
     }
 
     fn set_key_id(&self, key_id: &str) {
         unsafe {
-            ffi::g_mime_certificate_set_key_id(
-                self.as_ref().to_glib_none().0,
-                key_id.to_glib_none().0,
-            );
+            ffi::g_mime_certificate_set_key_id(self.as_ref().to_glib_none().0, key_id.to_glib_none().0);
         }
     }
 
@@ -320,10 +288,7 @@ impl<O: IsA<Certificate>> CertificateExt for O {
 
     fn set_pubkey_algo(&self, algo: PubKeyAlgo) {
         unsafe {
-            ffi::g_mime_certificate_set_pubkey_algo(
-                self.as_ref().to_glib_none().0,
-                algo.into_glib(),
-            );
+            ffi::g_mime_certificate_set_pubkey_algo(self.as_ref().to_glib_none().0, algo.into_glib());
         }
     }
 
@@ -335,10 +300,7 @@ impl<O: IsA<Certificate>> CertificateExt for O {
 
     fn set_user_id(&self, user_id: &str) {
         unsafe {
-            ffi::g_mime_certificate_set_user_id(
-                self.as_ref().to_glib_none().0,
-                user_id.to_glib_none().0,
-            );
+            ffi::g_mime_certificate_set_user_id(self.as_ref().to_glib_none().0, user_id.to_glib_none().0);
         }
     }
 }
