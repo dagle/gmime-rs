@@ -12,6 +12,9 @@ pub trait StreamExtManual: 'static {
     fn write(&self, buf: &[u8]) -> isize;
 }
 
+impl !Send for Stream {}
+impl !Sync for Stream {}
+
 impl Write for Stream {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
         let size = StreamExtManual::write(self, buf);
