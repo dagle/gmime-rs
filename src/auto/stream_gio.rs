@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamGIO {
+    pub const NONE: Option<&'static StreamGIO> = None;
+
     #[doc(alias = "g_mime_stream_gio_new")]
     pub fn new(file: &impl IsA<gio::File>) -> StreamGIO {
         assert_initialized_main_thread!();
@@ -41,8 +41,6 @@ impl StreamGIO {
         }
     }
 }
-
-pub const NONE_STREAM_GIO: Option<&StreamGIO> = None;
 
 pub trait StreamGIOExt: 'static {
     #[doc(alias = "g_mime_stream_gio_get_owner")]

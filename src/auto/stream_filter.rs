@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Filter, Stream};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamFilter {
+    pub const NONE: Option<&'static StreamFilter> = None;
+
     #[doc(alias = "g_mime_stream_filter_new")]
     pub fn new(stream: &impl IsA<Stream>) -> StreamFilter {
         skip_assert_initialized!();
@@ -30,8 +29,6 @@ impl StreamFilter {
         }
     }
 }
-
-pub const NONE_STREAM_FILTER: Option<&StreamFilter> = None;
 
 pub trait StreamFilterExt: 'static {
     #[doc(alias = "g_mime_stream_filter_add")]

@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamNull {
+    pub const NONE: Option<&'static StreamNull> = None;
+
     #[doc(alias = "g_mime_stream_null_new")]
     pub fn new() -> StreamNull {
         assert_initialized_main_thread!();
@@ -30,8 +30,6 @@ impl Default for StreamNull {
         Self::new()
     }
 }
-
-pub const NONE_STREAM_NULL: Option<&StreamNull> = None;
 
 pub trait StreamNullExt: 'static {
     #[doc(alias = "g_mime_stream_null_get_count_newlines")]

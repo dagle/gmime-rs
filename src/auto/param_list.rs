@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::FormatOptions;
-use crate::Param;
-use crate::ParserOptions;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{FormatOptions, Param, ParserOptions};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl ParamList {
+    pub const NONE: Option<&'static ParamList> = None;
+
     #[doc(alias = "g_mime_param_list_new")]
     pub fn new() -> ParamList {
         assert_initialized_main_thread!();
@@ -43,11 +42,12 @@ impl Default for ParamList {
     }
 }
 
-pub const NONE_PARAM_LIST: Option<&ParamList> = None;
-
 pub trait ParamListExt: 'static {
     #[doc(alias = "g_mime_param_list_clear")]
     fn clear(&self);
+
+    #[doc(alias = "g_mime_param_list_encode")]
+    fn encode(&self, options: &mut FormatOptions, fold: bool, str: &mut glib::String);
 
     #[doc(alias = "g_mime_param_list_get_parameter")]
     #[doc(alias = "get_parameter")]
@@ -74,6 +74,17 @@ impl<O: IsA<ParamList>> ParamListExt for O {
     fn clear(&self) {
         unsafe {
             ffi::g_mime_param_list_clear(self.as_ref().to_glib_none().0);
+        }
+    }
+
+    fn encode(&self, options: &mut FormatOptions, fold: bool, str: &mut glib::String) {
+        unsafe {
+            ffi::g_mime_param_list_encode(
+                self.as_ref().to_glib_none().0,
+                options.to_glib_none_mut().0,
+                fold.into_glib(),
+                str.to_glib_none_mut().0,
+            );
         }
     }
 

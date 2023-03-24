@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::SeekWhence;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -16,7 +15,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_STREAM: Option<&Stream> = None;
+impl Stream {
+    pub const NONE: Option<&'static Stream> = None;
+}
 
 pub trait StreamExt: 'static {
     #[doc(alias = "g_mime_stream_buffer_gets")]
@@ -41,7 +42,7 @@ pub trait StreamExt: 'static {
     fn length(&self) -> i64;
 
     //#[doc(alias = "g_mime_stream_printf")]
-    //fn printf(&self, fmt: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> isize;
+    //fn printf(&self, fmt: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> isize;
 
     #[doc(alias = "g_mime_stream_read")]
     fn read(&self, buf: &[u8]) -> isize;
@@ -56,10 +57,14 @@ pub trait StreamExt: 'static {
     fn set_bounds(&self, start: i64, end: i64);
 
     #[doc(alias = "g_mime_stream_substream")]
+    #[must_use]
     fn substream(&self, start: i64, end: i64) -> Option<Stream>;
 
     #[doc(alias = "g_mime_stream_tell")]
     fn tell(&self) -> i64;
+
+    #[doc(alias = "g_mime_stream_write")]
+    fn write(&self, buf: &str) -> isize;
 
     #[doc(alias = "g_mime_stream_write_string")]
     fn write_string(&self, str: &str) -> isize;
@@ -113,12 +118,12 @@ impl<O: IsA<Stream>> StreamExt for O {
         unsafe { ffi::g_mime_stream_length(self.as_ref().to_glib_none().0) }
     }
 
-    //fn printf(&self, fmt: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> isize {
+    //fn printf(&self, fmt: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> isize {
     //    unsafe { TODO: call ffi:g_mime_stream_printf() }
     //}
 
     fn read(&self, buf: &[u8]) -> isize {
-        let len = buf.len() as usize;
+        let len = buf.len() as _;
         unsafe {
             ffi::g_mime_stream_read(self.as_ref().to_glib_none().0, buf.to_glib_none().0, len)
         }
@@ -154,12 +159,12 @@ impl<O: IsA<Stream>> StreamExt for O {
         unsafe { ffi::g_mime_stream_tell(self.as_ref().to_glib_none().0) }
     }
 
-    // fn write(&self, buf: &str) -> isize {
-    //     let len = buf.len() as usize;
-    //     unsafe {
-    //         ffi::g_mime_stream_write(self.as_ref().to_glib_none().0, buf.to_glib_none().0, len)
-    //     }
-    // }
+    fn write(&self, buf: &str) -> isize {
+        let len = buf.len() as _;
+        unsafe {
+            ffi::g_mime_stream_write(self.as_ref().to_glib_none().0, buf.to_glib_none().0, len)
+        }
+    }
 
     fn write_string(&self, str: &str) -> isize {
         unsafe {

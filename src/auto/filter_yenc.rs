@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterYenc {
+    pub const NONE: Option<&'static FilterYenc> = None;
+
     #[doc(alias = "g_mime_filter_yenc_new")]
     pub fn new(encode: bool) -> FilterYenc {
         assert_initialized_main_thread!();
@@ -26,8 +26,6 @@ impl FilterYenc {
         }
     }
 }
-
-pub const NONE_FILTER_YENC: Option<&FilterYenc> = None;
 
 pub trait FilterYencExt: 'static {
     #[doc(alias = "g_mime_filter_yenc_get_crc")]

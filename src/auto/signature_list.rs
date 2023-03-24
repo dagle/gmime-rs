@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Signature;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,6 +16,8 @@ glib::wrapper! {
 }
 
 impl SignatureList {
+    pub const NONE: Option<&'static SignatureList> = None;
+
     #[doc(alias = "g_mime_signature_list_new")]
     pub fn new() -> SignatureList {
         assert_initialized_main_thread!();
@@ -29,8 +30,6 @@ impl Default for SignatureList {
         Self::new()
     }
 }
-
-pub const NONE_SIGNATURE_LIST: Option<&SignatureList> = None;
 
 pub trait SignatureListExt: 'static {
     #[doc(alias = "g_mime_signature_list_add")]

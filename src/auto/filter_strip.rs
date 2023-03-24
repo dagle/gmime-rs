@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterStrip {
+    pub const NONE: Option<&'static FilterStrip> = None;
+
     #[doc(alias = "g_mime_filter_strip_new")]
     pub fn new() -> FilterStrip {
         assert_initialized_main_thread!();
@@ -29,8 +30,6 @@ impl Default for FilterStrip {
         Self::new()
     }
 }
-
-pub const NONE_FILTER_STRIP: Option<&FilterStrip> = None;
 
 impl fmt::Display for FilterStrip {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

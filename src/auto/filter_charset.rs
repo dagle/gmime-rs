@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterCharset {
+    pub const NONE: Option<&'static FilterCharset> = None;
+
     #[doc(alias = "g_mime_filter_charset_new")]
     pub fn new(from_charset: &str, to_charset: &str) -> FilterCharset {
         assert_initialized_main_thread!();
@@ -29,8 +30,6 @@ impl FilterCharset {
         }
     }
 }
-
-pub const NONE_FILTER_CHARSET: Option<&FilterCharset> = None;
 
 impl fmt::Display for FilterCharset {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

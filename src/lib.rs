@@ -27,7 +27,6 @@ mod auto;
 pub mod subclass;
 
 mod crypto_context;
-mod stream;
 mod filter_checksum;
 mod internet_address;
 mod internet_address_group;
@@ -36,9 +35,9 @@ mod internet_address_mailbox;
 mod message;
 mod message_partial;
 mod parser_options;
+mod stream;
 
 pub use crypto_context::*;
-pub use stream::*;
 pub use filter_checksum::*;
 pub use internet_address::*;
 pub use internet_address_group::*;
@@ -47,6 +46,7 @@ pub use internet_address_mailbox::*;
 pub use message::*;
 pub use message_partial::*;
 pub use parser_options::*;
+pub use stream::*;
 
 pub use crate::auto::*;
 

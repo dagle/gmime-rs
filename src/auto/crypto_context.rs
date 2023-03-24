@@ -2,17 +2,11 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::DecryptFlags;
-use crate::DecryptResult;
-use crate::DigestAlgo;
-use crate::EncryptFlags;
-use crate::SignatureList;
-use crate::Stream;
-use crate::VerifyFlags;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use crate::{
+    DecryptFlags, DecryptResult, DigestAlgo, EncryptFlags, SignatureList, Stream, VerifyFlags,
+};
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeCryptoContext")]
@@ -24,6 +18,8 @@ glib::wrapper! {
 }
 
 impl CryptoContext {
+    pub const NONE: Option<&'static CryptoContext> = None;
+
     #[doc(alias = "g_mime_crypto_context_new")]
     pub fn new(protocol: &str) -> Option<CryptoContext> {
         assert_initialized_main_thread!();
@@ -35,8 +31,6 @@ impl CryptoContext {
     //    unsafe { TODO: call ffi:g_mime_crypto_context_register() }
     //}
 }
-
-pub const NONE_CRYPTO_CONTEXT: Option<&CryptoContext> = None;
 
 pub trait CryptoContextExt: 'static {
     #[doc(alias = "g_mime_crypto_context_decrypt")]
@@ -81,7 +75,7 @@ pub trait CryptoContextExt: 'static {
     fn import_keys(&self, istream: &impl IsA<Stream>) -> Result<i32, glib::Error>;
 
     //#[doc(alias = "g_mime_crypto_context_set_request_password")]
-    //fn set_request_password<P: Fn(&CryptoContext, &str, &str, bool, &Stream, Option<&glib::Error>) -> bool + 'static>(&self, request_passwd: P);
+    //fn set_request_password<P: Fn(&CryptoContext, &str, &str, bool, Option<&glib::Error>) -> bool + 'static>(&self, request_passwd: P);
 
     #[doc(alias = "g_mime_crypto_context_sign")]
     fn sign(
@@ -215,7 +209,7 @@ impl<O: IsA<CryptoContext>> CryptoContextExt for O {
         }
     }
 
-    //fn set_request_password<P: Fn(&CryptoContext, &str, &str, bool, &Stream, Option<&glib::Error>) -> bool + 'static>(&self, request_passwd: P) {
+    //fn set_request_password<P: Fn(&CryptoContext, &str, &str, bool, Option<&glib::Error>) -> bool + 'static>(&self, request_passwd: P) {
     //    unsafe { TODO: call ffi:g_mime_crypto_context_set_request_password() }
     //}
 

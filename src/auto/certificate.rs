@@ -2,12 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::DigestAlgo;
-use crate::PubKeyAlgo;
-use crate::Trust;
-use crate::Validity;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{DigestAlgo, PubKeyAlgo, Trust, Validity};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -20,6 +16,8 @@ glib::wrapper! {
 }
 
 impl Certificate {
+    pub const NONE: Option<&'static Certificate> = None;
+
     #[doc(alias = "g_mime_certificate_new")]
     pub fn new() -> Certificate {
         assert_initialized_main_thread!();
@@ -32,8 +30,6 @@ impl Default for Certificate {
         Self::new()
     }
 }
-
-pub const NONE_CERTIFICATE: Option<&Certificate> = None;
 
 pub trait CertificateExt: 'static {
     #[doc(alias = "g_mime_certificate_get_created")]

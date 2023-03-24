@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,14 +16,14 @@ glib::wrapper! {
 }
 
 impl StreamPipe {
+    pub const NONE: Option<&'static StreamPipe> = None;
+
     #[doc(alias = "g_mime_stream_pipe_new")]
     pub fn new(fd: i32) -> StreamPipe {
         assert_initialized_main_thread!();
         unsafe { Stream::from_glib_full(ffi::g_mime_stream_pipe_new(fd)).unsafe_cast() }
     }
 }
-
-pub const NONE_STREAM_PIPE: Option<&StreamPipe> = None;
 
 pub trait StreamPipeExt: 'static {
     #[doc(alias = "g_mime_stream_pipe_get_owner")]

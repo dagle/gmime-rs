@@ -2,15 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Format;
-use crate::Message;
-use crate::Object;
-use crate::ParserOptions;
-use crate::Stream;
-use glib::object::IsA;
-use glib::translate::*;
-use std::boxed::Box as Box_;
-use std::fmt;
+use crate::{Format, Message, Object, ParserOptions, Stream};
+use glib::{prelude::*, translate::*};
+use std::{boxed::Box as Box_, fmt};
 
 glib::wrapper! {
     #[doc(alias = "GMimeParser")]
@@ -22,6 +16,8 @@ glib::wrapper! {
 }
 
 impl Parser {
+    pub const NONE: Option<&'static Parser> = None;
+
     #[doc(alias = "g_mime_parser_new")]
     pub fn new() -> Parser {
         assert_initialized_main_thread!();
@@ -45,8 +41,6 @@ impl Default for Parser {
         Self::new()
     }
 }
-
-pub const NONE_PARSER: Option<&Parser> = None;
 
 pub trait ParserExt: 'static {
     #[doc(alias = "g_mime_parser_construct_message")]
@@ -208,7 +202,7 @@ impl<O: IsA<Parser>> ParserExt for O {
             let header: Borrowed<glib::GString> = from_glib_borrow(header);
             let value: Borrowed<glib::GString> = from_glib_borrow(value);
             let callback: &P = &*(user_data as *mut _);
-            (*callback)(&parser, header.as_str(), value.as_str(), offset);
+            (*callback)(&parser, header.as_str(), value.as_str(), offset)
         }
         let header_cb = Some(header_cb_func::<P> as _);
         let super_callback0: Box_<P> = header_cb_data;

@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::FormatOptions;
-use crate::Stream;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{FormatOptions, Stream};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,7 +15,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_HEADER: Option<&Header> = None;
+impl Header {
+    pub const NONE: Option<&'static Header> = None;
+}
 
 pub trait HeaderExt: 'static {
     #[doc(alias = "g_mime_header_format_addrlist")]

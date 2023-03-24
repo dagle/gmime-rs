@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use crate::OpenPGPData;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Filter, OpenPGPData};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterOpenPGP {
+    pub const NONE: Option<&'static FilterOpenPGP> = None;
+
     #[doc(alias = "g_mime_filter_openpgp_new")]
     pub fn new() -> FilterOpenPGP {
         assert_initialized_main_thread!();
@@ -33,8 +32,6 @@ impl Default for FilterOpenPGP {
         Self::new()
     }
 }
-
-pub const NONE_FILTER_OPEN_PGP: Option<&FilterOpenPGP> = None;
 
 pub trait FilterOpenPGPExt: 'static {
     #[doc(alias = "g_mime_filter_openpgp_get_begin_offset")]

@@ -2,17 +2,11 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::AutocryptHeaderList;
-use crate::ContentDisposition;
-use crate::ContentType;
-use crate::EncodingConstraint;
-use crate::FormatOptions;
-use crate::HeaderList;
-use crate::InternetAddressList;
-use crate::ParserOptions;
-use crate::Stream;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{
+    AutocryptHeaderList, ContentDisposition, ContentType, EncodingConstraint, FormatOptions,
+    HeaderList, InternetAddressList, ParserOptions, Stream,
+};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -25,6 +19,8 @@ glib::wrapper! {
 }
 
 impl Object {
+    pub const NONE: Option<&'static Object> = None;
+
     #[doc(alias = "g_mime_object_new")]
     pub fn new(options: Option<&ParserOptions>, content_type: &impl IsA<ContentType>) -> Object {
         skip_assert_initialized!();
@@ -76,8 +72,6 @@ impl Object {
         }
     }
 }
-
-pub const NONE_OBJECT: Option<&Object> = None;
 
 pub trait ObjectExt: 'static {
     #[doc(alias = "g_mime_object_append_header")]

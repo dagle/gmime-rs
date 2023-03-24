@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::ContentEncoding;
-use crate::Stream;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{ContentEncoding, Stream};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl DataWrapper {
+    pub const NONE: Option<&'static DataWrapper> = None;
+
     #[doc(alias = "g_mime_data_wrapper_new")]
     pub fn new() -> DataWrapper {
         assert_initialized_main_thread!();
@@ -42,8 +42,6 @@ impl Default for DataWrapper {
         Self::new()
     }
 }
-
-pub const NONE_DATA_WRAPPER: Option<&DataWrapper> = None;
 
 pub trait DataWrapperExt: 'static {
     #[doc(alias = "g_mime_data_wrapper_get_encoding")]

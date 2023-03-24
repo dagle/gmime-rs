@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Object;
-use crate::Part;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Object, Part};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl MessagePartial {
+    pub const NONE: Option<&'static MessagePartial> = None;
+
     #[doc(alias = "g_mime_message_partial_new")]
     pub fn new(id: &str, number: i32, total: i32) -> MessagePartial {
         assert_initialized_main_thread!();
@@ -30,8 +30,6 @@ impl MessagePartial {
         }
     }
 }
-
-pub const NONE_MESSAGE_PARTIAL: Option<&MessagePartial> = None;
 
 pub trait MessagePartialExt: 'static {
     #[doc(alias = "g_mime_message_partial_get_id")]

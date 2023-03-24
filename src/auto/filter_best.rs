@@ -2,13 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::ContentEncoding;
-use crate::EncodingConstraint;
-use crate::Filter;
-use crate::FilterBestFlags;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{ContentEncoding, EncodingConstraint, Filter, FilterBestFlags};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -21,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterBest {
+    pub const NONE: Option<&'static FilterBest> = None;
+
     #[doc(alias = "g_mime_filter_best_new")]
     pub fn new(flags: FilterBestFlags) -> FilterBest {
         assert_initialized_main_thread!();
@@ -29,8 +26,6 @@ impl FilterBest {
         }
     }
 }
-
-pub const NONE_FILTER_BEST: Option<&FilterBest> = None;
 
 pub trait FilterBestExt: 'static {
     #[doc(alias = "g_mime_filter_best_charset")]

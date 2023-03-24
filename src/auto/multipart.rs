@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Object;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,6 +16,8 @@ glib::wrapper! {
 }
 
 impl Multipart {
+    pub const NONE: Option<&'static Multipart> = None;
+
     #[doc(alias = "g_mime_multipart_new")]
     pub fn new() -> Multipart {
         assert_initialized_main_thread!();
@@ -40,8 +41,6 @@ impl Default for Multipart {
         Self::new()
     }
 }
-
-pub const NONE_MULTIPART: Option<&Multipart> = None;
 
 pub trait MultipartExt: 'static {
     #[doc(alias = "g_mime_multipart_add")]
@@ -140,7 +139,7 @@ impl<O: IsA<Multipart>> MultipartExt for O {
             let parent = from_glib_borrow(parent);
             let part = from_glib_borrow(part);
             let callback: *mut P = user_data as *const _ as usize as *mut P;
-            (*callback)(&parent, &part);
+            (*callback)(&parent, &part)
         }
         let callback = Some(callback_func::<P> as _);
         let super_callback0: &P = &callback_data;

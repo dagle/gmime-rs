@@ -2,16 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::CryptoContext;
-use crate::DecryptFlags;
-use crate::DecryptResult;
-use crate::EncryptFlags;
-use crate::Multipart;
-use crate::Object;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use crate::{CryptoContext, DecryptFlags, DecryptResult, EncryptFlags, Multipart, Object};
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMultipartEncrypted")]
@@ -23,6 +16,8 @@ glib::wrapper! {
 }
 
 impl MultipartEncrypted {
+    pub const NONE: Option<&'static MultipartEncrypted> = None;
+
     #[doc(alias = "g_mime_multipart_encrypted_new")]
     pub fn new() -> MultipartEncrypted {
         assert_initialized_main_thread!();
@@ -64,8 +59,6 @@ impl Default for MultipartEncrypted {
         Self::new()
     }
 }
-
-pub const NONE_MULTIPART_ENCRYPTED: Option<&MultipartEncrypted> = None;
 
 pub trait MultipartEncryptedExt: 'static {
     #[doc(alias = "g_mime_multipart_encrypted_decrypt")]

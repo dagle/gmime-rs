@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,14 +16,14 @@ glib::wrapper! {
 }
 
 impl FilterHTML {
+    pub const NONE: Option<&'static FilterHTML> = None;
+
     #[doc(alias = "g_mime_filter_html_new")]
     pub fn new(flags: u32, colour: u32) -> FilterHTML {
         assert_initialized_main_thread!();
         unsafe { Filter::from_glib_full(ffi::g_mime_filter_html_new(flags, colour)).unsafe_cast() }
     }
 }
-
-pub const NONE_FILTER_HTML: Option<&FilterHTML> = None;
 
 impl fmt::Display for FilterHTML {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::FormatOptions;
-use crate::ParamList;
-use crate::ParserOptions;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{FormatOptions, ParamList, ParserOptions};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl ContentType {
+    pub const NONE: Option<&'static ContentType> = None;
+
     #[doc(alias = "g_mime_content_type_new")]
     pub fn new(type_: &str, subtype: &str) -> ContentType {
         assert_initialized_main_thread!();
@@ -41,8 +40,6 @@ impl ContentType {
         }
     }
 }
-
-pub const NONE_CONTENT_TYPE: Option<&ContentType> = None;
 
 pub trait ContentTypeExt: 'static {
     #[doc(alias = "g_mime_content_type_encode")]

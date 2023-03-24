@@ -2,12 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::FormatOptions;
-use crate::Header;
-use crate::ParserOptions;
-use crate::Stream;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{FormatOptions, Header, ParserOptions, Stream};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -20,6 +16,8 @@ glib::wrapper! {
 }
 
 impl HeaderList {
+    pub const NONE: Option<&'static HeaderList> = None;
+
     #[doc(alias = "g_mime_header_list_new")]
     pub fn new(options: Option<&ParserOptions>) -> HeaderList {
         assert_initialized_main_thread!();
@@ -30,8 +28,6 @@ impl HeaderList {
         }
     }
 }
-
-pub const NONE_HEADER_LIST: Option<&HeaderList> = None;
 
 pub trait HeaderListExt: 'static {
     #[doc(alias = "g_mime_header_list_append")]

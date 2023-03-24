@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterWindows {
+    pub const NONE: Option<&'static FilterWindows> = None;
+
     #[doc(alias = "g_mime_filter_windows_new")]
     pub fn new(claimed_charset: &str) -> FilterWindows {
         assert_initialized_main_thread!();
@@ -29,8 +29,6 @@ impl FilterWindows {
         }
     }
 }
-
-pub const NONE_FILTER_WINDOWS: Option<&FilterWindows> = None;
 
 pub trait FilterWindowsExt: 'static {
     #[doc(alias = "g_mime_filter_windows_is_windows_charset")]

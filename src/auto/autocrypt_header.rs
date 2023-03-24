@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::AutocryptPreferEncrypt;
-use crate::InternetAddressMailbox;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{AutocryptPreferEncrypt, InternetAddressMailbox};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl AutocryptHeader {
+    pub const NONE: Option<&'static AutocryptHeader> = None;
+
     #[doc(alias = "g_mime_autocrypt_header_new")]
     pub fn new() -> AutocryptHeader {
         assert_initialized_main_thread!();
@@ -41,8 +41,6 @@ impl Default for AutocryptHeader {
         Self::new()
     }
 }
-
-pub const NONE_AUTOCRYPT_HEADER: Option<&AutocryptHeader> = None;
 
 pub trait AutocryptHeaderExt: 'static {
     #[doc(alias = "g_mime_autocrypt_header_clone")]

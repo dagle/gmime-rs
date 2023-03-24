@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::FormatOptions;
-use crate::ParamList;
-use crate::ParserOptions;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{FormatOptions, ParamList, ParserOptions};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl ContentDisposition {
+    pub const NONE: Option<&'static ContentDisposition> = None;
+
     #[doc(alias = "g_mime_content_disposition_new")]
     pub fn new() -> ContentDisposition {
         assert_initialized_main_thread!();
@@ -42,8 +41,6 @@ impl Default for ContentDisposition {
         Self::new()
     }
 }
-
-pub const NONE_CONTENT_DISPOSITION: Option<&ContentDisposition> = None;
 
 pub trait ContentDispositionExt: 'static {
     #[doc(alias = "g_mime_content_disposition_encode")]

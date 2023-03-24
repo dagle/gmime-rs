@@ -10,15 +10,15 @@ bitflags! {
     #[doc(alias = "GMimeDecryptFlags")]
     pub struct DecryptFlags: u32 {
         #[doc(alias = "GMIME_DECRYPT_NONE")]
-        const NONE = ffi::GMIME_DECRYPT_NONE as u32;
+        const NONE = ffi::GMIME_DECRYPT_NONE as _;
         #[doc(alias = "GMIME_DECRYPT_EXPORT_SESSION_KEY")]
-        const EXPORT_SESSION_KEY = ffi::GMIME_DECRYPT_EXPORT_SESSION_KEY as u32;
+        const EXPORT_SESSION_KEY = ffi::GMIME_DECRYPT_EXPORT_SESSION_KEY as _;
         #[doc(alias = "GMIME_DECRYPT_NO_VERIFY")]
-        const NO_VERIFY = ffi::GMIME_DECRYPT_NO_VERIFY as u32;
+        const NO_VERIFY = ffi::GMIME_DECRYPT_NO_VERIFY as _;
         #[doc(alias = "GMIME_DECRYPT_ENABLE_KEYSERVER_LOOKUPS")]
-        const ENABLE_KEYSERVER_LOOKUPS = ffi::GMIME_DECRYPT_ENABLE_KEYSERVER_LOOKUPS as u32;
+        const ENABLE_KEYSERVER_LOOKUPS = ffi::GMIME_DECRYPT_ENABLE_KEYSERVER_LOOKUPS as _;
         #[doc(alias = "GMIME_DECRYPT_ENABLE_ONLINE_CERTIFICATE_CHECKS")]
-        const ENABLE_ONLINE_CERTIFICATE_CHECKS = ffi::GMIME_DECRYPT_ENABLE_ONLINE_CERTIFICATE_CHECKS as u32;
+        const ENABLE_ONLINE_CERTIFICATE_CHECKS = ffi::GMIME_DECRYPT_ENABLE_ONLINE_CERTIFICATE_CHECKS as _;
     }
 }
 
@@ -32,6 +32,7 @@ impl fmt::Display for DecryptFlags {
 impl IntoGlib for DecryptFlags {
     type GlibType = ffi::GMimeDecryptFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeDecryptFlags {
         self.bits()
     }
@@ -39,6 +40,7 @@ impl IntoGlib for DecryptFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeDecryptFlags> for DecryptFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeDecryptFlags) -> Self {
         skip_assert_initialized!();
         Self::from_bits_truncate(value)
@@ -49,9 +51,9 @@ bitflags! {
     #[doc(alias = "GMimeFilterBestFlags")]
     pub struct FilterBestFlags: u32 {
         #[doc(alias = "GMIME_FILTER_BEST_CHARSET")]
-        const CHARSET = ffi::GMIME_FILTER_BEST_CHARSET as u32;
+        const CHARSET = ffi::GMIME_FILTER_BEST_CHARSET as _;
         #[doc(alias = "GMIME_FILTER_BEST_ENCODING")]
-        const ENCODING = ffi::GMIME_FILTER_BEST_ENCODING as u32;
+        const ENCODING = ffi::GMIME_FILTER_BEST_ENCODING as _;
     }
 }
 
@@ -65,6 +67,7 @@ impl fmt::Display for FilterBestFlags {
 impl IntoGlib for FilterBestFlags {
     type GlibType = ffi::GMimeFilterBestFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeFilterBestFlags {
         self.bits()
     }
@@ -72,6 +75,7 @@ impl IntoGlib for FilterBestFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeFilterBestFlags> for FilterBestFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeFilterBestFlags) -> Self {
         skip_assert_initialized!();
         Self::from_bits_truncate(value)
@@ -84,25 +88,25 @@ bitflags! {
     #[doc(alias = "GMimeOpenPGPState")]
     pub struct OpenPGPState: u32 {
         #[doc(alias = "GMIME_OPENPGP_NONE")]
-        const NONE = ffi::GMIME_OPENPGP_NONE as u32;
+        const NONE = ffi::GMIME_OPENPGP_NONE as _;
         #[doc(alias = "GMIME_OPENPGP_BEGIN_PGP_MESSAGE")]
-        const BEGIN_PGP_MESSAGE = ffi::GMIME_OPENPGP_BEGIN_PGP_MESSAGE as u32;
+        const BEGIN_PGP_MESSAGE = ffi::GMIME_OPENPGP_BEGIN_PGP_MESSAGE as _;
         #[doc(alias = "GMIME_OPENPGP_END_PGP_MESSAGE")]
-        const END_PGP_MESSAGE = ffi::GMIME_OPENPGP_END_PGP_MESSAGE as u32;
+        const END_PGP_MESSAGE = ffi::GMIME_OPENPGP_END_PGP_MESSAGE as _;
         #[doc(alias = "GMIME_OPENPGP_BEGIN_PGP_SIGNED_MESSAGE")]
-        const BEGIN_PGP_SIGNED_MESSAGE = ffi::GMIME_OPENPGP_BEGIN_PGP_SIGNED_MESSAGE as u32;
+        const BEGIN_PGP_SIGNED_MESSAGE = ffi::GMIME_OPENPGP_BEGIN_PGP_SIGNED_MESSAGE as _;
         #[doc(alias = "GMIME_OPENPGP_BEGIN_PGP_SIGNATURE")]
-        const BEGIN_PGP_SIGNATURE = ffi::GMIME_OPENPGP_BEGIN_PGP_SIGNATURE as u32;
+        const BEGIN_PGP_SIGNATURE = ffi::GMIME_OPENPGP_BEGIN_PGP_SIGNATURE as _;
         #[doc(alias = "GMIME_OPENPGP_END_PGP_SIGNATURE")]
-        const END_PGP_SIGNATURE = ffi::GMIME_OPENPGP_END_PGP_SIGNATURE as u32;
+        const END_PGP_SIGNATURE = ffi::GMIME_OPENPGP_END_PGP_SIGNATURE as _;
         #[doc(alias = "GMIME_OPENPGP_BEGIN_PGP_PUBLIC_KEY_BLOCK")]
-        const BEGIN_PGP_PUBLIC_KEY_BLOCK = ffi::GMIME_OPENPGP_BEGIN_PGP_PUBLIC_KEY_BLOCK as u32;
+        const BEGIN_PGP_PUBLIC_KEY_BLOCK = ffi::GMIME_OPENPGP_BEGIN_PGP_PUBLIC_KEY_BLOCK as _;
         #[doc(alias = "GMIME_OPENPGP_END_PGP_PUBLIC_KEY_BLOCK")]
-        const END_PGP_PUBLIC_KEY_BLOCK = ffi::GMIME_OPENPGP_END_PGP_PUBLIC_KEY_BLOCK as u32;
+        const END_PGP_PUBLIC_KEY_BLOCK = ffi::GMIME_OPENPGP_END_PGP_PUBLIC_KEY_BLOCK as _;
         #[doc(alias = "GMIME_OPENPGP_BEGIN_PGP_PRIVATE_KEY_BLOCK")]
-        const BEGIN_PGP_PRIVATE_KEY_BLOCK = ffi::GMIME_OPENPGP_BEGIN_PGP_PRIVATE_KEY_BLOCK as u32;
+        const BEGIN_PGP_PRIVATE_KEY_BLOCK = ffi::GMIME_OPENPGP_BEGIN_PGP_PRIVATE_KEY_BLOCK as _;
         #[doc(alias = "GMIME_OPENPGP_END_PGP_PRIVATE_KEY_BLOCK")]
-        const END_PGP_PRIVATE_KEY_BLOCK = ffi::GMIME_OPENPGP_END_PGP_PRIVATE_KEY_BLOCK as u32;
+        const END_PGP_PRIVATE_KEY_BLOCK = ffi::GMIME_OPENPGP_END_PGP_PRIVATE_KEY_BLOCK as _;
     }
 }
 
@@ -120,6 +124,7 @@ impl fmt::Display for OpenPGPState {
 impl IntoGlib for OpenPGPState {
     type GlibType = ffi::GMimeOpenPGPState;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeOpenPGPState {
         self.bits()
     }
@@ -129,6 +134,7 @@ impl IntoGlib for OpenPGPState {
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeOpenPGPState> for OpenPGPState {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeOpenPGPState) -> Self {
         skip_assert_initialized!();
         Self::from_bits_truncate(value)
@@ -139,11 +145,11 @@ bitflags! {
     #[doc(alias = "GMimeVerifyFlags")]
     pub struct VerifyFlags: u32 {
         #[doc(alias = "GMIME_VERIFY_NONE")]
-        const NONE = ffi::GMIME_VERIFY_NONE as u32;
+        const NONE = ffi::GMIME_VERIFY_NONE as _;
         #[doc(alias = "GMIME_VERIFY_ENABLE_KEYSERVER_LOOKUPS")]
-        const ENABLE_KEYSERVER_LOOKUPS = ffi::GMIME_VERIFY_ENABLE_KEYSERVER_LOOKUPS as u32;
+        const ENABLE_KEYSERVER_LOOKUPS = ffi::GMIME_VERIFY_ENABLE_KEYSERVER_LOOKUPS as _;
         #[doc(alias = "GMIME_VERIFY_ENABLE_ONLINE_CERTIFICATE_CHECKS")]
-        const ENABLE_ONLINE_CERTIFICATE_CHECKS = ffi::GMIME_VERIFY_ENABLE_ONLINE_CERTIFICATE_CHECKS as u32;
+        const ENABLE_ONLINE_CERTIFICATE_CHECKS = ffi::GMIME_VERIFY_ENABLE_ONLINE_CERTIFICATE_CHECKS as _;
     }
 }
 
@@ -157,6 +163,7 @@ impl fmt::Display for VerifyFlags {
 impl IntoGlib for VerifyFlags {
     type GlibType = ffi::GMimeVerifyFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeVerifyFlags {
         self.bits()
     }
@@ -164,6 +171,7 @@ impl IntoGlib for VerifyFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeVerifyFlags> for VerifyFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeVerifyFlags) -> Self {
         skip_assert_initialized!();
         Self::from_bits_truncate(value)

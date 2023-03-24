@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::AutocryptHeader;
-use crate::InternetAddressList;
-use crate::InternetAddressMailbox;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{AutocryptHeader, InternetAddressList, InternetAddressMailbox};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl AutocryptHeaderList {
+    pub const NONE: Option<&'static AutocryptHeaderList> = None;
+
     #[doc(alias = "g_mime_autocrypt_header_list_new")]
     pub fn new() -> AutocryptHeaderList {
         assert_initialized_main_thread!();
@@ -31,8 +30,6 @@ impl Default for AutocryptHeaderList {
         Self::new()
     }
 }
-
-pub const NONE_AUTOCRYPT_HEADER_LIST: Option<&AutocryptHeaderList> = None;
 
 pub trait AutocryptHeaderListExt: 'static {
     #[doc(alias = "g_mime_autocrypt_header_list_add")]

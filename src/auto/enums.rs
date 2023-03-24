@@ -47,6 +47,7 @@ impl fmt::Display for AddressType {
 impl IntoGlib for AddressType {
     type GlibType = ffi::GMimeAddressType;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeAddressType {
         match self {
             Self::Sender => ffi::GMIME_ADDRESS_TYPE_SENDER,
@@ -62,8 +63,10 @@ impl IntoGlib for AddressType {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeAddressType> for AddressType {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeAddressType) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_ADDRESS_TYPE_SENDER => Self::Sender,
             ffi::GMIME_ADDRESS_TYPE_FROM => Self::From,
@@ -106,6 +109,7 @@ impl fmt::Display for AutocryptPreferEncrypt {
 impl IntoGlib for AutocryptPreferEncrypt {
     type GlibType = ffi::GMimeAutocryptPreferEncrypt;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeAutocryptPreferEncrypt {
         match self {
             Self::None => ffi::GMIME_AUTOCRYPT_PREFER_ENCRYPT_NONE,
@@ -117,8 +121,10 @@ impl IntoGlib for AutocryptPreferEncrypt {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeAutocryptPreferEncrypt> for AutocryptPreferEncrypt {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeAutocryptPreferEncrypt) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_AUTOCRYPT_PREFER_ENCRYPT_NONE => Self::None,
             ffi::GMIME_AUTOCRYPT_PREFER_ENCRYPT_MUTUAL => Self::Mutual,
@@ -187,6 +193,7 @@ impl fmt::Display for CipherAlgo {
 impl IntoGlib for CipherAlgo {
     type GlibType = ffi::GMimeCipherAlgo;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeCipherAlgo {
         match self {
             Self::Default => ffi::GMIME_CIPHER_ALGO_DEFAULT,
@@ -208,8 +215,10 @@ impl IntoGlib for CipherAlgo {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeCipherAlgo> for CipherAlgo {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeCipherAlgo) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_CIPHER_ALGO_DEFAULT => Self::Default,
             ffi::GMIME_CIPHER_ALGO_IDEA => Self::Idea,
@@ -273,6 +282,7 @@ impl fmt::Display for ContentEncoding {
 impl IntoGlib for ContentEncoding {
     type GlibType = ffi::GMimeContentEncoding;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeContentEncoding {
         match self {
             Self::Default => ffi::GMIME_CONTENT_ENCODING_DEFAULT,
@@ -289,8 +299,10 @@ impl IntoGlib for ContentEncoding {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeContentEncoding> for ContentEncoding {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeContentEncoding) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_CONTENT_ENCODING_DEFAULT => Self::Default,
             ffi::GMIME_CONTENT_ENCODING_7BIT => Self::_7bit,
@@ -399,6 +411,7 @@ impl IntoGlib for DigestAlgo {
 impl FromGlib<ffi::GMimeDigestAlgo> for DigestAlgo {
     unsafe fn from_glib(value: ffi::GMimeDigestAlgo) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_DIGEST_ALGO_DEFAULT => Self::Default,
             ffi::GMIME_DIGEST_ALGO_MD5 => Self::Md5,
@@ -453,6 +466,7 @@ impl fmt::Display for EncodingConstraint {
 impl IntoGlib for EncodingConstraint {
     type GlibType = ffi::GMimeEncodingConstraint;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeEncodingConstraint {
         match self {
             Self::_7bit => ffi::GMIME_ENCODING_CONSTRAINT_7BIT,
@@ -465,8 +479,10 @@ impl IntoGlib for EncodingConstraint {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeEncodingConstraint> for EncodingConstraint {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeEncodingConstraint) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_ENCODING_CONSTRAINT_7BIT => Self::_7bit,
             ffi::GMIME_ENCODING_CONSTRAINT_8BIT => Self::_8bit,
@@ -515,6 +531,7 @@ impl fmt::Display for EncryptFlags {
 impl IntoGlib for EncryptFlags {
     type GlibType = ffi::GMimeEncryptFlags;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeEncryptFlags {
         match self {
             Self::None => ffi::GMIME_ENCRYPT_NONE,
@@ -529,8 +546,10 @@ impl IntoGlib for EncryptFlags {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeEncryptFlags> for EncryptFlags {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeEncryptFlags) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_ENCRYPT_NONE => Self::None,
             ffi::GMIME_ENCRYPT_ALWAYS_TRUST => Self::AlwaysTrust,
@@ -572,6 +591,7 @@ impl fmt::Display for FilterFromMode {
 impl IntoGlib for FilterFromMode {
     type GlibType = ffi::GMimeFilterFromMode;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeFilterFromMode {
         match self {
             Self::Default => ffi::GMIME_FILTER_FROM_MODE_DEFAULT,
@@ -583,8 +603,10 @@ impl IntoGlib for FilterFromMode {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeFilterFromMode> for FilterFromMode {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeFilterFromMode) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_FILTER_FROM_MODE_DEFAULT => Self::Default,
             ffi::GMIME_FILTER_FROM_MODE_ARMOR => Self::Armor,
@@ -623,6 +645,7 @@ impl fmt::Display for FilterGZipMode {
 impl IntoGlib for FilterGZipMode {
     type GlibType = ffi::GMimeFilterGZipMode;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeFilterGZipMode {
         match self {
             Self::Zip => ffi::GMIME_FILTER_GZIP_MODE_ZIP,
@@ -634,8 +657,10 @@ impl IntoGlib for FilterGZipMode {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeFilterGZipMode> for FilterGZipMode {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeFilterGZipMode) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_FILTER_GZIP_MODE_ZIP => Self::Zip,
             ffi::GMIME_FILTER_GZIP_MODE_UNZIP => Self::Unzip,
@@ -677,6 +702,7 @@ impl fmt::Display for Format {
 impl IntoGlib for Format {
     type GlibType = ffi::GMimeFormat;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeFormat {
         match self {
             Self::Message => ffi::GMIME_FORMAT_MESSAGE,
@@ -689,8 +715,10 @@ impl IntoGlib for Format {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeFormat> for Format {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeFormat) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_FORMAT_MESSAGE => Self::Message,
             ffi::GMIME_FORMAT_MBOX => Self::Mbox,
@@ -730,6 +758,7 @@ impl fmt::Display for NewLineFormat {
 impl IntoGlib for NewLineFormat {
     type GlibType = ffi::GMimeNewLineFormat;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeNewLineFormat {
         match self {
             Self::Unix => ffi::GMIME_NEWLINE_FORMAT_UNIX,
@@ -741,8 +770,10 @@ impl IntoGlib for NewLineFormat {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeNewLineFormat> for NewLineFormat {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeNewLineFormat) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_NEWLINE_FORMAT_UNIX => Self::Unix,
             ffi::GMIME_NEWLINE_FORMAT_DOS => Self::Dos,
@@ -790,6 +821,7 @@ impl fmt::Display for OpenPGPData {
 impl IntoGlib for OpenPGPData {
     type GlibType = ffi::GMimeOpenPGPData;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeOpenPGPData {
         match self {
             Self::None => ffi::GMIME_OPENPGP_DATA_NONE,
@@ -804,8 +836,10 @@ impl IntoGlib for OpenPGPData {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeOpenPGPData> for OpenPGPData {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeOpenPGPData) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_OPENPGP_DATA_NONE => Self::None,
             ffi::GMIME_OPENPGP_DATA_ENCRYPTED => Self::Encrypted,
@@ -850,6 +884,7 @@ impl fmt::Display for ParamEncodingMethod {
 impl IntoGlib for ParamEncodingMethod {
     type GlibType = ffi::GMimeParamEncodingMethod;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeParamEncodingMethod {
         match self {
             Self::Default => ffi::GMIME_PARAM_ENCODING_METHOD_DEFAULT,
@@ -862,8 +897,10 @@ impl IntoGlib for ParamEncodingMethod {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeParamEncodingMethod> for ParamEncodingMethod {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeParamEncodingMethod) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_PARAM_ENCODING_METHOD_DEFAULT => Self::Default,
             ffi::GMIME_PARAM_ENCODING_METHOD_RFC2231 => Self::Rfc2231,
@@ -968,6 +1005,7 @@ impl IntoGlib for ParserWarning {
 impl FromGlib<ffi::GMimeParserWarning> for ParserWarning {
     unsafe fn from_glib(value: ffi::GMimeParserWarning) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_WARN_DUPLICATED_HEADER => Self::WarnDuplicatedHeader,
             ffi::GMIME_WARN_DUPLICATED_PARAMETER => Self::WarnDuplicatedParameter,
@@ -1046,6 +1084,7 @@ impl fmt::Display for PubKeyAlgo {
 impl IntoGlib for PubKeyAlgo {
     type GlibType = ffi::GMimePubKeyAlgo;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimePubKeyAlgo {
         match self {
             Self::Default => ffi::GMIME_PUBKEY_ALGO_DEFAULT,
@@ -1066,8 +1105,10 @@ impl IntoGlib for PubKeyAlgo {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimePubKeyAlgo> for PubKeyAlgo {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimePubKeyAlgo) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_PUBKEY_ALGO_DEFAULT => Self::Default,
             ffi::GMIME_PUBKEY_ALGO_RSA => Self::Rsa,
@@ -1115,6 +1156,7 @@ impl fmt::Display for RfcComplianceMode {
 impl IntoGlib for RfcComplianceMode {
     type GlibType = ffi::GMimeRfcComplianceMode;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeRfcComplianceMode {
         match self {
             Self::Loose => ffi::GMIME_RFC_COMPLIANCE_LOOSE,
@@ -1126,8 +1168,10 @@ impl IntoGlib for RfcComplianceMode {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeRfcComplianceMode> for RfcComplianceMode {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeRfcComplianceMode) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_RFC_COMPLIANCE_LOOSE => Self::Loose,
             ffi::GMIME_RFC_COMPLIANCE_STRICT => Self::Strict,
@@ -1175,6 +1219,7 @@ impl fmt::Display for SecureMimeType {
 impl IntoGlib for SecureMimeType {
     type GlibType = ffi::GMimeSecureMimeType;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeSecureMimeType {
         match self {
             Self::CompressedData => ffi::GMIME_SECURE_MIME_TYPE_COMPRESSED_DATA,
@@ -1189,8 +1234,10 @@ impl IntoGlib for SecureMimeType {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeSecureMimeType> for SecureMimeType {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeSecureMimeType) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_SECURE_MIME_TYPE_COMPRESSED_DATA => Self::CompressedData,
             ffi::GMIME_SECURE_MIME_TYPE_ENVELOPED_DATA => Self::EnvelopedData,
@@ -1235,6 +1282,7 @@ impl fmt::Display for SeekWhence {
 impl IntoGlib for SeekWhence {
     type GlibType = ffi::GMimeSeekWhence;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeSeekWhence {
         match self {
             Self::Set => ffi::GMIME_STREAM_SEEK_SET,
@@ -1247,8 +1295,10 @@ impl IntoGlib for SeekWhence {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeSeekWhence> for SeekWhence {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeSeekWhence) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_STREAM_SEEK_SET => Self::Set,
             ffi::GMIME_STREAM_SEEK_CUR => Self::Cur,
@@ -1318,6 +1368,7 @@ impl fmt::Display for SignatureStatus {
 impl IntoGlib for SignatureStatus {
     type GlibType = ffi::GMimeSignatureStatus;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeSignatureStatus {
         match self {
             Self::Valid => ffi::GMIME_SIGNATURE_STATUS_VALID,
@@ -1339,8 +1390,10 @@ impl IntoGlib for SignatureStatus {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeSignatureStatus> for SignatureStatus {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeSignatureStatus) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_SIGNATURE_STATUS_VALID => Self::Valid,
             ffi::GMIME_SIGNATURE_STATUS_GREEN => Self::Green,
@@ -1389,6 +1442,7 @@ impl fmt::Display for StreamBufferMode {
 impl IntoGlib for StreamBufferMode {
     type GlibType = ffi::GMimeStreamBufferMode;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeStreamBufferMode {
         match self {
             Self::Read => ffi::GMIME_STREAM_BUFFER_BLOCK_READ,
@@ -1400,8 +1454,10 @@ impl IntoGlib for StreamBufferMode {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeStreamBufferMode> for StreamBufferMode {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeStreamBufferMode) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_STREAM_BUFFER_BLOCK_READ => Self::Read,
             ffi::GMIME_STREAM_BUFFER_BLOCK_WRITE => Self::Write,
@@ -1452,6 +1508,7 @@ impl fmt::Display for Trust {
 impl IntoGlib for Trust {
     type GlibType = ffi::GMimeTrust;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeTrust {
         match self {
             Self::Unknown => ffi::GMIME_TRUST_UNKNOWN,
@@ -1467,8 +1524,10 @@ impl IntoGlib for Trust {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeTrust> for Trust {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeTrust) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_TRUST_UNKNOWN => Self::Unknown,
             ffi::GMIME_TRUST_UNDEFINED => Self::Undefined,
@@ -1523,6 +1582,7 @@ impl fmt::Display for Validity {
 impl IntoGlib for Validity {
     type GlibType = ffi::GMimeValidity;
 
+    #[inline]
     fn into_glib(self) -> ffi::GMimeValidity {
         match self {
             Self::Unknown => ffi::GMIME_VALIDITY_UNKNOWN,
@@ -1538,8 +1598,10 @@ impl IntoGlib for Validity {
 
 #[doc(hidden)]
 impl FromGlib<ffi::GMimeValidity> for Validity {
+    #[inline]
     unsafe fn from_glib(value: ffi::GMimeValidity) -> Self {
         skip_assert_initialized!();
+
         match value {
             ffi::GMIME_VALIDITY_UNKNOWN => Self::Unknown,
             ffi::GMIME_VALIDITY_UNDEFINED => Self::Undefined,

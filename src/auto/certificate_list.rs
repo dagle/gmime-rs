@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Certificate;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,6 +16,8 @@ glib::wrapper! {
 }
 
 impl CertificateList {
+    pub const NONE: Option<&'static CertificateList> = None;
+
     #[doc(alias = "g_mime_certificate_list_new")]
     pub fn new() -> CertificateList {
         assert_initialized_main_thread!();
@@ -29,8 +30,6 @@ impl Default for CertificateList {
         Self::new()
     }
 }
-
-pub const NONE_CERTIFICATE_LIST: Option<&CertificateList> = None;
 
 pub trait CertificateListExt: 'static {
     #[doc(alias = "g_mime_certificate_list_add")]

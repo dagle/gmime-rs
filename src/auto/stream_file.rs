@@ -3,10 +3,8 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamFile")]
@@ -18,14 +16,16 @@ glib::wrapper! {
 }
 
 impl StreamFile {
+    pub const NONE: Option<&'static StreamFile> = None;
+
     //#[doc(alias = "g_mime_stream_file_new")]
-    //pub fn new(fp: /*Unimplemented*/Option<Fundamental: Pointer>) -> StreamFile {
+    //pub fn new(fp: /*Unimplemented*/Option<Basic: Pointer>) -> StreamFile {
     //    unsafe { TODO: call ffi:g_mime_stream_file_new() }
     //}
 
     //#[doc(alias = "g_mime_stream_file_new_with_bounds")]
     //#[doc(alias = "new_with_bounds")]
-    //pub fn with_bounds(fp: /*Unimplemented*/Option<Fundamental: Pointer>, start: i64, end: i64) -> StreamFile {
+    //pub fn with_bounds(fp: /*Unimplemented*/Option<Basic: Pointer>, start: i64, end: i64) -> StreamFile {
     //    unsafe { TODO: call ffi:g_mime_stream_file_new_with_bounds() }
     //}
 
@@ -47,8 +47,6 @@ impl StreamFile {
         }
     }
 }
-
-pub const NONE_STREAM_FILE: Option<&StreamFile> = None;
 
 pub trait StreamFileExt: 'static {
     #[doc(alias = "g_mime_stream_file_get_owner")]

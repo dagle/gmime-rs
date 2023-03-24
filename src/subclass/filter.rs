@@ -1,9 +1,9 @@
 use std::mem;
 
 use crate::Filter;
-use glib::Cast;
-use glib::translate::*;
 use glib::subclass::prelude::*;
+use glib::translate::*;
+use glib::Cast;
 
 pub trait FilterImpl: FilterImplExt + ObjectImpl {
     fn complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
@@ -106,9 +106,7 @@ impl<T: FilterImpl> FilterImplExt for T {
             let f = (*parent_class)
                 .reset
                 .expect("No parent class impl for \"reset\"");
-            f(
-                self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0,
-            )
+            f(self.obj().unsafe_cast_ref::<Filter>().to_glib_none().0)
         }
     }
 }
@@ -125,7 +123,15 @@ unsafe impl<T: FilterImpl> IsSubclassable<T> for Filter {
     }
 }
 
-unsafe extern "C" fn complete<T: FilterImpl>(ptr: *mut ffi::GMimeFilter, inbuf: *mut u8, inlen: libc::size_t, prespace: libc::size_t, outbuf: *mut *mut u8, outlen: *mut libc::size_t, outprespace: *mut libc::size_t) {
+unsafe extern "C" fn complete<T: FilterImpl>(
+    ptr: *mut ffi::GMimeFilter,
+    inbuf: *mut u8,
+    inlen: libc::size_t,
+    prespace: libc::size_t,
+    outbuf: *mut *mut u8,
+    outlen: *mut libc::size_t,
+    outprespace: *mut libc::size_t,
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let ibuf = std::slice::from_raw_parts(inbuf, inlen as usize);
@@ -141,7 +147,15 @@ unsafe extern "C" fn copy<T: FilterImpl>(ptr: *mut ffi::GMimeFilter) -> *mut ffi
     imp.copy().to_glib_full()
 }
 
-unsafe extern "C" fn filter<T: FilterImpl>(ptr: *mut ffi::GMimeFilter, inbuf: *mut u8, inlen: libc::size_t, prespace: libc::size_t, outbuf: *mut *mut u8, outlen: *mut libc::size_t, outprespace: *mut libc::size_t) {
+unsafe extern "C" fn filter<T: FilterImpl>(
+    ptr: *mut ffi::GMimeFilter,
+    inbuf: *mut u8,
+    inlen: libc::size_t,
+    prespace: libc::size_t,
+    outbuf: *mut *mut u8,
+    outlen: *mut libc::size_t,
+    outprespace: *mut libc::size_t,
+) {
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let ibuf = std::slice::from_raw_parts(inbuf, inlen as usize);

@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use crate::FilterGZipMode;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Filter, FilterGZipMode};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterGZip {
+    pub const NONE: Option<&'static FilterGZip> = None;
+
     #[doc(alias = "g_mime_filter_gzip_new")]
     pub fn new(mode: FilterGZipMode, level: i32) -> FilterGZip {
         assert_initialized_main_thread!();
@@ -28,8 +27,6 @@ impl FilterGZip {
         }
     }
 }
-
-pub const NONE_FILTER_GZIP: Option<&FilterGZip> = None;
 
 pub trait FilterGZipExt: 'static {
     #[cfg(any(feature = "v3_2", feature = "dox"))]

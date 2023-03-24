@@ -2,16 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::EncryptFlags;
-use crate::Object;
-use crate::Part;
-use crate::SecureMimeType;
-use crate::SignatureList;
-use crate::VerifyFlags;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use crate::{EncryptFlags, Object, Part, SecureMimeType, SignatureList, VerifyFlags};
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeApplicationPkcs7Mime")]
@@ -23,6 +16,8 @@ glib::wrapper! {
 }
 
 impl ApplicationPkcs7Mime {
+    pub const NONE: Option<&'static ApplicationPkcs7Mime> = None;
+
     #[doc(alias = "g_mime_application_pkcs7_mime_new")]
     pub fn new(type_: SecureMimeType) -> ApplicationPkcs7Mime {
         assert_initialized_main_thread!();
@@ -73,8 +68,6 @@ impl ApplicationPkcs7Mime {
         }
     }
 }
-
-pub const NONE_APPLICATION_PKCS7_MIME: Option<&ApplicationPkcs7Mime> = None;
 
 pub trait ApplicationPkcs7MimeExt: 'static {
     #[doc(alias = "g_mime_application_pkcs7_mime_get_smime_type")]

@@ -2,15 +2,9 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::CryptoContext;
-use crate::Multipart;
-use crate::Object;
-use crate::SignatureList;
-use crate::VerifyFlags;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use crate::{CryptoContext, Multipart, Object, SignatureList, VerifyFlags};
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMultipartSigned")]
@@ -22,6 +16,8 @@ glib::wrapper! {
 }
 
 impl MultipartSigned {
+    pub const NONE: Option<&'static MultipartSigned> = None;
+
     #[doc(alias = "g_mime_multipart_signed_new")]
     pub fn new() -> MultipartSigned {
         assert_initialized_main_thread!();
@@ -57,8 +53,6 @@ impl Default for MultipartSigned {
         Self::new()
     }
 }
-
-pub const NONE_MULTIPART_SIGNED: Option<&MultipartSigned> = None;
 
 pub trait MultipartSignedExt: 'static {
     #[doc(alias = "g_mime_multipart_signed_verify")]

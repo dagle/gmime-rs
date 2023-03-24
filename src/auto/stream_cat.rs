@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamCat {
+    pub const NONE: Option<&'static StreamCat> = None;
+
     #[doc(alias = "g_mime_stream_cat_new")]
     pub fn new() -> StreamCat {
         assert_initialized_main_thread!();
@@ -30,8 +30,6 @@ impl Default for StreamCat {
         Self::new()
     }
 }
-
-pub const NONE_STREAM_CAT: Option<&StreamCat> = None;
 
 pub trait StreamCatExt: 'static {
     #[doc(alias = "g_mime_stream_cat_add_source")]

@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Certificate;
-use crate::SignatureStatus;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Certificate, SignatureStatus};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl Signature {
+    pub const NONE: Option<&'static Signature> = None;
+
     #[doc(alias = "g_mime_signature_new")]
     pub fn new() -> Signature {
         assert_initialized_main_thread!();
@@ -30,8 +30,6 @@ impl Default for Signature {
         Self::new()
     }
 }
-
-pub const NONE_SIGNATURE: Option<&Signature> = None;
 
 pub trait SignatureExt: 'static {
     #[doc(alias = "g_mime_signature_get_certificate")]

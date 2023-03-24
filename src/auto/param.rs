@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::ParamEncodingMethod;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -16,7 +15,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_PARAM: Option<&Param> = None;
+impl Param {
+    pub const NONE: Option<&'static Param> = None;
+}
 
 pub trait ParamExt: 'static {
     #[doc(alias = "g_mime_param_get_charset")]

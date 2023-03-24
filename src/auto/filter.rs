@@ -2,11 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::mem;
-use std::ptr;
+use glib::{prelude::*, translate::*};
+use std::{fmt, mem, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeFilter")]
@@ -17,7 +14,9 @@ glib::wrapper! {
     }
 }
 
-pub const NONE_FILTER: Option<&Filter> = None;
+impl Filter {
+    pub const NONE: Option<&'static Filter> = None;
+}
 
 pub trait FilterExt: 'static {
     #[doc(alias = "g_mime_filter_backup")]
@@ -27,6 +26,7 @@ pub trait FilterExt: 'static {
     fn complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize);
 
     #[doc(alias = "g_mime_filter_copy")]
+    #[must_use]
     fn copy(&self) -> Option<Filter>;
 
     #[doc(alias = "g_mime_filter_filter")]
@@ -41,7 +41,7 @@ pub trait FilterExt: 'static {
 
 impl<O: IsA<Filter>> FilterExt for O {
     fn backup(&self, data: &[u8]) {
-        let length = data.len() as usize;
+        let length = data.len() as _;
         unsafe {
             ffi::g_mime_filter_backup(
                 self.as_ref().to_glib_none().0,
@@ -52,7 +52,7 @@ impl<O: IsA<Filter>> FilterExt for O {
     }
 
     fn complete(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
-        let inlen = inbuf.len() as usize;
+        let inlen = inbuf.len() as _;
         unsafe {
             let mut outbuf = ptr::null_mut();
             let mut outlen = mem::MaybeUninit::uninit();
@@ -66,10 +66,9 @@ impl<O: IsA<Filter>> FilterExt for O {
                 outlen.as_mut_ptr(),
                 outprespace.as_mut_ptr(),
             );
-            let outprespace = outprespace.assume_init();
             (
-                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as usize),
-                outprespace,
+                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as _),
+                outprespace.assume_init(),
             )
         }
     }
@@ -79,7 +78,7 @@ impl<O: IsA<Filter>> FilterExt for O {
     }
 
     fn filter(&self, inbuf: &[u8], prespace: usize) -> (Vec<u8>, usize) {
-        let inlen = inbuf.len() as usize;
+        let inlen = inbuf.len() as _;
         unsafe {
             let mut outbuf = ptr::null_mut();
             let mut outlen = mem::MaybeUninit::uninit();
@@ -93,10 +92,9 @@ impl<O: IsA<Filter>> FilterExt for O {
                 outlen.as_mut_ptr(),
                 outprespace.as_mut_ptr(),
             );
-            let outprespace = outprespace.assume_init();
             (
-                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as usize),
-                outprespace,
+                FromGlibContainer::from_glib_none_num(outbuf, outlen.assume_init() as _),
+                outprespace.assume_init(),
             )
         }
     }

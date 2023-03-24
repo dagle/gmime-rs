@@ -2,20 +2,12 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::ContentEncoding;
-use crate::DataWrapper;
-use crate::DecryptFlags;
-use crate::DecryptResult;
-use crate::EncodingConstraint;
-use crate::EncryptFlags;
-use crate::Object;
-use crate::OpenPGPData;
-use crate::SignatureList;
-use crate::VerifyFlags;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use crate::{
+    ContentEncoding, DataWrapper, DecryptFlags, DecryptResult, EncodingConstraint, EncryptFlags,
+    Object, OpenPGPData, SignatureList, VerifyFlags,
+};
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimePart")]
@@ -27,6 +19,8 @@ glib::wrapper! {
 }
 
 impl Part {
+    pub const NONE: Option<&'static Part> = None;
+
     #[doc(alias = "g_mime_part_new")]
     pub fn new() -> Part {
         assert_initialized_main_thread!();
@@ -52,8 +46,6 @@ impl Default for Part {
     }
 }
 
-pub const NONE_PART: Option<&Part> = None;
-
 pub trait PartExt: 'static {
     #[doc(alias = "g_mime_part_get_best_content_encoding")]
     #[doc(alias = "get_best_content_encoding")]
@@ -70,6 +62,10 @@ pub trait PartExt: 'static {
     #[doc(alias = "g_mime_part_get_content_encoding")]
     #[doc(alias = "get_content_encoding")]
     fn content_encoding(&self) -> ContentEncoding;
+
+    #[doc(alias = "g_mime_part_get_content_id")]
+    #[doc(alias = "get_content_id")]
+    fn content_id(&self) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_part_get_content_location")]
     #[doc(alias = "get_content_location")]
@@ -121,6 +117,9 @@ pub trait PartExt: 'static {
     #[doc(alias = "g_mime_part_set_content_encoding")]
     fn set_content_encoding(&self, encoding: ContentEncoding);
 
+    #[doc(alias = "g_mime_part_set_content_id")]
+    fn set_content_id(&self, content_id: &str);
+
     #[doc(alias = "g_mime_part_set_content_location")]
     fn set_content_location(&self, content_location: &str);
 
@@ -162,6 +161,14 @@ impl<O: IsA<Part>> PartExt for O {
     fn content_encoding(&self) -> ContentEncoding {
         unsafe {
             from_glib(ffi::g_mime_part_get_content_encoding(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
+
+    fn content_id(&self) -> Option<glib::GString> {
+        unsafe {
+            from_glib_none(ffi::g_mime_part_get_content_id(
                 self.as_ref().to_glib_none().0,
             ))
         }
@@ -237,7 +244,7 @@ impl<O: IsA<Part>> PartExt for O {
     ) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_mime_part_openpgp_encrypt(
+            let is_ok = ffi::g_mime_part_openpgp_encrypt(
                 self.as_ref().to_glib_none().0,
                 sign.into_glib(),
                 userid.to_glib_none().0,
@@ -245,6 +252,7 @@ impl<O: IsA<Part>> PartExt for O {
                 recipients.to_glib_none().0,
                 &mut error,
             );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -256,11 +264,12 @@ impl<O: IsA<Part>> PartExt for O {
     fn openpgp_sign(&self, userid: &str) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
-            let _ = ffi::g_mime_part_openpgp_sign(
+            let is_ok = ffi::g_mime_part_openpgp_sign(
                 self.as_ref().to_glib_none().0,
                 userid.to_glib_none().0,
                 &mut error,
             );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
             } else {
@@ -308,6 +317,15 @@ impl<O: IsA<Part>> PartExt for O {
             ffi::g_mime_part_set_content_encoding(
                 self.as_ref().to_glib_none().0,
                 encoding.into_glib(),
+            );
+        }
+    }
+
+    fn set_content_id(&self, content_id: &str) {
+        unsafe {
+            ffi::g_mime_part_set_content_id(
+                self.as_ref().to_glib_none().0,
+                content_id.to_glib_none().0,
             );
         }
     }

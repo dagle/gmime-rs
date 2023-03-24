@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Object;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -29,6 +28,7 @@ impl PartIter {
     }
 
     #[doc(alias = "g_mime_part_iter_clone")]
+    #[must_use]
     pub fn clone(&mut self) -> Option<PartIter> {
         unsafe { from_glib_full(ffi::g_mime_part_iter_clone(self.to_glib_none_mut().0)) }
     }

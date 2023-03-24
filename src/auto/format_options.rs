@@ -2,9 +2,7 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Filter;
-use crate::NewLineFormat;
-use crate::ParamEncodingMethod;
+use crate::{Filter, NewLineFormat, ParamEncodingMethod};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -43,6 +41,7 @@ impl FormatOptions {
     }
 
     #[doc(alias = "g_mime_format_options_clone")]
+    #[must_use]
     pub fn clone(&mut self) -> Option<FormatOptions> {
         unsafe { from_glib_full(ffi::g_mime_format_options_clone(self.to_glib_none_mut().0)) }
     }
@@ -129,6 +128,7 @@ impl FormatOptions {
 
     #[doc(alias = "g_mime_format_options_get_default")]
     #[doc(alias = "get_default")]
+    #[allow(clippy::should_implement_trait)]
     pub fn default() -> Option<FormatOptions> {
         assert_initialized_main_thread!();
         unsafe { from_glib_full(ffi::g_mime_format_options_get_default()) }

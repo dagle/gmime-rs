@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamMmap {
+    pub const NONE: Option<&'static StreamMmap> = None;
+
     #[doc(alias = "g_mime_stream_mmap_new")]
     pub fn new(fd: i32, prot: i32, flags: i32) -> StreamMmap {
         assert_initialized_main_thread!();
@@ -38,8 +38,6 @@ impl StreamMmap {
         }
     }
 }
-
-pub const NONE_STREAM_MMAP: Option<&StreamMmap> = None;
 
 pub trait StreamMmapExt: 'static {
     #[cfg(any(feature = "v3_2", feature = "dox"))]

@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterChecksum {
+    pub const NONE: Option<&'static FilterChecksum> = None;
+
     #[doc(alias = "g_mime_filter_checksum_new")]
     pub fn new(type_: glib::ChecksumType) -> FilterChecksum {
         assert_initialized_main_thread!();
@@ -26,8 +26,6 @@ impl FilterChecksum {
         }
     }
 }
-
-pub const NONE_FILTER_CHECKSUM: Option<&FilterChecksum> = None;
 
 pub trait FilterChecksumExt: 'static {
     #[doc(alias = "g_mime_filter_checksum_get_string")]

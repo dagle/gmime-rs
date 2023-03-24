@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterSmtpData {
+    pub const NONE: Option<&'static FilterSmtpData> = None;
+
     #[doc(alias = "g_mime_filter_smtp_data_new")]
     pub fn new() -> FilterSmtpData {
         assert_initialized_main_thread!();
@@ -29,8 +30,6 @@ impl Default for FilterSmtpData {
         Self::new()
     }
 }
-
-pub const NONE_FILTER_SMTP_DATA: Option<&FilterSmtpData> = None;
 
 impl fmt::Display for FilterSmtpData {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

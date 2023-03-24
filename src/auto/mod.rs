@@ -3,173 +3,173 @@
 // DO NOT EDIT
 
 mod application_pkcs7_mime;
-pub use self::application_pkcs7_mime::{ApplicationPkcs7Mime, NONE_APPLICATION_PKCS7_MIME};
+pub use self::application_pkcs7_mime::ApplicationPkcs7Mime;
 
 mod autocrypt_header;
-pub use self::autocrypt_header::{AutocryptHeader, NONE_AUTOCRYPT_HEADER};
+pub use self::autocrypt_header::AutocryptHeader;
 
 mod autocrypt_header_list;
-pub use self::autocrypt_header_list::{AutocryptHeaderList, NONE_AUTOCRYPT_HEADER_LIST};
+pub use self::autocrypt_header_list::AutocryptHeaderList;
 
 mod certificate;
-pub use self::certificate::{Certificate, NONE_CERTIFICATE};
+pub use self::certificate::Certificate;
 
 mod certificate_list;
-pub use self::certificate_list::{CertificateList, NONE_CERTIFICATE_LIST};
+pub use self::certificate_list::CertificateList;
 
 mod content_disposition;
-pub use self::content_disposition::{ContentDisposition, NONE_CONTENT_DISPOSITION};
+pub use self::content_disposition::ContentDisposition;
 
 mod content_type;
-pub use self::content_type::{ContentType, NONE_CONTENT_TYPE};
+pub use self::content_type::ContentType;
 
 mod crypto_context;
-pub use self::crypto_context::{CryptoContext, NONE_CRYPTO_CONTEXT};
+pub use self::crypto_context::CryptoContext;
 
 mod data_wrapper;
-pub use self::data_wrapper::{DataWrapper, NONE_DATA_WRAPPER};
+pub use self::data_wrapper::DataWrapper;
 
 mod decrypt_result;
-pub use self::decrypt_result::{DecryptResult, NONE_DECRYPT_RESULT};
+pub use self::decrypt_result::DecryptResult;
 
 mod filter;
-pub use self::filter::{Filter, NONE_FILTER};
+pub use self::filter::Filter;
 
 mod filter_basic;
-pub use self::filter_basic::{FilterBasic, NONE_FILTER_BASIC};
+pub use self::filter_basic::FilterBasic;
 
 mod filter_best;
-pub use self::filter_best::{FilterBest, NONE_FILTER_BEST};
+pub use self::filter_best::FilterBest;
 
 mod filter_charset;
-pub use self::filter_charset::{FilterCharset, NONE_FILTER_CHARSET};
+pub use self::filter_charset::FilterCharset;
 
 mod filter_checksum;
-pub use self::filter_checksum::{FilterChecksum, NONE_FILTER_CHECKSUM};
+pub use self::filter_checksum::FilterChecksum;
 
 mod filter_dos2_unix;
-pub use self::filter_dos2_unix::{FilterDos2Unix, NONE_FILTER_DOS2_UNIX};
+pub use self::filter_dos2_unix::FilterDos2Unix;
 
 mod filter_enriched;
-pub use self::filter_enriched::{FilterEnriched, NONE_FILTER_ENRICHED};
+pub use self::filter_enriched::FilterEnriched;
 
 mod filter_from;
-pub use self::filter_from::{FilterFrom, NONE_FILTER_FROM};
+pub use self::filter_from::FilterFrom;
 
 mod filter_gzip;
-pub use self::filter_gzip::{FilterGZip, NONE_FILTER_GZIP};
+pub use self::filter_gzip::FilterGZip;
 
 mod filter_html;
-pub use self::filter_html::{FilterHTML, NONE_FILTER_HTML};
+pub use self::filter_html::FilterHTML;
 
 #[cfg(any(feature = "v3_2", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
 mod filter_open_pgp;
 #[cfg(any(feature = "v3_2", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
-pub use self::filter_open_pgp::{FilterOpenPGP, NONE_FILTER_OPEN_PGP};
+pub use self::filter_open_pgp::FilterOpenPGP;
 
 mod filter_smtp_data;
-pub use self::filter_smtp_data::{FilterSmtpData, NONE_FILTER_SMTP_DATA};
+pub use self::filter_smtp_data::FilterSmtpData;
 
 mod filter_strip;
-pub use self::filter_strip::{FilterStrip, NONE_FILTER_STRIP};
+pub use self::filter_strip::FilterStrip;
 
 mod filter_unix2_dos;
-pub use self::filter_unix2_dos::{FilterUnix2Dos, NONE_FILTER_UNIX2_DOS};
+pub use self::filter_unix2_dos::FilterUnix2Dos;
 
 mod filter_windows;
-pub use self::filter_windows::{FilterWindows, NONE_FILTER_WINDOWS};
+pub use self::filter_windows::FilterWindows;
 
 mod filter_yenc;
-pub use self::filter_yenc::{FilterYenc, NONE_FILTER_YENC};
+pub use self::filter_yenc::FilterYenc;
 
 mod gpg_context;
 pub use self::gpg_context::GpgContext;
 
 mod header;
-pub use self::header::{Header, NONE_HEADER};
+pub use self::header::Header;
 
 mod header_list;
-pub use self::header_list::{HeaderList, NONE_HEADER_LIST};
+pub use self::header_list::HeaderList;
 
 mod message;
-pub use self::message::{Message, NONE_MESSAGE};
+pub use self::message::Message;
 
 mod message_part;
-pub use self::message_part::{MessagePart, NONE_MESSAGE_PART};
+pub use self::message_part::MessagePart;
 
 mod message_partial;
-pub use self::message_partial::{MessagePartial, NONE_MESSAGE_PARTIAL};
+pub use self::message_partial::MessagePartial;
 
 mod multipart;
-pub use self::multipart::{Multipart, NONE_MULTIPART};
+pub use self::multipart::Multipart;
 
 mod multipart_encrypted;
-pub use self::multipart_encrypted::{MultipartEncrypted, NONE_MULTIPART_ENCRYPTED};
+pub use self::multipart_encrypted::MultipartEncrypted;
 
 mod multipart_signed;
-pub use self::multipart_signed::{MultipartSigned, NONE_MULTIPART_SIGNED};
+pub use self::multipart_signed::MultipartSigned;
 
 mod object;
-pub use self::object::{Object, NONE_OBJECT};
+pub use self::object::Object;
 
 mod param;
-pub use self::param::{Param, NONE_PARAM};
+pub use self::param::Param;
 
 mod param_list;
-pub use self::param_list::{ParamList, NONE_PARAM_LIST};
+pub use self::param_list::ParamList;
 
 mod parser;
-pub use self::parser::{Parser, NONE_PARSER};
+pub use self::parser::Parser;
 
 mod part;
-pub use self::part::{Part, NONE_PART};
+pub use self::part::Part;
 
 mod pkcs7_context;
 pub use self::pkcs7_context::Pkcs7Context;
 
 mod signature;
-pub use self::signature::{Signature, NONE_SIGNATURE};
+pub use self::signature::Signature;
 
 mod signature_list;
-pub use self::signature_list::{SignatureList, NONE_SIGNATURE_LIST};
+pub use self::signature_list::SignatureList;
 
 mod stream;
-pub use self::stream::{Stream, NONE_STREAM};
+pub use self::stream::Stream;
 
 mod stream_buffer;
-pub use self::stream_buffer::{StreamBuffer, NONE_STREAM_BUFFER};
+pub use self::stream_buffer::StreamBuffer;
 
 mod stream_cat;
-pub use self::stream_cat::{StreamCat, NONE_STREAM_CAT};
+pub use self::stream_cat::StreamCat;
 
 mod stream_file;
-pub use self::stream_file::{StreamFile, NONE_STREAM_FILE};
+pub use self::stream_file::StreamFile;
 
 mod stream_filter;
-pub use self::stream_filter::{StreamFilter, NONE_STREAM_FILTER};
+pub use self::stream_filter::StreamFilter;
 
 mod stream_fs;
-pub use self::stream_fs::{StreamFs, NONE_STREAM_FS};
+pub use self::stream_fs::StreamFs;
 
 mod stream_gio;
-pub use self::stream_gio::{StreamGIO, NONE_STREAM_GIO};
+pub use self::stream_gio::StreamGIO;
 
 mod stream_mem;
-pub use self::stream_mem::{StreamMem, NONE_STREAM_MEM};
+pub use self::stream_mem::StreamMem;
 
 mod stream_mmap;
-pub use self::stream_mmap::{StreamMmap, NONE_STREAM_MMAP};
+pub use self::stream_mmap::StreamMmap;
 
 mod stream_null;
-pub use self::stream_null::{StreamNull, NONE_STREAM_NULL};
+pub use self::stream_null::StreamNull;
 
 mod stream_pipe;
-pub use self::stream_pipe::{StreamPipe, NONE_STREAM_PIPE};
+pub use self::stream_pipe::StreamPipe;
 
 mod text_part;
-pub use self::text_part::{TextPart, NONE_TEXT_PART};
+pub use self::text_part::TextPart;
 
 mod format_options;
 pub use self::format_options::FormatOptions;

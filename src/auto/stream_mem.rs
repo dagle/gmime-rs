@@ -3,9 +3,7 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamMem {
+    pub const NONE: Option<&'static StreamMem> = None;
+
     #[doc(alias = "g_mime_stream_mem_new")]
     pub fn new() -> StreamMem {
         assert_initialized_main_thread!();
@@ -28,7 +28,7 @@ impl StreamMem {
     #[doc(alias = "new_with_buffer")]
     pub fn with_buffer(buffer: &[u8]) -> StreamMem {
         assert_initialized_main_thread!();
-        let len = buffer.len() as usize;
+        let len = buffer.len() as _;
         unsafe {
             Stream::from_glib_full(ffi::g_mime_stream_mem_new_with_buffer(
                 buffer.to_glib_none().0,
@@ -56,8 +56,6 @@ impl Default for StreamMem {
         Self::new()
     }
 }
-
-pub const NONE_STREAM_MEM: Option<&StreamMem> = None;
 
 pub trait StreamMemExt: 'static {
     #[doc(alias = "g_mime_stream_mem_get_byte_array")]

@@ -2,16 +2,11 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::AddressType;
-use crate::AutocryptHeader;
-use crate::AutocryptHeaderList;
-use crate::DecryptFlags;
-use crate::InternetAddressList;
-use crate::Object;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use crate::{
+    AddressType, AutocryptHeader, AutocryptHeaderList, DecryptFlags, InternetAddressList, Object,
+};
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeMessage")]
@@ -23,14 +18,14 @@ glib::wrapper! {
 }
 
 impl Message {
+    pub const NONE: Option<&'static Message> = None;
+
     #[doc(alias = "g_mime_message_new")]
     pub fn new(pretty_headers: bool) -> Message {
         assert_initialized_main_thread!();
         unsafe { from_glib_full(ffi::g_mime_message_new(pretty_headers.into_glib())) }
     }
 }
-
-pub const NONE_MESSAGE: Option<&Message> = None;
 
 pub trait MessageExt: 'static {
     #[doc(alias = "g_mime_message_add_mailbox")]
@@ -147,7 +142,7 @@ impl<O: IsA<Message>> MessageExt for O {
             let parent = from_glib_borrow(parent);
             let part = from_glib_borrow(part);
             let callback: *mut P = user_data as *const _ as usize as *mut P;
-            (*callback)(&parent, &part);
+            (*callback)(&parent, &part)
         }
         let callback = Some(callback_func::<P> as _);
         let super_callback0: &P = &callback_data;

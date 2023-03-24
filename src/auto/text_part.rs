@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Object;
-use crate::Part;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Object, Part};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl TextPart {
+    pub const NONE: Option<&'static TextPart> = None;
+
     #[doc(alias = "g_mime_text_part_new")]
     pub fn new() -> TextPart {
         assert_initialized_main_thread!();
@@ -41,8 +41,6 @@ impl Default for TextPart {
         Self::new()
     }
 }
-
-pub const NONE_TEXT_PART: Option<&TextPart> = None;
 
 pub trait TextPartExt: 'static {
     #[doc(alias = "g_mime_text_part_get_charset")]

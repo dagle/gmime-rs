@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,14 +16,14 @@ glib::wrapper! {
 }
 
 impl FilterEnriched {
+    pub const NONE: Option<&'static FilterEnriched> = None;
+
     #[doc(alias = "g_mime_filter_enriched_new")]
     pub fn new(flags: u32) -> FilterEnriched {
         assert_initialized_main_thread!();
         unsafe { Filter::from_glib_full(ffi::g_mime_filter_enriched_new(flags)).unsafe_cast() }
     }
 }
-
-pub const NONE_FILTER_ENRICHED: Option<&FilterEnriched> = None;
 
 impl fmt::Display for FilterEnriched {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

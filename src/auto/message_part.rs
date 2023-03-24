@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::Message;
-use crate::Object;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{Message, Object};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl MessagePart {
+    pub const NONE: Option<&'static MessagePart> = None;
+
     #[doc(alias = "g_mime_message_part_new")]
     pub fn new(subtype: &str) -> MessagePart {
         assert_initialized_main_thread!();
@@ -36,8 +36,6 @@ impl MessagePart {
         }
     }
 }
-
-pub const NONE_MESSAGE_PART: Option<&MessagePart> = None;
 
 pub trait MessagePartExt: 'static {
     #[doc(alias = "g_mime_message_part_get_message")]

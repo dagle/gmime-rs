@@ -3,11 +3,8 @@
 // DO NOT EDIT
 
 use crate::Stream;
-use glib::object::Cast;
-use glib::object::IsA;
-use glib::translate::*;
-use std::fmt;
-use std::ptr;
+use glib::{prelude::*, translate::*};
+use std::{fmt, ptr};
 
 glib::wrapper! {
     #[doc(alias = "GMimeStreamFs")]
@@ -19,6 +16,8 @@ glib::wrapper! {
 }
 
 impl StreamFs {
+    pub const NONE: Option<&'static StreamFs> = None;
+
     #[doc(alias = "g_mime_stream_fs_new")]
     pub fn new(fd: i32) -> StreamFs {
         assert_initialized_main_thread!();
@@ -49,8 +48,6 @@ impl StreamFs {
         }
     }
 }
-
-pub const NONE_STREAM_FS: Option<&StreamFs> = None;
 
 pub trait StreamFsExt: 'static {
     #[doc(alias = "g_mime_stream_fs_get_owner")]

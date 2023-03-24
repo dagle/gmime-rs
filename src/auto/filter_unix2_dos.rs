@@ -3,8 +3,7 @@
 // DO NOT EDIT
 
 use crate::Filter;
-use glib::object::Cast;
-use glib::translate::*;
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -17,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterUnix2Dos {
+    pub const NONE: Option<&'static FilterUnix2Dos> = None;
+
     #[doc(alias = "g_mime_filter_unix2dos_new")]
     pub fn new(ensure_newline: bool) -> FilterUnix2Dos {
         assert_initialized_main_thread!();
@@ -26,8 +27,6 @@ impl FilterUnix2Dos {
         }
     }
 }
-
-pub const NONE_FILTER_UNIX2_DOS: Option<&FilterUnix2Dos> = None;
 
 impl fmt::Display for FilterUnix2Dos {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

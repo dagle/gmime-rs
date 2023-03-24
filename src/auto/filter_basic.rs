@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::ContentEncoding;
-use crate::Filter;
-use glib::object::Cast;
-use glib::translate::*;
+use crate::{ContentEncoding, Filter};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -18,6 +16,8 @@ glib::wrapper! {
 }
 
 impl FilterBasic {
+    pub const NONE: Option<&'static FilterBasic> = None;
+
     #[doc(alias = "g_mime_filter_basic_new")]
     pub fn new(encoding: ContentEncoding, encode: bool) -> FilterBasic {
         assert_initialized_main_thread!();
@@ -30,8 +30,6 @@ impl FilterBasic {
         }
     }
 }
-
-pub const NONE_FILTER_BASIC: Option<&FilterBasic> = None;
 
 impl fmt::Display for FilterBasic {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

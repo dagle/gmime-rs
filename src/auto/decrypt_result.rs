@@ -2,12 +2,8 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::CertificateList;
-use crate::CipherAlgo;
-use crate::DigestAlgo;
-use crate::SignatureList;
-use glib::object::IsA;
-use glib::translate::*;
+use crate::{CertificateList, CipherAlgo, DigestAlgo, SignatureList};
+use glib::{prelude::*, translate::*};
 use std::fmt;
 
 glib::wrapper! {
@@ -20,6 +16,8 @@ glib::wrapper! {
 }
 
 impl DecryptResult {
+    pub const NONE: Option<&'static DecryptResult> = None;
+
     #[doc(alias = "g_mime_decrypt_result_new")]
     pub fn new() -> DecryptResult {
         assert_initialized_main_thread!();
@@ -32,8 +30,6 @@ impl Default for DecryptResult {
         Self::new()
     }
 }
-
-pub const NONE_DECRYPT_RESULT: Option<&DecryptResult> = None;
 
 pub trait DecryptResultExt: 'static {
     #[doc(alias = "g_mime_decrypt_result_get_cipher")]
