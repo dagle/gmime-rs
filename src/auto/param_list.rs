@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/vhdirk/gir-files.git)
 // DO NOT EDIT
 
-use crate::{FormatOptions,Param,ParserOptions};
+use crate::{Param,ParserOptions};
 use glib::{prelude::*,translate::*};
 use std::{fmt};
 
@@ -46,9 +46,6 @@ pub trait ParamListExt: 'static {
     #[doc(alias = "g_mime_param_list_clear")]
     fn clear(&self);
 
-    #[doc(alias = "g_mime_param_list_encode")]
-    fn encode(&self, options: &mut FormatOptions, fold: bool, str: &mut glib::String);
-
     #[doc(alias = "g_mime_param_list_get_parameter")]
     #[doc(alias = "get_parameter")]
     fn parameter(&self, name: &str) -> Option<Param>;
@@ -74,12 +71,6 @@ impl<O: IsA<ParamList>> ParamListExt for O {
     fn clear(&self) {
         unsafe {
             ffi::g_mime_param_list_clear(self.as_ref().to_glib_none().0);
-        }
-    }
-
-    fn encode(&self, options: &mut FormatOptions, fold: bool, str: &mut glib::String) {
-        unsafe {
-            ffi::g_mime_param_list_encode(self.as_ref().to_glib_none().0, options.to_glib_none_mut().0, fold.into_glib(), str.to_glib_none_mut().0);
         }
     }
 

@@ -130,7 +130,7 @@ impl<O: IsA<InternetAddressList>> InternetAddressListExt for O {
             let s = glib::ffi::g_string_new(ptr::null());
             ffi::internet_address_list_encode(
                 self.as_ref().to_glib_none().0,
-                options.to_glib_none().0 as *mut _,
+                options.to_glib_none().0 as *mut ffi::GMimeFormatOptions,
                 s,
             );
             from_glib_full(glib::ffi::g_string_free(s, glib::ffi::GFALSE))

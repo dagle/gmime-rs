@@ -55,7 +55,7 @@ generate = [
     "GMime.OpenPGPState",
     "GMime.Param",
     "GMime.ParamEncodingMethod",
-    "GMime.ParamList",
+    # "GMime.ParamList",
     "GMime.ParserWarning",
     "GMime.Part",
     "GMime.PartIter",
@@ -248,12 +248,12 @@ status = "generate"
 name = "GMime.ParserOptions"
 status = "manual"
 
-# [[object]]
-# name = "GMime.ParamList"
-# status = "generate"
-#     [[object.function]]
-#     name = "encode"
-# 	ignore = true
+[[object]]
+name = "GMime.ParamList"
+status = "generate"
+    [[object.function]]
+    name = "encode"
+	ignore = true
 
 [[object]]
 name = "GMime.MessagePartial"
