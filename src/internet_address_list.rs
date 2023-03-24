@@ -128,9 +128,10 @@ impl<O: IsA<InternetAddressList>> InternetAddressListExt for O {
     fn encode(&self, options: Option<&FormatOptions>) -> String {
         unsafe {
             let s = glib::ffi::g_string_new(ptr::null());
+            let options: *const ffi::GMimeFormatOptions = options.to_glib_none().0;
             ffi::internet_address_list_encode(
                 self.as_ref().to_glib_none().0,
-                options.to_glib_none().0 as *mut ffi::GMimeFormatOptions,
+                options as *mut ffi::GMimeFormatOptions,
                 s,
             );
             from_glib_full(glib::ffi::g_string_free(s, glib::ffi::GFALSE))
