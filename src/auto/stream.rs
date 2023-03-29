@@ -22,7 +22,7 @@ impl Stream {
 
 pub trait StreamExt: 'static {
     #[doc(alias = "g_mime_stream_buffer_gets")]
-    fn buffer_gets(&self, buf: &str, max: usize) -> isize;
+    fn buffer_gets(&self, buf: &[u8]) -> isize;
 
     #[doc(alias = "g_mime_stream_buffer_readln")]
     fn buffer_readln(&self, buffer: &glib::ByteArray);
@@ -65,7 +65,7 @@ pub trait StreamExt: 'static {
     fn tell(&self) -> i64;
 
     #[doc(alias = "g_mime_stream_write")]
-    fn write(&self, buf: &str) -> isize;
+    fn write(&self, buf: &[u8]) -> isize;
 
     #[doc(alias = "g_mime_stream_write_string")]
     fn write_string(&self, str: &str) -> isize;
@@ -74,11 +74,12 @@ pub trait StreamExt: 'static {
     fn write_to_stream(&self, dest: &impl IsA<Stream>) -> i64;
 
     //#[doc(alias = "g_mime_stream_writev")]
-    //fn writev(&self, vector: /*Ignored*/&mut StreamIOVector, count: usize) -> i64;
+    //fn writev(&self, vector: /*Ignored*/&[StreamIOVector]) -> i64;
 }
 
 impl<O: IsA<Stream>> StreamExt for O {
-    fn buffer_gets(&self, buf: &str, max: usize) -> isize {
+    fn buffer_gets(&self, buf: &[u8]) -> isize {
+        let max = buf.len() as _;
         unsafe {
             ffi::g_mime_stream_buffer_gets(self.as_ref().to_glib_none().0, buf.to_glib_none().0, max)
         }
@@ -161,7 +162,7 @@ impl<O: IsA<Stream>> StreamExt for O {
         }
     }
 
-    fn write(&self, buf: &str) -> isize {
+    fn write(&self, buf: &[u8]) -> isize {
         let len = buf.len() as _;
         unsafe {
             ffi::g_mime_stream_write(self.as_ref().to_glib_none().0, buf.to_glib_none().0, len)
@@ -180,7 +181,7 @@ impl<O: IsA<Stream>> StreamExt for O {
         }
     }
 
-    //fn writev(&self, vector: /*Ignored*/&mut StreamIOVector, count: usize) -> i64 {
+    //fn writev(&self, vector: /*Ignored*/&[StreamIOVector]) -> i64 {
     //    unsafe { TODO: call ffi:g_mime_stream_writev() }
     //}
 }

@@ -80,7 +80,7 @@ pub trait AutocryptHeaderExt: 'static {
     fn set_effective_date(&self, effective_date: &glib::DateTime);
 
     #[doc(alias = "g_mime_autocrypt_header_set_keydata")]
-    fn set_keydata(&self, data: &glib::Bytes);
+    fn set_keydata(&self, keydata: &glib::Bytes);
 
     #[doc(alias = "g_mime_autocrypt_header_set_prefer_encrypt")]
     fn set_prefer_encrypt(&self, pref: AutocryptPreferEncrypt);
@@ -150,9 +150,9 @@ impl<O: IsA<AutocryptHeader>> AutocryptHeaderExt for O {
         }
     }
 
-    fn set_keydata(&self, data: &glib::Bytes) {
+    fn set_keydata(&self, keydata: &glib::Bytes) {
         unsafe {
-            ffi::g_mime_autocrypt_header_set_keydata(self.as_ref().to_glib_none().0, data.to_glib_none().0);
+            ffi::g_mime_autocrypt_header_set_keydata(self.as_ref().to_glib_none().0, keydata.to_glib_none().0);
         }
     }
 

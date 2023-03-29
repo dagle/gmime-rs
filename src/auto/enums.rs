@@ -477,72 +477,6 @@ match value {
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
 #[non_exhaustive]
-#[doc(alias = "GMimeEncryptFlags")]
-pub enum EncryptFlags {
-    #[doc(alias = "GMIME_ENCRYPT_NONE")]
-    None,
-    #[doc(alias = "GMIME_ENCRYPT_ALWAYS_TRUST")]
-    AlwaysTrust,
-    #[doc(alias = "GMIME_ENCRYPT_NO_COMPRESS")]
-    NoCompress,
-    #[doc(alias = "GMIME_ENCRYPT_SYMMETRIC")]
-    Symmetric,
-    #[doc(alias = "GMIME_ENCRYPT_THROW_KEYIDS")]
-    ThrowKeyids,
-#[doc(hidden)]
-    __Unknown(i32),
-}
-
-impl fmt::Display for EncryptFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "EncryptFlags::{}", match *self {
-            Self::None => "None",
-            Self::AlwaysTrust => "AlwaysTrust",
-            Self::NoCompress => "NoCompress",
-            Self::Symmetric => "Symmetric",
-            Self::ThrowKeyids => "ThrowKeyids",
-            _ => "Unknown",
-        })
-    }
-}
-
-#[doc(hidden)]
-impl IntoGlib for EncryptFlags {
-    type GlibType = ffi::GMimeEncryptFlags;
-
-    #[inline]
-fn into_glib(self) -> ffi::GMimeEncryptFlags {
-match self {
-            Self::None => ffi::GMIME_ENCRYPT_NONE,
-            Self::AlwaysTrust => ffi::GMIME_ENCRYPT_ALWAYS_TRUST,
-            Self::NoCompress => ffi::GMIME_ENCRYPT_NO_COMPRESS,
-            Self::Symmetric => ffi::GMIME_ENCRYPT_SYMMETRIC,
-            Self::ThrowKeyids => ffi::GMIME_ENCRYPT_THROW_KEYIDS,
-            Self::__Unknown(value) => value,
-}
-}
-}
-
-#[doc(hidden)]
-impl FromGlib<ffi::GMimeEncryptFlags> for EncryptFlags {
-    #[inline]
-unsafe fn from_glib(value: ffi::GMimeEncryptFlags) -> Self {
-        skip_assert_initialized!();
-        
-match value {
-            ffi::GMIME_ENCRYPT_NONE => Self::None,
-            ffi::GMIME_ENCRYPT_ALWAYS_TRUST => Self::AlwaysTrust,
-            ffi::GMIME_ENCRYPT_NO_COMPRESS => Self::NoCompress,
-            ffi::GMIME_ENCRYPT_SYMMETRIC => Self::Symmetric,
-            ffi::GMIME_ENCRYPT_THROW_KEYIDS => Self::ThrowKeyids,
-            value => Self::__Unknown(value),
-}
-}
-}
-
-#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
-#[derive(Clone, Copy)]
-#[non_exhaustive]
 #[doc(alias = "GMimeFilterFromMode")]
 pub enum FilterFromMode {
     #[doc(alias = "GMIME_FILTER_FROM_MODE_DEFAULT")]
@@ -906,6 +840,10 @@ pub enum ParserWarning {
     WarnInvalidAddressList,
     #[doc(alias = "GMIME_CRIT_NESTING_OVERFLOW")]
     CritNestingOverflow,
+    #[doc(alias = "GMIME_WARN_PART_WITHOUT_CONTENT")]
+    WarnPartWithoutContent,
+    #[doc(alias = "GMIME_CRIT_PART_WITHOUT_HEADERS_OR_CONTENT")]
+    CritPartWithoutHeadersOrContent,
 #[doc(hidden)]
     __Unknown(i32),
 }
@@ -928,6 +866,8 @@ impl fmt::Display for ParserWarning {
             Self::WarnInvalidParameter => "WarnInvalidParameter",
             Self::WarnInvalidAddressList => "WarnInvalidAddressList",
             Self::CritNestingOverflow => "CritNestingOverflow",
+            Self::WarnPartWithoutContent => "WarnPartWithoutContent",
+            Self::CritPartWithoutHeadersOrContent => "CritPartWithoutHeadersOrContent",
             _ => "Unknown",
         })
     }
@@ -954,6 +894,8 @@ match self {
             Self::WarnInvalidParameter => ffi::GMIME_WARN_INVALID_PARAMETER,
             Self::WarnInvalidAddressList => ffi::GMIME_WARN_INVALID_ADDRESS_LIST,
             Self::CritNestingOverflow => ffi::GMIME_CRIT_NESTING_OVERFLOW,
+            Self::WarnPartWithoutContent => ffi::GMIME_WARN_PART_WITHOUT_CONTENT,
+            Self::CritPartWithoutHeadersOrContent => ffi::GMIME_CRIT_PART_WITHOUT_HEADERS_OR_CONTENT,
             Self::__Unknown(value) => value,
 }
 }
@@ -980,6 +922,8 @@ match value {
             ffi::GMIME_WARN_INVALID_PARAMETER => Self::WarnInvalidParameter,
             ffi::GMIME_WARN_INVALID_ADDRESS_LIST => Self::WarnInvalidAddressList,
             ffi::GMIME_CRIT_NESTING_OVERFLOW => Self::CritNestingOverflow,
+            ffi::GMIME_WARN_PART_WITHOUT_CONTENT => Self::WarnPartWithoutContent,
+            ffi::GMIME_CRIT_PART_WITHOUT_HEADERS_OR_CONTENT => Self::CritPartWithoutHeadersOrContent,
             value => Self::__Unknown(value),
 }
 }

@@ -62,7 +62,7 @@ impl Object {
 
 pub trait ObjectExt: 'static {
     #[doc(alias = "g_mime_object_append_header")]
-    fn append_header(&self, header: &str, value: &str, charset: &str);
+    fn append_header(&self, header: &str, value: &str, charset: Option<&str>);
 
     #[doc(alias = "g_mime_object_encode")]
     fn encode(&self, constraint: EncodingConstraint);
@@ -108,7 +108,7 @@ pub trait ObjectExt: 'static {
     fn headers(&self, options: Option<&FormatOptions>) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_object_prepend_header")]
-    fn prepend_header(&self, header: &str, value: &str, charset: &str);
+    fn prepend_header(&self, header: &str, value: &str, charset: Option<&str>);
 
     #[doc(alias = "g_mime_object_remove_header")]
     fn remove_header(&self, header: &str) -> bool;
@@ -132,17 +132,20 @@ pub trait ObjectExt: 'static {
     fn set_disposition(&self, disposition: &str);
 
     #[doc(alias = "g_mime_object_set_header")]
-    fn set_header(&self, header: &str, value: &str, charset: &str);
+    fn set_header(&self, header: &str, value: &str, charset: Option<&str>);
 
     #[doc(alias = "g_mime_object_to_string")]
     fn to_string(&self, options: Option<&FormatOptions>) -> Option<glib::GString>;
+
+    #[doc(alias = "g_mime_object_write_content_to_stream")]
+    fn write_content_to_stream(&self, options: Option<&mut FormatOptions>, stream: &impl IsA<Stream>) -> isize;
 
     #[doc(alias = "g_mime_object_write_to_stream")]
     fn write_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize;
 }
 
 impl<O: IsA<Object>> ObjectExt for O {
-    fn append_header(&self, header: &str, value: &str, charset: &str) {
+    fn append_header(&self, header: &str, value: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_object_append_header(self.as_ref().to_glib_none().0, header.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
@@ -156,7 +159,7 @@ impl<O: IsA<Object>> ObjectExt for O {
 
     fn autocrypt_headers(&self, effective_date: &glib::DateTime, matchheader: &str, addresses: &impl IsA<InternetAddressList>, keep_incomplete: bool) -> Option<AutocryptHeaderList> {
         unsafe {
-            from_glib_none(ffi::g_mime_object_get_autocrypt_headers(self.as_ref().to_glib_none().0, effective_date.to_glib_none().0, matchheader.to_glib_none().0, addresses.as_ref().to_glib_none().0, keep_incomplete.into_glib()))
+            from_glib_full(ffi::g_mime_object_get_autocrypt_headers(self.as_ref().to_glib_none().0, effective_date.to_glib_none().0, matchheader.to_glib_none().0, addresses.as_ref().to_glib_none().0, keep_incomplete.into_glib()))
         }
     }
 
@@ -214,7 +217,7 @@ impl<O: IsA<Object>> ObjectExt for O {
         }
     }
 
-    fn prepend_header(&self, header: &str, value: &str, charset: &str) {
+    fn prepend_header(&self, header: &str, value: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_object_prepend_header(self.as_ref().to_glib_none().0, header.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
@@ -262,7 +265,7 @@ impl<O: IsA<Object>> ObjectExt for O {
         }
     }
 
-    fn set_header(&self, header: &str, value: &str, charset: &str) {
+    fn set_header(&self, header: &str, value: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_object_set_header(self.as_ref().to_glib_none().0, header.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
@@ -271,6 +274,12 @@ impl<O: IsA<Object>> ObjectExt for O {
     fn to_string(&self, options: Option<&FormatOptions>) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_mime_object_to_string(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0)))
+        }
+    }
+
+    fn write_content_to_stream(&self, options: Option<&mut FormatOptions>, stream: &impl IsA<Stream>) -> isize {
+        unsafe {
+            ffi::g_mime_object_write_content_to_stream(self.as_ref().to_glib_none().0, options.to_glib_none_mut().0, stream.as_ref().to_glib_none().0)
         }
     }
 

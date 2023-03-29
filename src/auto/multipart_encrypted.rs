@@ -46,11 +46,11 @@ impl Default for MultipartEncrypted {
 
 pub trait MultipartEncryptedExt: 'static {
     #[doc(alias = "g_mime_multipart_encrypted_decrypt")]
-    fn decrypt(&self, flags: DecryptFlags, session_key: &str) -> Result<(Option<Object>, DecryptResult), glib::Error>;
+    fn decrypt(&self, flags: DecryptFlags, session_key: Option<&str>) -> Result<(Option<Object>, DecryptResult), glib::Error>;
 }
 
 impl<O: IsA<MultipartEncrypted>> MultipartEncryptedExt for O {
-    fn decrypt(&self, flags: DecryptFlags, session_key: &str) -> Result<(Option<Object>, DecryptResult), glib::Error> {
+    fn decrypt(&self, flags: DecryptFlags, session_key: Option<&str>) -> Result<(Option<Object>, DecryptResult), glib::Error> {
         unsafe {
             let mut result = ptr::null_mut();
             let mut error = ptr::null_mut();

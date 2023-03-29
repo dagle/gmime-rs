@@ -48,6 +48,47 @@ impl FromGlib<ffi::GMimeDecryptFlags> for DecryptFlags {
 }
 
 bitflags! {
+    #[doc(alias = "GMimeEncryptFlags")]
+    pub struct EncryptFlags: u32 {
+        #[doc(alias = "GMIME_ENCRYPT_NONE")]
+        const NONE = ffi::GMIME_ENCRYPT_NONE as _;
+        #[doc(alias = "GMIME_ENCRYPT_ALWAYS_TRUST")]
+        const ALWAYS_TRUST = ffi::GMIME_ENCRYPT_ALWAYS_TRUST as _;
+        #[doc(alias = "GMIME_ENCRYPT_NO_COMPRESS")]
+        const NO_COMPRESS = ffi::GMIME_ENCRYPT_NO_COMPRESS as _;
+        #[doc(alias = "GMIME_ENCRYPT_SYMMETRIC")]
+        const SYMMETRIC = ffi::GMIME_ENCRYPT_SYMMETRIC as _;
+        #[doc(alias = "GMIME_ENCRYPT_THROW_KEYIDS")]
+        const THROW_KEYIDS = ffi::GMIME_ENCRYPT_THROW_KEYIDS as _;
+    }
+}
+
+impl fmt::Display for EncryptFlags {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for EncryptFlags {
+    type GlibType = ffi::GMimeEncryptFlags;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GMimeEncryptFlags {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GMimeEncryptFlags> for EncryptFlags {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GMimeEncryptFlags) -> Self {
+        skip_assert_initialized!();
+        Self::from_bits_truncate(value)
+    }
+}
+
+bitflags! {
     #[doc(alias = "GMimeFilterBestFlags")]
     pub struct FilterBestFlags: u32 {
         #[doc(alias = "GMIME_FILTER_BEST_CHARSET")]

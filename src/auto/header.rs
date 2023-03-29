@@ -66,7 +66,7 @@ pub trait HeaderExt: 'static {
     fn set_raw_value(&self, raw_value: &str);
 
     #[doc(alias = "g_mime_header_set_value")]
-    fn set_value(&self, options: Option<&FormatOptions>, value: &str, charset: &str);
+    fn set_value(&self, options: Option<&FormatOptions>, value: &str, charset: Option<&str>);
 
     #[doc(alias = "g_mime_header_write_to_stream")]
     fn write_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize;
@@ -151,7 +151,7 @@ impl<O: IsA<Header>> HeaderExt for O {
         }
     }
 
-    fn set_value(&self, options: Option<&FormatOptions>, value: &str, charset: &str) {
+    fn set_value(&self, options: Option<&FormatOptions>, value: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_header_set_value(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), value.to_glib_none().0, charset.to_glib_none().0);
         }

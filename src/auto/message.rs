@@ -30,7 +30,7 @@ impl Message {
 
 pub trait MessageExt: 'static {
     #[doc(alias = "g_mime_message_add_mailbox")]
-    fn add_mailbox(&self, type_: AddressType, name: &str, addr: &str);
+    fn add_mailbox(&self, type_: AddressType, name: Option<&str>, addr: &str);
 
     #[doc(alias = "g_mime_message_foreach")]
     fn foreach<P: FnMut(&Object, &Object)>(&self, callback: P);
@@ -45,15 +45,15 @@ pub trait MessageExt: 'static {
 
     #[doc(alias = "g_mime_message_get_autocrypt_gossip_headers")]
     #[doc(alias = "get_autocrypt_gossip_headers")]
-    fn autocrypt_gossip_headers(&self, now: &glib::DateTime, flags: DecryptFlags, session_key: &str) -> Result<AutocryptHeaderList, glib::Error>;
+    fn autocrypt_gossip_headers(&self, now: Option<&glib::DateTime>, flags: DecryptFlags, session_key: Option<&str>) -> Result<Option<AutocryptHeaderList>, glib::Error>;
 
     #[doc(alias = "g_mime_message_get_autocrypt_gossip_headers_from_inner_part")]
     #[doc(alias = "get_autocrypt_gossip_headers_from_inner_part")]
-    fn autocrypt_gossip_headers_from_inner_part(&self, now: &glib::DateTime, inner_part: &impl IsA<Object>) -> Option<AutocryptHeaderList>;
+    fn autocrypt_gossip_headers_from_inner_part(&self, now: Option<&glib::DateTime>, inner_part: &impl IsA<Object>) -> Option<AutocryptHeaderList>;
 
     #[doc(alias = "g_mime_message_get_autocrypt_header")]
     #[doc(alias = "get_autocrypt_header")]
-    fn autocrypt_header(&self, now: &glib::DateTime) -> Option<AutocryptHeader>;
+    fn autocrypt_header(&self, now: Option<&glib::DateTime>) -> Option<AutocryptHeader>;
 
     #[doc(alias = "g_mime_message_get_bcc")]
     #[doc(alias = "get_bcc")]
@@ -109,11 +109,11 @@ pub trait MessageExt: 'static {
     fn set_mime_part(&self, mime_part: &impl IsA<Object>);
 
     #[doc(alias = "g_mime_message_set_subject")]
-    fn set_subject(&self, subject: &str, charset: &str);
+    fn set_subject(&self, subject: &str, charset: Option<&str>);
 }
 
 impl<O: IsA<Message>> MessageExt for O {
-    fn add_mailbox(&self, type_: AddressType, name: &str, addr: &str) {
+    fn add_mailbox(&self, type_: AddressType, name: Option<&str>, addr: &str) {
         unsafe {
             ffi::g_mime_message_add_mailbox(self.as_ref().to_glib_none().0, type_.into_glib(), name.to_glib_none().0, addr.to_glib_none().0);
         }
@@ -146,7 +146,7 @@ impl<O: IsA<Message>> MessageExt for O {
         }
     }
 
-    fn autocrypt_gossip_headers(&self, now: &glib::DateTime, flags: DecryptFlags, session_key: &str) -> Result<AutocryptHeaderList, glib::Error> {
+    fn autocrypt_gossip_headers(&self, now: Option<&glib::DateTime>, flags: DecryptFlags, session_key: Option<&str>) -> Result<Option<AutocryptHeaderList>, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = ffi::g_mime_message_get_autocrypt_gossip_headers(self.as_ref().to_glib_none().0, now.to_glib_none().0, flags.into_glib(), session_key.to_glib_none().0, &mut error);
@@ -154,13 +154,13 @@ impl<O: IsA<Message>> MessageExt for O {
         }
     }
 
-    fn autocrypt_gossip_headers_from_inner_part(&self, now: &glib::DateTime, inner_part: &impl IsA<Object>) -> Option<AutocryptHeaderList> {
+    fn autocrypt_gossip_headers_from_inner_part(&self, now: Option<&glib::DateTime>, inner_part: &impl IsA<Object>) -> Option<AutocryptHeaderList> {
         unsafe {
             from_glib_full(ffi::g_mime_message_get_autocrypt_gossip_headers_from_inner_part(self.as_ref().to_glib_none().0, now.to_glib_none().0, inner_part.as_ref().to_glib_none().0))
         }
     }
 
-    fn autocrypt_header(&self, now: &glib::DateTime) -> Option<AutocryptHeader> {
+    fn autocrypt_header(&self, now: Option<&glib::DateTime>) -> Option<AutocryptHeader> {
         unsafe {
             from_glib_full(ffi::g_mime_message_get_autocrypt_header(self.as_ref().to_glib_none().0, now.to_glib_none().0))
         }
@@ -186,7 +186,7 @@ impl<O: IsA<Message>> MessageExt for O {
 
     fn date(&self) -> Option<glib::DateTime> {
         unsafe {
-            from_glib_full(ffi::g_mime_message_get_date(self.as_ref().to_glib_none().0))
+            from_glib_none(ffi::g_mime_message_get_date(self.as_ref().to_glib_none().0))
         }
     }
 
@@ -250,7 +250,7 @@ impl<O: IsA<Message>> MessageExt for O {
         }
     }
 
-    fn set_subject(&self, subject: &str, charset: &str) {
+    fn set_subject(&self, subject: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_message_set_subject(self.as_ref().to_glib_none().0, subject.to_glib_none().0, charset.to_glib_none().0);
         }

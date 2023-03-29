@@ -30,7 +30,7 @@ impl HeaderList {
 
 pub trait HeaderListExt: 'static {
     #[doc(alias = "g_mime_header_list_append")]
-    fn append(&self, name: &str, value: &str, charset: &str);
+    fn append(&self, name: &str, value: &str, charset: Option<&str>);
 
     #[doc(alias = "g_mime_header_list_clear")]
     fn clear(&self);
@@ -51,7 +51,7 @@ pub trait HeaderListExt: 'static {
     fn header_at(&self, index: i32) -> Option<Header>;
 
     #[doc(alias = "g_mime_header_list_prepend")]
-    fn prepend(&self, name: &str, value: &str, charset: &str);
+    fn prepend(&self, name: &str, value: &str, charset: Option<&str>);
 
     #[doc(alias = "g_mime_header_list_remove")]
     fn remove(&self, name: &str) -> bool;
@@ -60,7 +60,7 @@ pub trait HeaderListExt: 'static {
     fn remove_at(&self, index: i32);
 
     #[doc(alias = "g_mime_header_list_set")]
-    fn set(&self, name: &str, value: &str, charset: &str);
+    fn set(&self, name: &str, value: &str, charset: Option<&str>);
 
     #[doc(alias = "g_mime_header_list_to_string")]
     fn to_string(&self, options: Option<&FormatOptions>) -> Option<glib::GString>;
@@ -70,7 +70,7 @@ pub trait HeaderListExt: 'static {
 }
 
 impl<O: IsA<HeaderList>> HeaderListExt for O {
-    fn append(&self, name: &str, value: &str, charset: &str) {
+    fn append(&self, name: &str, value: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_header_list_append(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
@@ -106,7 +106,7 @@ impl<O: IsA<HeaderList>> HeaderListExt for O {
         }
     }
 
-    fn prepend(&self, name: &str, value: &str, charset: &str) {
+    fn prepend(&self, name: &str, value: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_header_list_prepend(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }
@@ -124,7 +124,7 @@ impl<O: IsA<HeaderList>> HeaderListExt for O {
         }
     }
 
-    fn set(&self, name: &str, value: &str, charset: &str) {
+    fn set(&self, name: &str, value: &str, charset: Option<&str>) {
         unsafe {
             ffi::g_mime_header_list_set(self.as_ref().to_glib_none().0, name.to_glib_none().0, value.to_glib_none().0, charset.to_glib_none().0);
         }

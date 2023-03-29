@@ -187,7 +187,6 @@ pub use self::enums::CipherAlgo;
 pub use self::enums::ContentEncoding;
 pub use self::enums::DigestAlgo;
 pub use self::enums::EncodingConstraint;
-pub use self::enums::EncryptFlags;
 pub use self::enums::FilterFromMode;
 pub use self::enums::FilterGZipMode;
 pub use self::enums::Format;
@@ -206,6 +205,7 @@ pub use self::enums::Validity;
 
 mod flags;
 pub use self::flags::DecryptFlags;
+pub use self::flags::EncryptFlags;
 pub use self::flags::FilterBestFlags;
 #[cfg(any(feature = "v3_2", feature = "dox"))]
 #[cfg_attr(feature = "dox", doc(cfg(feature = "v3_2")))]
