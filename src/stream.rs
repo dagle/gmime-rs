@@ -1,9 +1,4 @@
-use std::convert::TryInto;
-use std::io::ErrorKind::WriteZero;
-use std::io::{Read, Error, Write};
-
 use crate::Stream;
-use crate::traits::StreamExt;
 use glib::object::IsA;
 use glib::translate::*;
 

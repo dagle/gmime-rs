@@ -17,26 +17,15 @@ extern crate libc;
 
 macro_rules! maybe_str {
     ($acc:expr) => {
-        maybe_str!($acc, ())
-    };
-    // ($acc:expr, $ret:expr, $err:ident) => {
-    ($acc:expr, $ret:expr) => {
         if $acc.is_null() {
             None
         } else {
             let c_str = CStr::from_ptr($acc);
-            if let Ok(str) = c_str.to_str() {
-                Some(str)
-            } else {
-                // if !$err.is_null() {
-                //     *$err = e.into_glib_ptr();
-                // }
-                return $ret;
-            }
+            let str = c_str.to_str().unwrap();
+            Some(str)
         }
     };
 }
-
 
 pub trait CryptoContextImpl: CryptoContextExt + ObjectImpl {
     fn decrypt(
@@ -447,7 +436,7 @@ unsafe extern "C" fn decrypt<T: CryptoContextImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    let key = maybe_str!(key, ptr::null_mut());
+    let key = maybe_str!(key);
     let instream: Borrowed<Stream> = from_glib_borrow(istream);
     let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
 
@@ -479,10 +468,8 @@ unsafe extern "C" fn digest_id<T: CryptoContextImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let c_str = CStr::from_ptr(name);
-    if let Ok(str) = c_str.to_str() {
-        return imp.digest_id(str).into_glib()
-    }
-    ffi::GMIME_DIGEST_ALGO_DEFAULT
+    let str = c_str.to_str().unwrap();
+    return imp.digest_id(str).into_glib()
 }
 
 unsafe extern "C" fn digest_name<T: CryptoContextImpl>(
@@ -569,7 +556,7 @@ unsafe extern "C" fn encrypt<T: CryptoContextImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
 
-    let uid = maybe_str!(uid, -1);
+    let uid = maybe_str!(uid);
 
     let instream: Borrowed<Stream> = from_glib_borrow(istream);
     let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
@@ -580,17 +567,8 @@ unsafe extern "C" fn encrypt<T: CryptoContextImpl>(
     for n in 0..num {
         let item_ptr = pdata.add(n);
         let c_str = CStr::from_ptr(*item_ptr as *const libc::c_char);
-        match c_str.to_str() {
-            Ok(r) => {
-                recip.push(r)
-            }
-            Err(_) => todo!(),
-        }
+        recip.push(c_str.to_str().unwrap());
     }
-
-    // let recip: Vec<String> =
-    //     FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(recipients);
-    // let recip: Vec<&str> = recip.iter().map(|x| x.as_str()).collect();
 
     let result = imp.encrypt(
         from_glib(sign),
@@ -651,34 +629,21 @@ unsafe extern "C" fn export_keys<T: CryptoContextImpl>(
     let imp = instance.imp();
     let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
 
-    let mut recip: Vec<&str> = Vec::new();
-    while !keys.is_null() {
-        let c_str = CStr::from_ptr(*keys);
-        match c_str.to_str() {
-            Ok(r) => {
-                recip.push(r)
+    let mut k: Vec<&str> = Vec::new();
+    if !keys.is_null() {
+        let mut len = 0;
+        loop {
+            let item = *keys.add(len);
+            if item.is_null() {
+                break;
             }
-            Err(_) => todo!(),
-        }
-    }
-    // let keys: Vec<String> = FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(keys);
-    // let keys: Vec<&str> = keys.iter().map(|x| x.as_str()).collect();
-
-    let num = (*recipients).len as usize;
-    let mut recip: Vec<&str> = Vec::with_capacity(num);
-    let pdata = (*recipients).pdata;
-    for n in 0..num {
-        let item_ptr = pdata.add(n);
-        let c_str = CStr::from_ptr(*item_ptr as *const libc::c_char);
-        match c_str.to_str() {
-            Ok(r) => {
-                recip.push(r)
-            }
-            Err(_) => todo!(),
+            let c_str = CStr::from_ptr(item);
+            k.push(c_str.to_str().unwrap());
+            len += 1;
         }
     }
 
-    match imp.export_keys(&*keys, &*outstream) {
+    match imp.export_keys(&k, &*outstream) {
         Ok(num) => {
             if !error.is_null() {
                 *error = ptr::null_mut();
@@ -705,28 +670,22 @@ unsafe extern "C" fn sign<T: CryptoContextImpl>(
     let instance = &*(ptr as *mut T::Instance);
     let imp = instance.imp();
     let uid = CStr::from_ptr(uid);
-    match uid.to_str() {
-        Ok(uid) => {
-            let instream: Borrowed<Stream> = from_glib_borrow(istream);
-            let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
-            let result = imp.sign(from_glib(detach), uid, &*instream, &*outstream);
+    let uid = uid.to_str().unwrap();
+    let instream: Borrowed<Stream> = from_glib_borrow(istream);
+    let outstream: Borrowed<Stream> = from_glib_borrow(ostream);
+    let result = imp.sign(from_glib(detach), uid, &*instream, &*outstream);
 
-            match result {
-                Ok(num) => {
-                    if !error.is_null() {
-                        *error = ptr::null_mut();
-                    }
-                    num
-                }
-                Err(e) => {
-                    if !error.is_null() {
-                        *error = e.into_glib_ptr();
-                    }
-                    -1
-                }
+    match result {
+        Ok(num) => {
+            if !error.is_null() {
+                *error = ptr::null_mut();
             }
+            num
         }
-        Err(_) => {
+        Err(e) => {
+            if !error.is_null() {
+                *error = e.into_glib_ptr();
+            }
             -1
         }
     }
