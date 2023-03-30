@@ -138,7 +138,7 @@ pub trait ObjectExt: 'static {
     fn to_string(&self, options: Option<&FormatOptions>) -> Option<glib::GString>;
 
     #[doc(alias = "g_mime_object_write_content_to_stream")]
-    fn write_content_to_stream(&self, options: Option<&mut FormatOptions>, stream: &impl IsA<Stream>) -> isize;
+    fn write_content_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize;
 
     #[doc(alias = "g_mime_object_write_to_stream")]
     fn write_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize;
@@ -277,9 +277,9 @@ impl<O: IsA<Object>> ObjectExt for O {
         }
     }
 
-    fn write_content_to_stream(&self, options: Option<&mut FormatOptions>, stream: &impl IsA<Stream>) -> isize {
+    fn write_content_to_stream(&self, options: Option<&FormatOptions>, stream: &impl IsA<Stream>) -> isize {
         unsafe {
-            ffi::g_mime_object_write_content_to_stream(self.as_ref().to_glib_none().0, options.to_glib_none_mut().0, stream.as_ref().to_glib_none().0)
+            ffi::g_mime_object_write_content_to_stream(self.as_ref().to_glib_none().0, mut_override(options.to_glib_none().0), stream.as_ref().to_glib_none().0)
         }
     }
 

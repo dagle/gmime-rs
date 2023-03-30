@@ -192,7 +192,7 @@ impl<T: StreamImpl> StreamImplExt for T {
                 .expect("No parent class impl for \"reset\"");
             f(
                 self.obj().unsafe_cast_ref::<Stream>().to_glib_none().0,
-                buf.to_glib_none().0 as *const libc::c_char,
+                buf.to_glib_none().0 as *const u8,
                 buf.len() as usize,
             )
         }
@@ -219,7 +219,7 @@ unsafe impl<T: StreamImpl> IsSubclassable<T> for Stream {
 
 unsafe extern "C" fn read<T: StreamImpl>(
     ptr: *mut ffi::GMimeStream,
-    buf: *mut u8,
+    buf: *const u8,
     len: libc::size_t,
 ) -> libc::ssize_t {
     let instance = &*(ptr as *mut T::Instance);
@@ -229,7 +229,7 @@ unsafe extern "C" fn read<T: StreamImpl>(
 
 unsafe extern "C" fn write<T: StreamImpl>(
     ptr: *mut ffi::GMimeStream,
-    buf: *const libc::c_char,
+    buf: *const u8,
     len: libc::size_t,
 ) -> libc::ssize_t {
     let instance = &*(ptr as *mut T::Instance);

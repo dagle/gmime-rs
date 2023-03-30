@@ -34,7 +34,7 @@ mod internet_address_list;
 mod internet_address_mailbox;
 mod message;
 mod message_partial;
-mod parser_options;
+// mod parser_options;
 mod stream;
 
 pub use crypto_context::*;
@@ -45,7 +45,7 @@ pub use internet_address_list::*;
 pub use internet_address_mailbox::*;
 pub use message::*;
 pub use message_partial::*;
-pub use parser_options::*;
+// pub use parser_options::*;
 pub use stream::*;
 
 pub use crate::auto::*;

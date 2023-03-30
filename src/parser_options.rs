@@ -133,33 +133,33 @@ impl ParserOptions {
         }
     }
 
-    #[doc(alias = "g_mime_parser_options_set_warning_callback")]
-    pub fn set_warning_callback<P: Fn(i64, &ParserWarning, &str) + 'static>(
-        &mut self,
-        warning_cb: P,
-    ) {
-        let warning_cb_data: Box_<P> = Box_::new(warning_cb);
-        unsafe extern "C" fn warning_cb_func<P: Fn(i64, &ParserWarning, &str) + 'static>(
-            offset: i64,
-            errcode: ffi::GMimeParserWarning,
-            item: *const libc::c_char,
-            user_data: glib::ffi::gpointer,
-        ) {
-            let errcode = from_glib(errcode);
-            let item: Borrowed<glib::GString> = from_glib_borrow(item);
-            let callback: &P = &*(user_data as *mut _);
-            (*callback)(offset, &errcode, item.as_str());
-        }
-        let warning_cb = Some(warning_cb_func::<P> as _);
-        let super_callback0: Box_<P> = warning_cb_data;
-        unsafe {
-            ffi::g_mime_parser_options_set_warning_callback(
-                self.to_glib_none_mut().0,
-                warning_cb,
-                Box_::into_raw(super_callback0) as *mut _,
-            );
-        }
-    }
+    // #[doc(alias = "g_mime_parser_options_set_warning_callback")]
+    // pub fn set_warning_callback<P: Fn(i64, &ParserWarning, &str) + 'static>(
+    //     &mut self,
+    //     warning_cb: P,
+    // ) {
+    //     let warning_cb_data: Box_<P> = Box_::new(warning_cb);
+    //     unsafe extern "C" fn warning_cb_func<P: Fn(i64, &ParserWarning, &str) + 'static>(
+    //         offset: i64,
+    //         errcode: ffi::GMimeParserWarning,
+    //         item: *const libc::c_char,
+    //         user_data: glib::ffi::gpointer,
+    //     ) {
+    //         let errcode = from_glib(errcode);
+    //         let item: Borrowed<glib::GString> = from_glib_borrow(item);
+    //         let callback: &P = &*(user_data as *mut _);
+    //         (*callback)(offset, &errcode, item.as_str());
+    //     }
+    //     let warning_cb = Some(warning_cb_func::<P> as _);
+    //     let super_callback0: Box_<P> = warning_cb_data;
+    //     unsafe {
+    //         ffi::g_mime_parser_options_set_warning_callback(
+    //             self.to_glib_none_mut().0,
+    //             warning_cb,
+    //             Box_::into_raw(super_callback0) as *mut _,
+    //         );
+    //     }
+    // }
 
     #[doc(alias = "g_mime_parser_options_get_default")]
     #[doc(alias = "get_default")]

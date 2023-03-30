@@ -13,7 +13,7 @@ impl<O: IsA<Stream>> StreamExtManual for O {
         unsafe {
             ffi::g_mime_stream_write(
                 self.as_ref().to_glib_none().0,
-                buf.to_glib_none().0 as *const i8,
+                buf.to_glib_none().0 as *const u8,
                 len,
             )
         }

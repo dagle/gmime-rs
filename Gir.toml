@@ -56,6 +56,7 @@ generate = [
     "GMime.Param",
     "GMime.ParamEncodingMethod",
     # "GMime.ParamList",
+	"GMime.ParserOptions",
     "GMime.ParserWarning",
     "GMime.Part",
     "GMime.PartIter",
@@ -215,7 +216,7 @@ status = "manual"
 name = "GMime.Object"
 status = "generate"
     [[object.function]]
-    pattern = "(new|new_type|to_string|write_to_stream|get_headers)"
+    pattern = "(new|new_type|to_string|write_to_stream|write_content_to_stream|get_headers)"
         [[object.function.parameter]]
         # optional and thus immutable
         name = "options"
@@ -244,9 +245,9 @@ status = "generate"
         const = true
         nullable = true
 
-[[object]]
-name = "GMime.ParserOptions"
-status = "manual"
+# [[object]]
+# name = "GMime.ParserOptions"
+# status = "manual"
 
 [[object]]
 name = "GMime.ParamList"
